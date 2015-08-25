@@ -63,9 +63,32 @@
     return [sectionDataMetric numberOfItems];
 }
 
+- (NSArray *)allSectionDataMetrics {
+    return self.sectionDataMetrics;
+}
+
+- (id)dataInSection:(NSInteger)section {
+    TCSectionDataMetric *sectionDataMetric = [self.sectionDataMetrics objectAtIndex:section];
+    return [sectionDataMetric allItems];
+}
+
 - (id)dataForItemAtIndexPath:(NSIndexPath *)indexPath {
     TCSectionDataMetric *sectionDataMetric = [self.sectionDataMetrics objectAtIndex:indexPath.section];
     return [sectionDataMetric dataAtIndex:indexPath.item];
+}
+
+- (NSIndexPath *)indexPathOfData:(id)data {
+    __block NSIndexPath *indexPath = nil;
+    [self.sectionDataMetrics enumerateObjectsUsingBlock:^(TCSectionDataMetric *sectionDataMetric, NSUInteger idx, BOOL *stop) {
+        NSArray *items = [sectionDataMetric allItems];
+        if ([items containsObject:data]) {
+            NSInteger row = [items indexOfObjectIdenticalTo:data];
+            indexPath = [NSIndexPath indexPathForItem:row inSection:idx];
+            *stop = YES;
+        }
+    }];
+    
+    return indexPath;
 }
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section {
@@ -77,6 +100,35 @@
     TCSectionDataMetric *sectionDataMetric = [self.sectionDataMetrics objectAtIndex:section];
     return [sectionDataMetric titleForFooter];
 }
+
+- (id)dataForHeaderInSection:(NSInteger)section {
+    TCSectionDataMetric *sectionDataMetric = [self.sectionDataMetrics objectAtIndex:section];
+    return [sectionDataMetric dataForHeader];
+}
+
+- (id)dataForFooterInSection:(NSInteger)section {
+    TCSectionDataMetric *sectionDataMetric = [self.sectionDataMetrics objectAtIndex:section];
+    return [sectionDataMetric dataForFooter];
+}
+
+- (NSInteger)indexOfHeaderData:(id)data {
+    NSArray *headerData = [self.sectionDataMetrics valueForKey:@"dataForHeader"];
+    if ([headerData containsObject:data]) {
+        return [headerData indexOfObjectIdenticalTo:data];
+    }
+    
+    return -1;
+}
+
+- (NSInteger)indexOfFooterData:(id)data {
+    NSArray *footerData = [self.sectionDataMetrics valueForKey:@"dataForFooter"];
+    if ([footerData containsObject:data]) {
+        return [footerData indexOfObjectIdenticalTo:data];
+    }
+    
+    return -1;
+}
+
 
 - (id)dataForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     TCSectionDataMetric *sectionDataMetric = [self.sectionDataMetrics objectAtIndex:indexPath.section];

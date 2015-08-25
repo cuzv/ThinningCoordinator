@@ -26,6 +26,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class TCSectionDataMetric;
+
 @protocol TCDataSourceProtocol <NSObject>
 
 @required
@@ -50,5 +52,16 @@
 /// UICollectionView only, load data for specific supplementary view
 - (void)loadData:(id)data forReusableSupplementaryView:(UICollectionReusableView *)reusableView;
 
+/// Return the section index title
+- (NSString *)indexTitleForSectionDataMetric:(TCSectionDataMetric *)sectionDataMetric;
+
+/// Can edit the specific item
+- (BOOL)canEditItemAtIndexPath:(NSIndexPath *)indexPath;
+
+/// commit editing data behavior
+- (void)commitEditingData:(id)data atIndexPath:(NSIndexPath *)indexPath;
+
+/// Can move the specific item
+- (BOOL)canMoveItemAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

@@ -22,8 +22,17 @@
 /// Each section items count
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
 
+/// Return the all section data metrics
+- (NSArray *)allSectionDataMetrics;
+
+/// The data from specific section
+- (id)dataInSection:(NSInteger)section;
+
 /// The data which should configure for the indexPath
 - (id)dataForItemAtIndexPath:(NSIndexPath *)indexPath;
+
+/// Return the data indexPath in UITableview/UICollection
+- (NSIndexPath *)indexPathOfData:(id)data;
 
 
 /// UITableView only, the section header title
@@ -31,6 +40,18 @@
 
 /// UITableView only, the section footer title
 - (NSString *)titleForFooterInSection:(NSInteger)section;
+
+/// UITableView only, the section header data
+- (id)dataForHeaderInSection:(NSInteger)section;
+
+/// UITableView only, the section header data
+- (id)dataForFooterInSection:(NSInteger)section;
+
+/// UITableView only, return the header index
+- (NSInteger)indexOfHeaderData:(id)data;
+
+/// UITableView only, return the footer index
+- (NSInteger)indexOfFooterData:(id)data;
 
 
 /// UICollectionView only, the data for specific kind at indexPath

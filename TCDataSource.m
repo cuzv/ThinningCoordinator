@@ -27,6 +27,7 @@
 #import "TCDataSource.h"
 #import "TCGlobalDataMetric.h"
 #import "TCDataSourceProtocol.h"
+#import "TCSectionDataMetric.h"
 
 @interface TCDataSource ()
 @property (nonatomic, weak, readwrite) UITableView *tableView;
@@ -56,6 +57,7 @@
 - (instancetype)initWithTableView:(UITableView *)tableView {
     self = [self init];
 
+    NSAssert(tableView, NSLocalizedString(@"Tableview can not be nil", nil));
     _tableView = tableView;
 
     return self;
@@ -77,6 +79,9 @@
     
     id data = [self.globalDataMetric dataForItemAtIndexPath:indexPath];
     [self.subclass loadData:data forReusableCell:cell];
+
+    [cell setNeedsUpdateConstraints];
+    [cell updateConstraintsIfNeeded];
     
     return cell;
 }
@@ -89,11 +94,105 @@
     return [self.globalDataMetric titleForFooterInSection:section];
 }
 
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    NSMutableArray *indexTitles = [NSMutableArray new];
+    BOOL respondsToSelector = [self.subclass respondsToSelector:@selector(indexTitleForSectionDataMetric:)];
+    if (!respondsToSelector) {
+        return nil;
+    }
+
+    // If titles contains nil will crash
+    __block BOOL valid = YES;
+    [[self.globalDataMetric allSectionDataMetrics] enumerateObjectsUsingBlock:^(TCSectionDataMetric *obj, NSUInteger idx, BOOL *stop) {
+        NSString *title = [self.subclass indexTitleForSectionDataMetric:obj];
+        if (!title) {
+            valid = NO;
+            *stop = YES;
+        }
+        [indexTitles addObject:title];
+    }];
+
+    if (!valid) {
+        return nil;
+    }
+    
+    return indexTitles;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
+    NSArray *sectionIndexTitles = [self sectionIndexTitlesForTableView:self.tableView];
+    return [sectionIndexTitles indexOfObjectIdenticalTo:title];
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    BOOL respondsToSelector = [self.subclass respondsToSelector:@selector(canEditItemAtIndexPath:)];
+    if (!respondsToSelector) {
+        return respondsToSelector;
+    }
+    
+    return [self.subclass canEditItemAtIndexPath:indexPath];
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    BOOL respondsToSelector = [self.subclass respondsToSelector:@selector(commitEditingData:atIndexPath:)];
+    if (!respondsToSelector) {
+        return;
+    }
+    
+    id data = [self.globalDataMetric dataForItemAtIndexPath:indexPath];
+    if (UITableViewCellEditingStyleDelete == editingStyle) {
+        [self.globalDataMetric removeDataAtIndexPath:indexPath];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } else if (UITableViewCellEditingStyleInsert == editingStyle) {
+        // Duplicate last content item, in case reload data error, should not use it.
+        if (!data) {
+            NSLog(NSLocalizedString(@"Array index cross the bounds", nil));
+            return;
+        }
+        
+        NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
+        [self.globalDataMetric insertData:@[data] atIndexPath:newIndexPath];
+        [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+
+    [self.subclass commitEditingData:data atIndexPath:indexPath];
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    BOOL respondsToSelector = [self.subclass respondsToSelector:@selector(canMoveItemAtIndexPath:)];
+    if (!respondsToSelector) {
+        return respondsToSelector;
+    }
+    
+    return [self.subclass canMoveItemAtIndexPath:indexPath];
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    TCSectionDataMetric *sourceSectionDataMetric = [self.globalDataMetric dataInSection:sourceIndexPath.section];
+    NSMutableArray *sourceContent = [[sourceSectionDataMetric allItems] mutableCopy];
+    
+    if (sourceIndexPath.section == destinationIndexPath.section) {
+        [sourceContent exchangeObjectAtIndex:sourceIndexPath.item withObjectAtIndex:destinationIndexPath.item];
+    } else {
+        id temp = [sourceContent objectAtIndex:sourceIndexPath.item];
+        [sourceContent removeObject:temp];
+        
+        TCSectionDataMetric *destinationSectionDataMetric = [self.globalDataMetric dataInSection:destinationIndexPath.section];
+        NSMutableArray *destinationContent = [[destinationSectionDataMetric allItems] mutableCopy];
+        [destinationContent insertObject:temp atIndex:destinationIndexPath.item];
+        [destinationSectionDataMetric setValue:destinationContent forKey:@"items"];
+    }
+    
+    [sourceSectionDataMetric setValue:sourceContent forKey:@"items"];
+}
+
+
 #pragma mark - UICollectionViewDataSource
 
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView {
     self = [self init];
 
+    NSAssert(collectionView, NSLocalizedString(@"CollectionView can not be nil", nil));
     _collectionView = collectionView;
     
     return self;

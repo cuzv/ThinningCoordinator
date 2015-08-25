@@ -45,6 +45,9 @@
 /// Section data count
 - (NSInteger)numberOfItems;
 
+/// All data
+- (NSArray *)allItems;
+
 /// Return specific data
 - (id)dataAtIndex:(NSInteger)index;
 

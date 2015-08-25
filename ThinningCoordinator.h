@@ -24,7 +24,6 @@
 //  THE SOFTWARE.
 //
 
-
 #ifndef Haioo_ThinningCoordinator_h
 #define Haioo_ThinningCoordinator_h
 

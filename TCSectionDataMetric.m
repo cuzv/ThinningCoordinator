@@ -88,6 +88,10 @@
     return self.items.count;
 }
 
+- (NSArray *)allItems {
+    return self.items;
+}
+
 - (id)dataAtIndex:(NSInteger)index {
     return [self.items objectAtIndex:index];
 }
