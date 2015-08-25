@@ -25,7 +25,80 @@
 //
 
 #import "TCDelegate.h"
+#import "TCDataSource.h"
+#import "TCDataSource+Private.h"
+#import "TCGlobalDataMetric.h"
+
+@interface TCDelegate ()
+@property (nonatomic, weak, readwrite) UITableView *tableView;
+@property (nonatomic, weak, readwrite) UICollectionView *collectionView;
+@end
 
 @implementation TCDelegate
+
+- (instancetype)init {
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+    
+//    if ([self conformsToProtocol:@protocol(TCDataSourceProtocol)]) {
+//        self.subclass = (id <TCDataSourceProtocol>) self;
+//    } else {
+//        NSAssert(NO, @"subclass must conforms TCDataSourceProtocol!");
+//    }
+    
+    return self;
+}
+
+#pragma mark - UITableViewDataSource
+
+- (instancetype)initWithTableView:(UITableView *)tableView {
+    self = [self init];
+    
+    NSAssert(tableView, NSLocalizedString(@"Tableview can not be nil", nil));
+    _tableView = tableView;
+    
+    return self;
+}
+
+#pragma mark -
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    TCDataSource *dataSource = (TCDataSource *)tableView.dataSource;
+    return [dataSource heightForRowAtIndexPath:indexPath];
+}
+
+- (UIView *)viewForHeaderInSection:(NSInteger)section {
+    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
+    return [dataSource viewForHeaderFooterInSection:section isHeader:YES];
+}
+
+- (UIView *)viewForFooterInSection:(NSInteger)section {
+    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
+   return [dataSource viewForHeaderFooterInSection:section isHeader:NO];
+}
+
+- (CGFloat)heightForHeaderInSection:(NSInteger)section {
+    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
+    return [dataSource heightForHeaderFooterInSection:section isHeader:YES];
+}
+
+- (CGFloat)heightForFooterInSection:(NSInteger)section {
+    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
+    return [dataSource heightForHeaderFooterInSection:section isHeader:NO];
+}
+
+#pragma mark - UICollectionViewDataSource
+
+- (instancetype)initWithCollectionView:(UICollectionView *)collectionView {
+    self = [self init];
+    
+    NSAssert(collectionView, NSLocalizedString(@"CollectionView can not be nil", nil));
+    _collectionView = collectionView;
+    
+    return self;
+}
+
 
 @end

@@ -1,5 +1,5 @@
 //
-//  TCDataSource.h
+//  TCDataSource+Private.h
 //  ThinningCoordinator
 //
 //  Created by Moch Xiao on 8/24/15.
@@ -25,28 +25,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TCDataSourceProtocol.h"
 
-@class TCGlobalDataMetric;
-@interface TCDataSource : NSObject <UITableViewDataSource, UICollectionViewDataSource>
+@protocol TCDataSourceProtocol;
 
-@property (nonatomic, weak, readonly) UITableView *tableView;
-- (instancetype)initWithTableView:(UITableView *)tableView;
+@interface TCDataSource ()
 
-@property (nonatomic, weak, readonly) UICollectionView *collectionView;
-- (instancetype)initWithCollectionView:(UICollectionView *)collectionView;
-
-@property (nonatomic, strong) TCGlobalDataMetric *globalDataMetric;
-
-#pragma mark - UITableView delegate helper methods
-
-/// UITableViewDelegate require row height simple return this method
-- (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath;
-
-/// UITableViewDelegate require header/footer view simple return this method
-- (UIView *)viewForHeaderFooterInSection:(NSInteger)section isHeader:(BOOL)isHeader;
-
-/// UITableViewDelegate require header/footer view height simple return this method
-- (CGFloat)heightForHeaderFooterInSection:(NSInteger)section isHeader:(BOOL)isHeader;
+@property (nonatomic, weak, readonly) id <TCDataSourceProtocol> subclass;
 
 @end

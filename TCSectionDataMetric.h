@@ -29,16 +29,16 @@
 
 @interface TCSectionDataMetric : NSObject
 
-- (instancetype)initWithItems:(NSArray *)items;
+- (instancetype)initWithItemsData:(NSArray *)itemsData;
 
 /// UITableView only
-- (instancetype)initWithItems:(NSArray *)items titleForHeader:(NSString *)titleForHeader titleForFooter:(NSString *)titleForFooter;
+- (instancetype)initWithItemsData:(NSArray *)itemsData titleForHeader:(NSString *)titleForHeader titleForFooter:(NSString *)titleForFooter;
 
 /// UITableView only, Data means which delegate method request for custom viewForHeader/viewForFooter needs
-- (instancetype)initWithItems:(NSArray *)items dataForHeader:(id)dataForHeader dataForFooter:(id)dataForFooter;
+- (instancetype)initWithItemsData:(NSArray *)itemsData dataForHeader:(id)dataForHeader dataForFooter:(id)dataForFooter;
 
 /// UICollectionView only, NSDictionary keys like `UICollectionElementKindSectionHeader`/`UICollectionElementKindSectionFooter`...
-- (instancetype)initWithItems:(NSArray *)items dataForSupplementaryElements:(NSDictionary *)dataForSupplementaryElements;
+- (instancetype)initWithItemsData:(NSArray *)itemsData dataForSupplementaryElements:(NSDictionary *)dataForSupplementaryElements;
 
 #pragma mark - Retrieve
 
@@ -46,7 +46,7 @@
 - (NSInteger)numberOfItems;
 
 /// All data
-- (NSArray *)allItems;
+- (NSArray *)allItemsData;
 
 /// Return specific data
 - (id)dataAtIndex:(NSInteger)index;
@@ -71,13 +71,17 @@
 #pragma mark - Modify
 
 /// Add new data for current section data metric
-- (void)addItemsFromArray:(NSArray *)data;
+- (void)addItemsDataFromArray:(NSArray *)data;
 
 /// Add new data for current setion data metric at specific index
-- (void)insertItemsFromArray:(NSArray *)data atIndex:(NSInteger)index;
+- (void)insertItemsDataFromArray:(NSArray *)data atIndex:(NSInteger)index;
 
 /// Remove specific data at index
-- (void)removeItemAtIndex:(NSInteger)index;
+- (void)removeDataForItemAtIndex:(NSInteger)index;
+
+/// Exchange data
+- (void)exchangeDataAtIndex:(NSInteger)sourceIndex withDataAtIndex:(NSInteger)destinationIndex;
+
 
 #pragma mark - Helpers
 

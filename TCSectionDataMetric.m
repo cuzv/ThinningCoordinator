@@ -32,7 +32,7 @@
 @property (nonatomic, copy) NSString *titleForFooter;
 @property (nonatomic, strong) id dataForHeader;
 @property (nonatomic, strong) id dataForFooter;
-@property (nonatomic, strong) NSMutableArray *items;
+@property (nonatomic, strong) NSMutableArray *itemsData;
 @property (nonatomic, strong) NSDictionary *dataForSupplementaryElements;
 @end
 
@@ -45,19 +45,19 @@
     return nil;
 }
 
-- (instancetype)initWithItems:(NSArray *)items {
+- (instancetype)initWithItemsData:(NSArray *)itemsData {
     self = [super init];
     if (!self) {
         return nil;
     }
     
-    _items = [items mutableCopy];
+    _itemsData = [itemsData mutableCopy];
     
     return self;
 }
 
-- (instancetype)initWithItems:(NSArray *)items titleForHeader:(NSString *)titleForHeader titleForFooter:(NSString *)titleForFooter {
-    self = [self initWithItems:items];
+- (instancetype)initWithItemsData:(NSArray *)itemsData titleForHeader:(NSString *)titleForHeader titleForFooter:(NSString *)titleForFooter {
+    self = [self initWithItemsData:itemsData];
     
     _titleForHeader = titleForHeader;
     _titleForFooter = titleForFooter;
@@ -65,8 +65,8 @@
     return self;
 }
 
-- (instancetype)initWithItems:(NSArray *)items dataForHeader:(id)dataForHeader dataForFooter:(id)dataForFooter {
-    self = [self initWithItems:items];
+- (instancetype)initWithItemsData:(NSArray *)itemsData dataForHeader:(id)dataForHeader dataForFooter:(id)dataForFooter {
+    self = [self initWithItemsData:itemsData];
     
     _dataForHeader = dataForHeader;
     _dataForFooter = dataForFooter;
@@ -74,8 +74,8 @@
     return self;
 }
 
-- (instancetype)initWithItems:(NSArray *)items dataForSupplementaryElements:(NSDictionary *)dataForSupplementaryElements {
-    self = [self initWithItems:items];
+- (instancetype)initWithItemsData:(NSArray *)itemsData dataForSupplementaryElements:(NSDictionary *)dataForSupplementaryElements {
+    self = [self initWithItemsData:itemsData];
     
     _dataForSupplementaryElements = dataForSupplementaryElements;
     
@@ -85,15 +85,15 @@
 #pragma mark - Retrieve
 
 - (NSInteger)numberOfItems {
-    return self.items.count;
+    return self.itemsData.count;
 }
 
-- (NSArray *)allItems {
-    return self.items;
+- (NSArray *)allItemsData {
+    return self.itemsData;
 }
 
 - (id)dataAtIndex:(NSInteger)index {
-    return [self.items objectAtIndex:index];
+    return [self.itemsData objectAtIndex:index];
 }
 
 - (id)dataForSupplementaryElementOfKind:(NSString *)kind atIndex:(NSInteger)index {
@@ -103,29 +103,40 @@
 
 #pragma mark - Modify
 
-- (void)addItemsFromArray:(NSArray *)data {
-    [self.items addObjectsFromArray:data];
+- (void)addItemsDataFromArray:(NSArray *)data {
+    [self.itemsData addObjectsFromArray:data];
 }
 
-- (void)insertItemsFromArray:(NSArray *)data atIndex:(NSInteger)index {
-    NSInteger count = self.items.count;
+- (void)insertItemsDataFromArray:(NSArray *)data atIndex:(NSInteger)index {
+    NSInteger count = self.itemsData.count;
     if (index > count) {
         NSLog(@"Index cross the bounds");
         return;
     }
     
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, data.count)];
-    [self.items insertObjects:data atIndexes:indexSet];
+    [self.itemsData insertObjects:data atIndexes:indexSet];
 }
 
-- (void)removeItemAtIndex:(NSInteger)index {
-    NSInteger count = self.items.count;
+- (void)removeDataForItemAtIndex:(NSInteger)index {
+    NSInteger count = self.itemsData.count;
     if (index > count) {
         NSLog(@"Index cross the bounds");
         return;
     }
     
-    [self.items removeObjectAtIndex:index];
+    [self.itemsData removeObjectAtIndex:index];
+}
+
+- (void)exchangeDataAtIndex:(NSInteger)sourceIndex withDataAtIndex:(NSInteger)destinationIndex {
+    NSInteger count = self.itemsData.count;
+    if (sourceIndex > count ||
+        destinationIndex > count) {
+        NSLog(@"Index cross the bounds");
+        return;
+    }
+    
+    [self.itemsData exchangeObjectAtIndex:sourceIndex withObjectAtIndex:destinationIndex];
 }
 
 #pragma mark - Description
@@ -140,10 +151,10 @@
 
 - (NSString *)_description_ {
     NSMutableString *desc = [[NSMutableString alloc] initWithString:@"items: (\n"];
-    for (id item in self.items) {
+    for (id item in self.itemsData) {
         [desc appendFormat:@"%@\n", item];
     }
-    [desc appendFormat:@")\nitems count :%@, \n", @(self.items.count)];
+    [desc appendFormat:@")\nitems count :%@, \n", @(self.itemsData.count)];
     
     return [NSString stringWithString:desc];
 }

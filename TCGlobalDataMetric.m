@@ -69,7 +69,7 @@
 
 - (id)dataInSection:(NSInteger)section {
     TCSectionDataMetric *sectionDataMetric = [self.sectionDataMetrics objectAtIndex:section];
-    return [sectionDataMetric allItems];
+    return [sectionDataMetric allItemsData];
 }
 
 - (id)dataForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -80,7 +80,7 @@
 - (NSIndexPath *)indexPathOfData:(id)data {
     __block NSIndexPath *indexPath = nil;
     [self.sectionDataMetrics enumerateObjectsUsingBlock:^(TCSectionDataMetric *sectionDataMetric, NSUInteger idx, BOOL *stop) {
-        NSArray *items = [sectionDataMetric allItems];
+        NSArray *items = [sectionDataMetric allItemsData];
         if ([items containsObject:data]) {
             NSInteger row = [items indexOfObjectIdenticalTo:data];
             indexPath = [NSIndexPath indexPathForItem:row inSection:idx];
@@ -169,7 +169,7 @@
         NSLog(@"Index cross the bounds");
         return;
     }
-    [[self.sectionDataMetrics objectAtIndex:indexPath.section] insertItemsFromArray:data atIndex:indexPath.item];
+    [[self.sectionDataMetrics objectAtIndex:indexPath.section] insertItemsDataFromArray:data atIndex:indexPath.item];
 }
 
 - (void)removeLastSectionDataMetric {
@@ -191,7 +191,7 @@
         NSLog(@"Index cross the bounds");
         return;
     }
-    [[self.sectionDataMetrics objectAtIndex:indexPath.section] removeItemAtIndex:indexPath.item];
+    [[self.sectionDataMetrics objectAtIndex:indexPath.section] removeDataForItemAtIndex:indexPath.item];
 }
 
 #pragma mark - Description

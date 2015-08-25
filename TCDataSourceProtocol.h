@@ -43,6 +43,15 @@
 
 @optional
 
+/// UITableView only, register the reuse header or footer view
+- (void)registerReusableHeaderFooterView;
+
+/// UITableView only, return the HeaderFooterView reuse identifier for section
+- (NSString *)reusableHeaderFooterViewIdentifierInSection:(NSInteger)section;
+
+/// UITableView only, load data for specific UITableViewHeaderFooterView
+- (void)loadData:(id)data forReusableHeaderFooterView:(UITableViewHeaderFooterView *)headerFooterView;
+
 /// UICollectionView only, regiseter the supplementary class for reuse
 - (void)registerReusableSupplementaryView;
 
