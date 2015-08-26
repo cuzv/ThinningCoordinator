@@ -307,12 +307,12 @@
     return cell;
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionReusableView *)viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     NSString *identifier = [self.subclass respondsToSelector:@selector(reusableSupplementaryViewIdentifierForIndexPath:ofKind:)]
                                             ? [self.subclass reusableSupplementaryViewIdentifierForIndexPath:indexPath ofKind:kind]
                                             : nil;
     NSAssert(identifier, NSLocalizedString(@"Supplementary view reuse identifier can not be nil", nil));
-    UICollectionReusableView *reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:identifier forIndexPath:indexPath];
+    UICollectionReusableView *reusableView = [self.collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:identifier forIndexPath:indexPath];
     
     id data = [self.globalDataMetric dataForSupplementaryElementOfKind:kind atIndexPath:indexPath];
     BOOL respondsToSelector = [self.subclass respondsToSelector:@selector(loadData:forReusableSupplementaryView:)];
@@ -321,6 +321,5 @@
     
     return reusableView;
 }
-
 
 @end

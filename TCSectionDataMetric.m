@@ -162,8 +162,18 @@
 #pragma mark - Helpers
 
 + (NSDictionary *)supplementaryElementsWithHeaderData:(NSArray *)headerData footerData:(NSArray *)footerData {
-    NSDictionary *supplementaryElements = @{UICollectionElementKindSectionHeader: headerData,
-                                            UICollectionElementKindSectionFooter: footerData};
+    if (!headerData && !footerData) {
+        return nil;
+    }
+
+    NSMutableDictionary *supplementaryElements = [NSMutableDictionary new];
+    if (headerData) {
+        [supplementaryElements setObject:headerData forKey:UICollectionElementKindSectionHeader];
+    }
+    if (footerData) {
+        [supplementaryElements setObject:footerData forKey:UICollectionElementKindSectionFooter];
+    }
+
     return supplementaryElements;
 }
 
