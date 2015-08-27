@@ -37,16 +37,15 @@
 @implementation TCDelegate
 
 - (instancetype)init {
+    NSAssert(NO, NSLocalizedString(@"Use designed initializer instead!", nil));
+    return nil;
+}
+
+- (instancetype)__init__ {
     self = [super init];
     if (!self) {
         return nil;
     }
-    
-//    if ([self conformsToProtocol:@protocol(TCDataSourceProtocol)]) {
-//        self.subclass = (id <TCDataSourceProtocol>) self;
-//    } else {
-//        NSAssert(NO, @"subclass must conforms TCDataSourceProtocol!");
-//    }
     
     return self;
 }
@@ -54,7 +53,7 @@
 #pragma mark - UITableViewDataSource
 
 - (instancetype)initWithTableView:(UITableView *)tableView {
-    self = [self init];
+    self = [self __init__];
     
     NSAssert(tableView, NSLocalizedString(@"Tableview can not be nil", nil));
     _tableView = tableView;
@@ -62,7 +61,7 @@
     return self;
 }
 
-#pragma mark -
+#pragma mark - UITableViewDelegate helper methods
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     TCDataSource *dataSource = (TCDataSource *)tableView.dataSource;
@@ -92,7 +91,7 @@
 #pragma mark - UICollectionViewDataSource
 
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView {
-    self = [self init];
+    self = [self __init__];
     
     NSAssert(collectionView, NSLocalizedString(@"CollectionView can not be nil", nil));
     _collectionView = collectionView;

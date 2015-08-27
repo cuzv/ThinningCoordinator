@@ -129,7 +129,6 @@
     return -1;
 }
 
-
 - (id)dataForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     TCSectionDataMetric *sectionDataMetric = [self.sectionDataMetrics objectAtIndex:indexPath.section];
     return [sectionDataMetric dataForSupplementaryElementOfKind:kind atIndex:indexPath.item];

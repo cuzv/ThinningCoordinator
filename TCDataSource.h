@@ -37,7 +37,7 @@
 @property (nonatomic, weak, readonly) UITableView *tableView;
 - (instancetype)initWithTableView:(UITableView *)tableView;
 
-#pragma mark - UITableView delegate helper methods
+#pragma mark - UITableViewDelegate helper methods
 
 /// TCDelegate subclass UITableViewDelegate require row height, simple return this method
 - (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -52,7 +52,7 @@
 @property (nonatomic, weak, readonly) UICollectionView *collectionView;
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView;
 
-#pragma mark - UICollectionView dataSource helper methods
+#pragma mark - UICollectionViewDataSource helper methods
 
 /// TCDataSource Subclas UICollectionViewDataSource require supplementary view, simple return this method
 /// Note: register first
