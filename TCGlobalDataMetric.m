@@ -47,7 +47,8 @@
         return nil;
     }
     
-    _sectionDataMetrics = [sectionDataMetrics mutableCopy];
+    _sectionDataMetrics = [NSMutableArray new];
+    [_sectionDataMetrics addObjectsFromArray:sectionDataMetrics];
     
     return self;
 }
