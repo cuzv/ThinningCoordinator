@@ -30,6 +30,8 @@
 
 @interface TCGlobalDataMetric ()
 @property (nonatomic, strong) NSMutableArray *sectionDataMetrics;
+@property (nonatomic, strong) id tableHeaderData;
+@property (nonatomic, strong) id tableFooterData;
 @end
 
 @implementation TCGlobalDataMetric
@@ -47,10 +49,26 @@
         return nil;
     }
     
-    _sectionDataMetrics = [sectionDataMetrics mutableCopy];
+    _sectionDataMetrics = [NSMutableArray new];
+    [_sectionDataMetrics addObjectsFromArray:sectionDataMetrics];
     
     return self;
 }
+
+- (instancetype)initWithSectionDataMetrics:(NSArray *)sectionDataMetrics tableHeaderData:(id)tableHeaderData tableFooterData:(id)tableFooterData {
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+    
+    _sectionDataMetrics = [NSMutableArray new];
+    [_sectionDataMetrics addObjectsFromArray:sectionDataMetrics];
+    _tableHeaderData = tableHeaderData;
+    _tableFooterData = tableFooterData;
+    
+    return self;
+}
+
 
 #pragma mark - Retrieve
 
@@ -67,7 +85,7 @@
     return self.sectionDataMetrics;
 }
 
-- (id)dataInSection:(NSInteger)section {
+- (NSArray *)dataInSection:(NSInteger)section {
     TCSectionDataMetric *sectionDataMetric = [self.sectionDataMetrics objectAtIndex:section];
     return [sectionDataMetric allItemsData];
 }
@@ -129,6 +147,13 @@
     return -1;
 }
 
+- (id)dataForHeader {
+    return self.tableHeaderData;
+}
+
+- (id)dataForFooter {
+    return self.tableFooterData;
+}
 
 - (id)dataForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     TCSectionDataMetric *sectionDataMetric = [self.sectionDataMetrics objectAtIndex:indexPath.section];

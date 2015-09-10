@@ -31,12 +31,20 @@
 @property (nonatomic, weak, readonly) UITableView *tableView;
 - (instancetype)initWithTableView:(UITableView *)tableView;
 
-#pragma mark - Subclass helper methods
+#pragma mark - UITableViewDelegate helper methods
 
+/// TCDelegate subclass UITableViewDelegate require section header view, simple return this method
 - (UIView *)viewForHeaderInSection:(NSInteger)section;
+
+/// TCDelegate subclass UITableViewDelegate require section footer view, simple return this method
 - (UIView *)viewForFooterInSection:(NSInteger)section;
+
+/// TCDelegate subclass UITableViewDelegate require section header view height, simple return this method
 - (CGFloat)heightForHeaderInSection:(NSInteger)section;
+
+/// TCDelegate subclass UITableViewDelegate require section footer view height, simple return this method
 - (CGFloat)heightForFooterInSection:(NSInteger)section;
+
 
 @property (nonatomic, weak, readonly) UICollectionView *collectionView;
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView;

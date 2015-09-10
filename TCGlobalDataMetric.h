@@ -13,6 +13,9 @@
 
 /// NSArray parameter must contains all instance kinda `TCSectionDataMetric`
 - (instancetype)initWithSectionDataMetrics:(NSArray *)sectionDataMetrics;
+/// UITableView only
+- (instancetype)initWithSectionDataMetrics:(NSArray *)sectionDataMetrics tableHeaderData:(id)tableHeaderData tableFooterData:(id)tableFooterData;
+
 
 #pragma mark - Retrieve
 
@@ -26,7 +29,7 @@
 - (NSArray *)allSectionDataMetrics;
 
 /// The data from specific section
-- (id)dataInSection:(NSInteger)section;
+- (NSArray *)dataInSection:(NSInteger)section;
 
 /// The data which should configure for the indexPath
 - (id)dataForItemAtIndexPath:(NSIndexPath *)indexPath;
@@ -35,24 +38,29 @@
 - (NSIndexPath *)indexPathOfData:(id)data;
 
 
-/// UITableView only, the section header title
+/// UITableView only, return the specific section header title
 - (NSString *)titleForHeaderInSection:(NSInteger)section;
 
-/// UITableView only, the section footer title
+/// UITableView only, return the specific section footer title
 - (NSString *)titleForFooterInSection:(NSInteger)section;
 
-/// UITableView only, the section header data
+/// UITableView only, return the specific section header data
 - (id)dataForHeaderInSection:(NSInteger)section;
 
-/// UITableView only, the section header data
+/// UITableView only, return the specific section header data
 - (id)dataForFooterInSection:(NSInteger)section;
 
-/// UITableView only, return the header index
+/// UITableView only, return the specific header index
 - (NSInteger)indexOfHeaderData:(id)data;
 
-/// UITableView only, return the footer index
+/// UITableView only, return the specific footer index
 - (NSInteger)indexOfFooterData:(id)data;
 
+/// UITableView only, return the table view header data
+- (id)dataForHeader;
+
+/// UITableView only, return the table view footer data
+- (id)dataForFooter;
 
 /// UICollectionView only, the data for specific kind at indexPath
 - (id)dataForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath;
