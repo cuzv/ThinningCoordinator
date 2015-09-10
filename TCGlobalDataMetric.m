@@ -85,7 +85,7 @@
     return self.sectionDataMetrics;
 }
 
-- (id)dataInSection:(NSInteger)section {
+- (NSArray *)dataInSection:(NSInteger)section {
     TCSectionDataMetric *sectionDataMetric = [self.sectionDataMetrics objectAtIndex:section];
     return [sectionDataMetric allItemsData];
 }

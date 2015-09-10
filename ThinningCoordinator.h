@@ -32,5 +32,6 @@
 #import "TCSectionDataMetric.h"
 #import "TCDataSource.h"
 #import "TCDelegate.h"
+#import "UICollectionReusableView+TCLayoutSizeFittingSize.h"
 
 #endif

@@ -29,7 +29,7 @@
 - (NSArray *)allSectionDataMetrics;
 
 /// The data from specific section
-- (id)dataInSection:(NSInteger)section;
+- (NSArray *)dataInSection:(NSInteger)section;
 
 /// The data which should configure for the indexPath
 - (id)dataForItemAtIndexPath:(NSIndexPath *)indexPath;
