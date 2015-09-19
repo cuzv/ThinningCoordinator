@@ -176,7 +176,7 @@
 }
 
 - (void)appendLastSectionData:(NSArray *)data {
-    [self.sectionDataMetrics.lastObject addItemsFromArray:data];
+    [self.sectionDataMetrics.lastObject addItemsDataFromArray:data];
 }
 
 - (void)appendData:(NSArray *)data inSection:(NSInteger)section {
@@ -185,7 +185,7 @@
         NSLog(@"Index cross the bounds");
         return;
     }
-    [[self.sectionDataMetrics objectAtIndex:section] addItemsFromArray:data];
+    [[self.sectionDataMetrics objectAtIndex:section] addItemsDataFromArray:data];
 }
 
 - (void)insertData:(NSArray *)data atIndexPath:(NSIndexPath *)indexPath {
