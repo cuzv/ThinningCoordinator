@@ -100,6 +100,12 @@
     
     id data = [self.globalDataMetric dataForItemAtIndexPath:indexPath];
     [self.subclass loadData:data forReusableCell:cell];
+    
+    // The first time load tableView, tableview will not draggin or decelerating
+    // But need load images anyway, so perform load action manual
+    if (!self.tableView.dragging && !self.tableView.decelerating) {
+        [self _lazyLoadImagesData:data forReusableCell:cell];
+    }
 
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
@@ -308,6 +314,12 @@
     
     id data = [self.globalDataMetric dataForItemAtIndexPath:indexPath];
     [self.subclass loadData:data forReusableCell:cell];
+    
+    // The first time load collectionView, collectionView will not draggin or decelerating
+    // But need load images anyway, so perform load action manual
+    if (!self.tableView.dragging && !self.tableView.decelerating) {
+        [self _lazyLoadImagesData:data forReusableCell:cell];
+    }
 
     return cell;
 }
@@ -325,6 +337,14 @@
     [self.subclass loadData:data forReusableSupplementaryView:reusableView];
     
     return reusableView;
+}
+
+#pragma mark - Lazy load images
+
+- (void)_lazyLoadImagesData:(id)data forReusableCell:(id)cell {
+    if ([self.subclass respondsToSelector:@selector(lazyLoadImagesData:forReusableCell:)]) {
+        [self.subclass lazyLoadImagesData:data forReusableCell:cell];
+    }
 }
 
 @end

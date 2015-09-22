@@ -73,4 +73,7 @@
 /// Can move the specific item
 - (BOOL)canMoveItemAtIndexPath:(NSIndexPath *)indexPath;
 
+/// Lazy load images
+- (void)lazyLoadImagesData:(id)data forReusableCell:(id)cell;
+
 @end

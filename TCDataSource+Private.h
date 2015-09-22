@@ -32,4 +32,7 @@
 
 @property (nonatomic, weak, readonly) id <TCDataSourceProtocol> subclass;
 
+/// Lazy laod cell images, invoked by `TCDelegate`, transmit to `TCDataSource` subclass instance
+- (void)_lazyLoadImagesData:(id)data forReusableCell:(id)cell;
+
 @end

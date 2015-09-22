@@ -99,5 +99,31 @@
     return self;
 }
 
+#pragma mark - UIScrollViewDelegate
+
+///  Load images for all onscreen rows when scrolling is finished.
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (!decelerate) {
+        [self loadImagesForOnscreenItems];
+    }
+}
+
+///  When scrolling stops, proceed to load the app icons that are on screen.
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    [self loadImagesForOnscreenItems];
+}
+
+- (void)loadImagesForOnscreenItems {
+    // visible index paths
+    NSArray *visibleIndexPaths = self.tableView ? [self.tableView indexPathsForVisibleRows] : [self.collectionView indexPathsForVisibleItems];
+    TCDataSource *dataSource = self.tableView ? (TCDataSource *)self.tableView.dataSource : (TCDataSource *)self.collectionView.dataSource;
+    for (NSIndexPath *indexPath in visibleIndexPaths) {
+        // cell data
+        id data = [dataSource.globalDataMetric dataForItemAtIndexPath:indexPath];
+        // cell
+        id cell = self.tableView ? [self.tableView cellForRowAtIndexPath:indexPath] : [self.collectionView cellForItemAtIndexPath:indexPath];
+        [dataSource _lazyLoadImagesData:data forReusableCell:cell];
+    }
+}
 
 @end
