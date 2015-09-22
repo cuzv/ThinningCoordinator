@@ -108,7 +108,7 @@
     }
 }
 
-///  When scrolling stops, proceed to load the app icons that are on screen.
+///  When scrolling stops, proceed to load the app images that are on screen.
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [self loadImagesForOnscreenItems];
 }

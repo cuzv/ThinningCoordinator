@@ -103,7 +103,10 @@
     
     // The first time load tableView, tableview will not draggin or decelerating
     // But need load images anyway, so perform load action manual
-    if (!self.tableView.dragging && !self.tableView.decelerating) {
+    if (!self.tableView.dragging &&
+        !self.tableView.decelerating &&
+        CGPointEqualToPoint(self.tableView.contentOffset, CGPointZero) &&
+        [[self.tableView indexPathsForVisibleRows] containsObject:indexPath]) {
         [self _lazyLoadImagesData:data forReusableCell:cell];
     }
 
@@ -317,7 +320,10 @@
     
     // The first time load collectionView, collectionView will not draggin or decelerating
     // But need load images anyway, so perform load action manual
-    if (!self.tableView.dragging && !self.tableView.decelerating) {
+    if (!self.collectionView.dragging &&
+        !self.collectionView.decelerating &&
+        CGPointEqualToPoint(self.collectionView.contentOffset, CGPointZero) &&
+        [[self.collectionView indexPathsForVisibleItems] containsObject:indexPath]) {
         [self _lazyLoadImagesData:data forReusableCell:cell];
     }
 
