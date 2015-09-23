@@ -106,7 +106,7 @@
     // Note that see the collectionView logic in the same where
     if (!self.tableView.dragging &&
         !self.tableView.decelerating &&
-        CGRectContainsRect(self.tableView.frame, cell.frame)) {
+        CGRectContainsPoint(self.tableView.frame, cell.origin)) {
         [self _lazyLoadImagesData:data forReusableCell:cell];
     }
 
@@ -325,7 +325,7 @@
     // you really can see it on the screen
     if (!self.collectionView.dragging &&
         !self.collectionView.decelerating &&
-        CGRectContainsRect(self.collectionView.frame, cell.frame)) {
+        CGRectContainsPoint(self.collectionView.frame, cell.origin)) {
         [self _lazyLoadImagesData:data forReusableCell:cell];
     }
 
