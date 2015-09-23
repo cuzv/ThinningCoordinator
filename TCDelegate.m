@@ -101,6 +101,11 @@
 
 #pragma mark - UIScrollViewDelegate
 
+///// Fix second time scrolling before first scrolling not ended intermediate state
+//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+//    [self loadImagesForOnscreenItems];
+//}
+
 ///  Load images for all onscreen rows when scrolling is finished.
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (!decelerate) {

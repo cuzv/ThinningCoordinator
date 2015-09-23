@@ -103,10 +103,10 @@
     
     // The first time load tableView, tableview will not draggin or decelerating
     // But need load images anyway, so perform load action manual
+    // Note that see the collectionView logic in the same where
     if (!self.tableView.dragging &&
         !self.tableView.decelerating &&
-        CGPointEqualToPoint(self.tableView.contentOffset, CGPointZero) &&
-        [[self.tableView indexPathsForVisibleRows] containsObject:indexPath]) {
+        CGRectContainsRect(self.tableView.frame, cell.frame)) {
         [self _lazyLoadImagesData:data forReusableCell:cell];
     }
 
@@ -320,10 +320,12 @@
     
     // The first time load collectionView, collectionView will not draggin or decelerating
     // But need load images anyway, so perform load action manual
+    // First time. I try to add condiition `[[self.collectionView indexPathsForVisibleItems] containsObject:indexPath]`
+    // But finally found that collectionView can not get the indexPath in `indexPathsForVisibleItems` before
+    // you really can see it on the screen
     if (!self.collectionView.dragging &&
         !self.collectionView.decelerating &&
-        CGPointEqualToPoint(self.collectionView.contentOffset, CGPointZero) &&
-        [[self.collectionView indexPathsForVisibleItems] containsObject:indexPath]) {
+        CGRectContainsRect(self.collectionView.frame, cell.frame)) {
         [self _lazyLoadImagesData:data forReusableCell:cell];
     }
 
