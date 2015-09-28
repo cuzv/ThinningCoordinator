@@ -49,6 +49,13 @@
 @property (nonatomic, weak, readonly) UICollectionView *collectionView;
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView;
 
+#pragma mark - UIScrollViewDelegate
+
+/// Implemented by `TCDelegate`, If you wanna implement you own version, invoke super first
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
+
+/// Implemented by `TCDelegate`, If you wanna implement you own version, invoke super first
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView;
 
 
 @end
