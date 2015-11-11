@@ -33,5 +33,6 @@
 #import "TCDataSource.h"
 #import "TCDelegate.h"
 #import "UICollectionReusableView+TCLayoutSizeFittingSize.h"
+#import "TCHelper.h"
 
 #endif
