@@ -24,7 +24,7 @@
 //  THE SOFTWARE.
 //
 
-#import "UICollectionReusableView+CHXLayoutSizeFittingSize.h"
+#import "UICollectionReusableView+TCLayoutSizeFittingSize.h"
 #import "TCHelper.h"
 
 #pragma mark -
