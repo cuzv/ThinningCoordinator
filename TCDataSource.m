@@ -233,12 +233,12 @@
 }
 
 - (UIView *)viewForHeaderFooterInSection:(NSInteger)section isHeader:(BOOL)isHeader {
-    BOOL respondsToSelector = [self.subclass respondsToSelector:@selector(reusableHeaderFooterViewIdentifierInSection:)];
+    BOOL respondsToSelector = [self.subclass respondsToSelector:@selector(reusableHeaderFooterViewIdentifierInSection:isHeader:)];
     if (!respondsToSelector) {
         return [UIView new];
     }
     
-    NSString *identifier = [self.subclass reusableHeaderFooterViewIdentifierInSection:section];
+    NSString *identifier = [self.subclass reusableHeaderFooterViewIdentifierInSection:section isHeader:isHeader];
     UITableViewHeaderFooterView *headerFooterView = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
     [headerFooterView prepareForReuse];
     respondsToSelector = [self.subclass respondsToSelector:@selector(loadData:forReusableHeaderFooterView:)];

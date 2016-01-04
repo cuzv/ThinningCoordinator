@@ -47,7 +47,7 @@
 - (void)registerReusableHeaderFooterView;
 
 /// UITableView only, return the HeaderFooterView reuse identifier for section
-- (NSString *)reusableHeaderFooterViewIdentifierInSection:(NSInteger)section;
+- (NSString *)reusableHeaderFooterViewIdentifierInSection:(NSInteger)section isHeader:(BOOL)isHeader;
 
 /// UITableView only, load data for specific UITableViewHeaderFooterView
 - (void)loadData:(id)data forReusableHeaderFooterView:(UITableViewHeaderFooterView *)headerFooterView;
