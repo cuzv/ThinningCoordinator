@@ -26,6 +26,7 @@
 
 #import <UIKit/UIKit.h>
 
+@class TCDataSource;
 @interface TCDelegate : NSObject <UITableViewDelegate, UICollectionViewDelegate>
 
 @property (nonatomic, weak, readonly) UITableView *tableView;
@@ -57,5 +58,8 @@
 /// Implemented by `TCDelegate`, If you wanna implement you own version, invoke super first
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView;
 
+#pragma mark - Helper
+
+@property (nonatomic, weak, readonly) TCDataSource *dataSource;
 
 @end

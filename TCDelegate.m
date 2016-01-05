@@ -131,4 +131,14 @@
     }
 }
 
+#pragma mark - Helper
+
+- (TCDataSource *)dataSource {
+    if (self.tableView) {
+        return (TCDataSource *)self.tableView.dataSource;
+    }
+    
+    return (TCDataSource *)self.collectionView.dataSource;
+}
+
 @end
