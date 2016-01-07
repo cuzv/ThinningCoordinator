@@ -109,7 +109,7 @@
 
 - (void)insertItemsDataFromArray:(NSArray *)data atIndex:(NSInteger)index {
     NSInteger count = self.itemsData.count;
-    if (index > count) {
+    if (index >= count) {
         NSLog(@"Index cross the bounds");
         return;
     }
@@ -120,7 +120,7 @@
 
 - (void)removeDataForItemAtIndex:(NSInteger)index {
     NSInteger count = self.itemsData.count;
-    if (index > count) {
+    if (index >= count) {
         NSLog(@"Index cross the bounds");
         return;
     }

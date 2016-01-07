@@ -91,8 +91,6 @@
 }
 
 - (id)dataForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    
     TCSectionDataMetric *sectionDataMetric = [self.sectionDataMetrics objectAtIndex:indexPath.section];
     return [sectionDataMetric dataAtIndex:indexPath.item];
 }
