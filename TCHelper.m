@@ -10,7 +10,7 @@
 
 @implementation TCHelper
 
-static inline BOOL _supportsConstraintsProperly() {
+static inline BOOL _supportsConstraintsProperty() {
     static BOOL constraintsSupported;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -22,12 +22,12 @@ static inline BOOL _supportsConstraintsProperly() {
 }
 
 
-BOOL TCCollectionViewSupportsConstraintsProperly() {
-    return _supportsConstraintsProperly();
+BOOL TCCollectionViewSupportsConstraintsProperty() {
+    return _supportsConstraintsProperty();
 }
 
-BOOL TCTableViewSupportsConstraintsProperly() {
-    return _supportsConstraintsProperly();
+BOOL TCTableViewSupportsConstraintsProperty() {
+    return _supportsConstraintsProperty();
 }
 
 @end
