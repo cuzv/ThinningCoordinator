@@ -10,7 +10,7 @@
 
 @interface TCHelper : NSObject
 
-BOOL TCCollectionViewSupportsConstraintsProperly();
-BOOL TCTableViewSupportsConstraintsProperly();
+BOOL TCCollectionViewSupportsConstraintsProperty();
+BOOL TCCollectionViewSupportsConstraintsProperty();
 
 @end

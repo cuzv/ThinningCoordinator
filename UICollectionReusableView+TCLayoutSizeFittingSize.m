@@ -39,7 +39,7 @@
     
     CGSize size;
     
-    if (TCCollectionViewSupportsConstraintsProperly()) {
+    if (TCCollectionViewSupportsConstraintsProperty()) {
         size = [self systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     } else {
         NSArray *constraints = @[
@@ -71,7 +71,7 @@
     
     CGSize size;
     
-    if (TCCollectionViewSupportsConstraintsProperly()) {
+    if (TCCollectionViewSupportsConstraintsProperty()) {
         [self layoutSubviews];
         size = [self.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     } else {

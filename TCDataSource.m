@@ -215,7 +215,7 @@
 #pragma mark - UITableView delegate helper methods
 
 - (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (TCTableViewSupportsConstraintsProperly()) {
+    if (TCCollectionViewSupportsConstraintsProperty()) {
         return UITableViewAutomaticDimension;
     }
     
