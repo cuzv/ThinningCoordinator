@@ -109,7 +109,7 @@
 
 - (void)insertItemsDataFromArray:(NSArray *)data atIndex:(NSInteger)index {
     NSInteger count = self.itemsData.count;
-    if (index >= count) {
+    if (count <= index) {
         NSLog(@"Index cross the bounds");
         return;
     }
@@ -120,7 +120,7 @@
 
 - (void)removeDataForItemAtIndex:(NSInteger)index {
     NSInteger count = self.itemsData.count;
-    if (index >= count) {
+    if (count <= index) {
         NSLog(@"Index cross the bounds");
         return;
     }
@@ -130,8 +130,8 @@
 
 - (void)exchangeDataAtIndex:(NSInteger)sourceIndex withDataAtIndex:(NSInteger)destinationIndex {
     NSInteger count = self.itemsData.count;
-    if (sourceIndex > count ||
-        destinationIndex > count) {
+    if (count <= sourceIndex ||
+        count <= destinationIndex) {
         NSLog(@"Index cross the bounds");
         return;
     }

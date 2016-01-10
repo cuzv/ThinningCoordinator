@@ -168,7 +168,7 @@
 
 - (void)insertSectionDataMetric:(TCSectionDataMetric *)sectionDataMetric atIndex:(NSInteger)index {
     NSInteger count = self.sectionDataMetrics.count;
-    if (count < index) {
+    if (count <= index) {
         NSLog(@"Index cross the bounds");
         return;
     }
@@ -181,7 +181,7 @@
 
 - (void)appendData:(NSArray *)data inSection:(NSInteger)section {
     NSInteger count = self.sectionDataMetrics.count;
-    if (count < section) {
+    if (count <= section) {
         NSLog(@"Index cross the bounds");
         return;
     }
@@ -190,7 +190,7 @@
 
 - (void)insertData:(NSArray *)data atIndexPath:(NSIndexPath *)indexPath {
     NSInteger count = self.sectionDataMetrics.count;
-    if (count < indexPath.section) {
+    if (count <= indexPath.section) {
         NSLog(@"Index cross the bounds");
         return;
     }
@@ -203,7 +203,7 @@
 
 - (void)removeSectionDataMetricAtIndex:(NSInteger)index {
     NSInteger count = self.sectionDataMetrics.count;
-    if (count < index) {
+    if (count <= index) {
         NSLog(@"Index cross the bounds");
         return;
     }
@@ -212,7 +212,7 @@
 
 - (void)removeDataAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger count = self.sectionDataMetrics.count;
-    if (count < indexPath.section) {
+    if (count <= indexPath.section) {
         NSLog(@"Index cross the bounds");
         return;
     }
