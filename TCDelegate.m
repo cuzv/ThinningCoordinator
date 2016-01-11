@@ -70,22 +70,22 @@
 
 - (UIView *)viewForHeaderInSection:(NSInteger)section {
     TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
-    return [dataSource viewForHeaderFooterInSection:section isHeader:YES];
+    return [dataSource viewForHeaderInSection:section];
 }
 
 - (UIView *)viewForFooterInSection:(NSInteger)section {
     TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
-   return [dataSource viewForHeaderFooterInSection:section isHeader:NO];
+   return [dataSource viewForFooterInSection:section];
 }
 
 - (CGFloat)heightForHeaderInSection:(NSInteger)section {
     TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
-    return [dataSource heightForHeaderFooterInSection:section isHeader:YES];
+    return [dataSource heightForHeaderInSection:section];
 }
 
 - (CGFloat)heightForFooterInSection:(NSInteger)section {
     TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
-    return [dataSource heightForHeaderFooterInSection:section isHeader:NO];
+    return [dataSource heightForFooterInSection:section];
 }
 
 #pragma mark - UICollectionViewDataSource

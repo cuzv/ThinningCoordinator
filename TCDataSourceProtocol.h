@@ -46,11 +46,17 @@
 /// UITableView only, register the reuse header or footer view
 - (void)registerReusableHeaderFooterView;
 
-/// UITableView only, return the HeaderFooterView reuse identifier for section
-- (NSString *)reusableHeaderFooterViewIdentifierInSection:(NSInteger)section isHeader:(BOOL)isHeader;
+/// UITableView only, return the HeaderFooterView header reuse identifier for section
+- (NSString *)reusableHeaderViewIdentifierInSection:(NSInteger)section;
 
-/// UITableView only, load data for specific UITableViewHeaderFooterView
-- (void)loadData:(id)data forReusableHeaderFooterView:(UITableViewHeaderFooterView *)headerFooterView;
+/// UITableView only, return the HeaderFooterView footer reuse identifier for section
+- (NSString *)reusableFooterViewIdentifierInSection:(NSInteger)section;
+
+/// UITableView only, load data for specific UITableViewHeaderFooterView header
+- (void)loadData:(id)data forReusableHeaderView:(UITableViewHeaderFooterView *)headerView;
+
+/// UITableView only, load data for specific UITableViewHeaderFooterView footer
+- (void)loadData:(id)data forReusableFooterView:(UITableViewHeaderFooterView *)footerView;
 
 /// UICollectionView only, regiseter the supplementary class for reuse
 - (void)registerReusableSupplementaryView;
@@ -75,5 +81,11 @@
 
 /// Lazy load images
 - (void)lazyLoadImagesData:(id)data forReusableCell:(id)cell;
+
+#pragma mark - Deprecated
+
+/// UITableView only, return the HeaderFooterView reuse identifier for section
+/// **Note**: deprecated
+- (NSString *)reusableHeaderFooterViewIdentifierInSection:(NSInteger)section isHeader:(BOOL)isHeader __attribute__((deprecated("use `viewForHeaderInSection:` or `viewForFooterInSection:` instead")));
 
 @end

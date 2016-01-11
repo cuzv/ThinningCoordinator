@@ -228,10 +228,41 @@
     CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1;
     
     [cell removeFromSuperview];
-    
+ 
     return height;
 }
 
+/// TCDelegate subclass UITableViewDelegate require footer view, simple return this method
+- (UIView *)viewForHeaderInSection:(NSInteger)section {
+    if (![self.subclass respondsToSelector:@selector(reusableHeaderViewIdentifierInSection:)]) {
+        return [UIView new];
+    }
+    
+    NSString *identifier = [self.subclass reusableHeaderViewIdentifierInSection:section];
+    UITableViewHeaderFooterView *headerView = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+    [headerView prepareForReuse];
+    [headerView setNeedsUpdateConstraints];
+    [headerView updateConstraintsIfNeeded];
+    
+    return headerView;
+}
+
+/// TCDelegate subclass UITableViewDelegate require footer view, simple return this method
+- (UIView *)viewForFooterInSection:(NSInteger)section {
+    if (![self.subclass respondsToSelector:@selector(reusableFooterViewIdentifierInSection:)]) {
+        return [UIView new];
+    }
+    
+    NSString *identifier = [self.subclass reusableFooterViewIdentifierInSection:section];
+    UITableViewHeaderFooterView *footerView = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+    [footerView prepareForReuse];
+    [footerView setNeedsUpdateConstraints];
+    [footerView updateConstraintsIfNeeded];
+    
+    return footerView;
+}
+
+/// Deprecated
 - (UIView *)viewForHeaderFooterInSection:(NSInteger)section isHeader:(BOOL)isHeader {
     BOOL respondsToSelector = [self.subclass respondsToSelector:@selector(reusableHeaderFooterViewIdentifierInSection:isHeader:)];
     if (!respondsToSelector) {
@@ -241,13 +272,18 @@
     NSString *identifier = [self.subclass reusableHeaderFooterViewIdentifierInSection:section isHeader:isHeader];
     UITableViewHeaderFooterView *headerFooterView = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
     [headerFooterView prepareForReuse];
-    respondsToSelector = [self.subclass respondsToSelector:@selector(loadData:forReusableHeaderFooterView:)];
-    if (!respondsToSelector) {
-        return headerFooterView;
-    }
     
-    id data = isHeader ? [self.globalDataMetric dataForHeaderInSection:section] : [self.globalDataMetric dataForFooterInSection:section];
-    [self.subclass loadData:data forReusableHeaderFooterView:headerFooterView];
+    if (isHeader) {
+        id headerData = [self.globalDataMetric dataForHeaderInSection:section];
+        if ([self.subclass respondsToSelector:@selector(loadData:forReusableHeaderView:)]) {
+            [self.subclass loadData:headerData forReusableHeaderView:headerFooterView];
+        }
+    } else {
+        id footerData = [self.globalDataMetric dataForFooterInSection:section];
+        if ([self.subclass respondsToSelector:@selector(loadData:forReusableFooterView:)]) {
+            [self.subclass loadData:footerData forReusableFooterView:headerFooterView];
+        }
+    }
     
     [headerFooterView setNeedsUpdateConstraints];
     [headerFooterView updateConstraintsIfNeeded];
@@ -255,18 +291,60 @@
     return headerFooterView;
 }
 
+- (CGFloat)heightForHeaderInSection:(NSInteger)section {
+    UIView *view = [self viewForHeaderInSection:section];
+    if (![view isKindOfClass:[UITableViewHeaderFooterView class]]) {
+        return 10;
+    }
+    if (![self.subclass respondsToSelector:@selector(loadData:forReusableHeaderView:)]) {
+        return 10;
+    }
+    
+    UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView *)view;
+    // Give the initialize bounds
+    headerView.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.tableView.bounds), CGRectGetHeight(headerView.bounds));
+    // break iOS7 issue
+    headerView.contentView.frame = headerView.bounds;
+    CGFloat height = [headerView.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    [headerView removeFromSuperview];
+
+    return height;
+}
+
+- (CGFloat)heightForFooterInSection:(NSInteger)section {
+    UIView *view = [self viewForFooterInSection:section];
+    if (![view isKindOfClass:[UITableViewHeaderFooterView class]]) {
+        return 10;
+    }
+    if (![self.subclass respondsToSelector:@selector(loadData:forReusableFooterView:)]) {
+        return 10;
+    }
+    
+    UITableViewHeaderFooterView *footerView = (UITableViewHeaderFooterView *)view;
+    // Give the initialize bounds
+    footerView.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.tableView.bounds), CGRectGetHeight(footerView.bounds));
+    // break iOS7 issue
+    footerView.contentView.frame = footerView.bounds;
+    CGFloat height = [footerView.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
+    [footerView removeFromSuperview];
+    
+    return height;
+}
+
+/// Deprecated
 - (CGFloat)heightForHeaderFooterInSection:(NSInteger)section isHeader:(BOOL)isHeader {
     UIView *view = [self viewForHeaderFooterInSection:section isHeader:isHeader];
     if (![view isKindOfClass:[UITableViewHeaderFooterView class]]) {
         return 10;
     }
     
-    UITableViewHeaderFooterView *headerFooterView = (UITableViewHeaderFooterView *)view;
-    BOOL respondsToSelector = [self.subclass respondsToSelector:@selector(loadData:forReusableHeaderFooterView:)];
-    if (!respondsToSelector) {
-        return 10;
+    BOOL respondsHeader = [self.subclass respondsToSelector:@selector(loadData:forReusableHeaderView:)];
+    BOOL respondsFooter = [self.subclass respondsToSelector:@selector(loadData:forReusableFooterView:)];
+    if (!respondsHeader && !respondsFooter) {
+        return 10.0f;
     }
     
+    UITableViewHeaderFooterView *headerFooterView = (UITableViewHeaderFooterView *)view;
     // Give the initialize bounds
     headerFooterView.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.tableView.bounds), CGRectGetHeight(headerFooterView.bounds));
     // break iOS7 issue

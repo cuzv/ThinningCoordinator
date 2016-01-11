@@ -33,7 +33,6 @@
 /// The tableview or collction view data metric
 @property (nonatomic, strong) TCGlobalDataMetric *globalDataMetric;
 
-
 @property (nonatomic, weak, readonly) UITableView *tableView;
 - (instancetype)initWithTableView:(UITableView *)tableView;
 
@@ -42,12 +41,15 @@
 /// TCDelegate subclass UITableViewDelegate require row height, simple return this method
 - (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 
-/// TCDelegate subclass UITableViewDelegate require header/footer view, simple return this method
-- (UIView *)viewForHeaderFooterInSection:(NSInteger)section isHeader:(BOOL)isHeader;
+/// TCDelegate subclass UITableViewDelegate require footer view, simple return this method
+- (UIView *)viewForHeaderInSection:(NSInteger)section;
+/// TCDelegate subclass UITableViewDelegate require footer view, simple return this method
+- (UIView *)viewForFooterInSection:(NSInteger)section;
 
-/// TCDelegate subclass UITableViewDelegate require header/footer view height, simple return this method
-- (CGFloat)heightForHeaderFooterInSection:(NSInteger)section isHeader:(BOOL)isHeader;
-
+/// TCDelegate subclass UITableViewDelegate require header view height, simple return this method
+- (CGFloat)heightForHeaderInSection:(NSInteger)section;
+/// TCDelegate subclass UITableViewDelegate require footer view height, simple return this method
+- (CGFloat)heightForFooterInSection:(NSInteger)section;
 
 @property (nonatomic, weak, readonly) UICollectionView *collectionView;
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView;
@@ -57,6 +59,15 @@
 /// TCDataSource Subclas UICollectionViewDataSource require supplementary view, simple return this method
 /// Note: register first
 - (UICollectionReusableView *)viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath;
+
+#pragma mark - Deprecated
+
+/// TCDelegate subclass UITableViewDelegate require header/footer view, simple return this method
+/// **Note**: deprecated
+- (UIView *)viewForHeaderFooterInSection:(NSInteger)section isHeader:(BOOL)isHeader __attribute__((deprecated("use `viewForHeaderInSection:` or `viewForFooterInSection:` instead")));
+/// TCDelegate subclass UITableViewDelegate require header/footer view height, simple return this method
+/// **Note**: deprecated
+- (CGFloat)heightForHeaderFooterInSection:(NSInteger)section isHeader:(BOOL)isHeader __attribute__((deprecated("use `heightForHeaderInSection:` or `heightForFooterInSection:` instead")));
 
 
 @end
