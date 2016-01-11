@@ -89,7 +89,11 @@
 }
 
 - (NSArray *)allItemsData {
-    return self.itemsData;
+    return _itemsData;
+}
+
+- (NSArray *)itemsData {
+    return _itemsData;
 }
 
 - (id)dataAtIndex:(NSInteger)index {
@@ -104,7 +108,7 @@
 #pragma mark - Modify
 
 - (void)addItemsDataFromArray:(NSArray *)data {
-    [self.itemsData addObjectsFromArray:data];
+    [_itemsData addObjectsFromArray:data];
 }
 
 - (void)insertItemsDataFromArray:(NSArray *)data atIndex:(NSInteger)index {
@@ -115,7 +119,7 @@
     }
     
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, data.count)];
-    [self.itemsData insertObjects:data atIndexes:indexSet];
+    [_itemsData insertObjects:data atIndexes:indexSet];
 }
 
 - (void)removeDataForItemAtIndex:(NSInteger)index {
@@ -125,7 +129,7 @@
         return;
     }
     
-    [self.itemsData removeObjectAtIndex:index];
+    [_itemsData removeObjectAtIndex:index];
 }
 
 - (void)exchangeDataAtIndex:(NSInteger)sourceIndex withDataAtIndex:(NSInteger)destinationIndex {
@@ -136,7 +140,7 @@
         return;
     }
     
-    [self.itemsData exchangeObjectAtIndex:sourceIndex withObjectAtIndex:destinationIndex];
+    [_itemsData exchangeObjectAtIndex:sourceIndex withObjectAtIndex:destinationIndex];
 }
 
 #pragma mark - Description

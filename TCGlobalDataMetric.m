@@ -43,7 +43,7 @@
     return nil;
 }
 
-- (instancetype)initWithSectionDataMetrics:(NSArray *)sectionDataMetrics {
+- (instancetype)initWithSectionDataMetrics:(NSArray<__kindof TCSectionDataMetric *> *)sectionDataMetrics {
     self = [super init];
     if (!self) {
         return nil;
@@ -55,7 +55,7 @@
     return self;
 }
 
-- (instancetype)initWithSectionDataMetrics:(NSArray *)sectionDataMetrics tableHeaderData:(id)tableHeaderData tableFooterData:(id)tableFooterData {
+- (instancetype)initWithSectionDataMetrics:(NSArray<__kindof TCSectionDataMetric *> *)sectionDataMetrics tableHeaderData:(id)tableHeaderData tableFooterData:(id)tableFooterData {
     self = [super init];
     if (!self) {
         return nil;
@@ -81,13 +81,17 @@
     return [sectionDataMetric numberOfItems];
 }
 
-- (NSArray *)allSectionDataMetrics {
+- (NSArray<__kindof TCSectionDataMetric *> *)allSectionDataMetrics {
     return self.sectionDataMetrics;
+}
+
+- (NSArray<__kindof TCSectionDataMetric *> *)sectionDataMetrics {
+    return _sectionDataMetrics;
 }
 
 - (NSArray *)dataInSection:(NSInteger)section {
     TCSectionDataMetric *sectionDataMetric = [self.sectionDataMetrics objectAtIndex:section];
-    return [sectionDataMetric allItemsData];
+    return [sectionDataMetric itemsData];
 }
 
 - (id)dataForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -98,7 +102,7 @@
 - (NSIndexPath *)indexPathOfData:(id)data {
     __block NSIndexPath *indexPath = nil;
     [self.sectionDataMetrics enumerateObjectsUsingBlock:^(TCSectionDataMetric *sectionDataMetric, NSUInteger idx, BOOL *stop) {
-        NSArray *items = [sectionDataMetric allItemsData];
+        NSArray *items = [sectionDataMetric itemsData];
         if ([items containsObject:data]) {
             NSInteger row = [items indexOfObjectIdenticalTo:data];
             indexPath = [NSIndexPath indexPathForItem:row inSection:idx];
@@ -163,7 +167,7 @@
 #pragma mark - Modify
 
 - (void)appendSectionDataMetric:(TCSectionDataMetric *)sectionDataMetric {
-    [self.sectionDataMetrics addObject:sectionDataMetric];
+    [_sectionDataMetrics addObject:sectionDataMetric];
 }
 
 - (void)insertSectionDataMetric:(TCSectionDataMetric *)sectionDataMetric atIndex:(NSInteger)index {
@@ -172,7 +176,7 @@
         NSLog(@"Index cross the bounds");
         return;
     }
-    [self.sectionDataMetrics insertObject:sectionDataMetric atIndex:index];
+    [_sectionDataMetrics insertObject:sectionDataMetric atIndex:index];
 }
 
 - (void)appendLastSectionData:(NSArray *)data {
@@ -198,7 +202,7 @@
 }
 
 - (void)removeLastSectionDataMetric {
-    [self.sectionDataMetrics removeLastObject];
+    [_sectionDataMetrics removeLastObject];
 }
 
 - (void)removeSectionDataMetricAtIndex:(NSInteger)index {
@@ -207,7 +211,7 @@
         NSLog(@"Index cross the bounds");
         return;
     }
-    [self.sectionDataMetrics removeObjectAtIndex:index];
+    [_sectionDataMetrics removeObjectAtIndex:index];
 }
 
 - (void)removeDataAtIndexPath:(NSIndexPath *)indexPath {

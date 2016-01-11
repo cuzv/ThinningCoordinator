@@ -12,10 +12,9 @@
 @interface TCGlobalDataMetric : NSObject
 
 /// NSArray parameter must contains all instance kinda `TCSectionDataMetric`
-- (instancetype)initWithSectionDataMetrics:(NSArray *)sectionDataMetrics;
+- (instancetype)initWithSectionDataMetrics:(NSArray<__kindof TCSectionDataMetric *> *)sectionDataMetrics;
 /// UITableView only
-- (instancetype)initWithSectionDataMetrics:(NSArray *)sectionDataMetrics tableHeaderData:(id)tableHeaderData tableFooterData:(id)tableFooterData;
-
+- (instancetype)initWithSectionDataMetrics:(NSArray<__kindof TCSectionDataMetric *> *)sectionDataMetrics tableHeaderData:(id)tableHeaderData tableFooterData:(id)tableFooterData;
 
 #pragma mark - Retrieve
 
@@ -26,7 +25,11 @@
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
 
 /// Return the all section data metrics
-- (NSArray *)allSectionDataMetrics;
+/// **Note**: Prepared for swift convert.
+- (NSArray<__kindof TCSectionDataMetric *> *)allSectionDataMetrics;
+
+/// Return the all section data metrics
+- (NSArray<__kindof TCSectionDataMetric *> *)sectionDataMetrics;
 
 /// The data from specific section
 - (NSArray *)dataInSection:(NSInteger)section;

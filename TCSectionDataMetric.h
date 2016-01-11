@@ -45,7 +45,11 @@
 - (NSInteger)numberOfItems;
 
 /// All data
-- (NSArray *)allItemsData;
+/// **Note**: Prepared for swift convert.
+- (NSArray *)allItemsData __attribute__((deprecated("use `itemsData` instead")));
+
+/// All data
+- (NSArray *)itemsData;
 
 /// Return specific data
 - (id)dataAtIndex:(NSInteger)index;
@@ -62,7 +66,6 @@
 
 /// UITableView only, the section footer data
 - (id)dataForFooter;
-
 
 /// UICollectionView only, return specific supplementary element data
 - (id)dataForSupplementaryElementOfKind:(NSString *)kind atIndex:(NSInteger)index;
