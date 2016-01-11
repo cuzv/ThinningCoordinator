@@ -241,6 +241,10 @@
     NSString *identifier = [self.subclass reusableHeaderViewIdentifierInSection:section];
     UITableViewHeaderFooterView *headerView = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
     [headerView prepareForReuse];
+
+    id headerData = [self.globalDataMetric dataForHeaderInSection:section];
+    [self.subclass loadData:headerData forReusableHeaderView:headerView];
+    
     [headerView setNeedsUpdateConstraints];
     [headerView updateConstraintsIfNeeded];
     
@@ -256,6 +260,10 @@
     NSString *identifier = [self.subclass reusableFooterViewIdentifierInSection:section];
     UITableViewHeaderFooterView *footerView = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
     [footerView prepareForReuse];
+
+    id footerData = [self.globalDataMetric dataForFooterInSection:section];
+    [self.subclass loadData:footerData forReusableFooterView:footerView];
+    
     [footerView setNeedsUpdateConstraints];
     [footerView updateConstraintsIfNeeded];
     
