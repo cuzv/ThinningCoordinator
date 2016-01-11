@@ -239,7 +239,15 @@
     }
     
     NSString *identifier = [self.subclass reusableHeaderViewIdentifierInSection:section];
+    if (!identifier || !identifier.length) {
+        return [UIView new];
+    }
+    
     UITableViewHeaderFooterView *headerView = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+    if (!headerView) {
+        return [UIView new];
+    }
+    
     [headerView prepareForReuse];
 
     id headerData = [self.globalDataMetric dataForHeaderInSection:section];
@@ -258,7 +266,15 @@
     }
     
     NSString *identifier = [self.subclass reusableFooterViewIdentifierInSection:section];
+    if (!identifier || !identifier.length) {
+        return [UIView new];
+    }
+    
     UITableViewHeaderFooterView *footerView = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+    if (!footerView) {
+        return [UIView new];
+    }
+    
     [footerView prepareForReuse];
 
     id footerData = [self.globalDataMetric dataForFooterInSection:section];
@@ -278,7 +294,15 @@
     }
     
     NSString *identifier = [self.subclass reusableHeaderFooterViewIdentifierInSection:section isHeader:isHeader];
+    if (!identifier || !identifier.length) {
+        return [UIView new];
+    }
+
     UITableViewHeaderFooterView *headerFooterView = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+    if (!headerFooterView) {
+        return [UIView new];
+    }
+
     [headerFooterView prepareForReuse];
     
     if (isHeader) {
