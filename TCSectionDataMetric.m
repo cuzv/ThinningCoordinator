@@ -122,6 +122,27 @@
     [_itemsData insertObjects:data atIndexes:indexSet];
 }
 
+- (void)replaceWithNewData:(id)data atIndex:(NSInteger)index {
+    NSInteger count = self.itemsData.count;
+    if (count <= index) {
+        NSLog(@"Index cross the bounds");
+        return;
+    }
+
+    [_itemsData replaceObjectAtIndex:index withObject:data];
+}
+
+- (void)replaceWithNewDataArray:(NSArray *)data atIndex:(NSInteger)index {
+    NSInteger count = self.itemsData.count;
+    if (count <= index) {
+        NSLog(@"Index cross the bounds");
+        return;
+    }
+
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, data.count)];
+    [_itemsData replaceObjectsAtIndexes:indexSet withObjects:data];
+}
+
 - (void)removeDataForItemAtIndex:(NSInteger)index {
     NSInteger count = self.itemsData.count;
     if (count <= index) {

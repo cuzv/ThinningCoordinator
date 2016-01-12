@@ -201,6 +201,15 @@
     [[self.sectionDataMetrics objectAtIndex:indexPath.section] insertItemsDataFromArray:data atIndex:indexPath.item];
 }
 
+- (void)replaceData:(NSArray *)data atIndexPath:(NSIndexPath *)indexPath {
+    NSInteger count = self.sectionDataMetrics.count;
+    if (count <= indexPath.section) {
+        NSLog(@"Index cross the bounds");
+        return;
+    }
+    [[self.sectionDataMetrics objectAtIndex:indexPath.section] replaceWithNewDataArray:data atIndex:indexPath.item];
+}
+
 - (void)removeLastSectionDataMetric {
     [_sectionDataMetrics removeLastObject];
 }

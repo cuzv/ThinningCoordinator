@@ -85,6 +85,9 @@
 /// Insert specific item new data to specific section data metric
 - (void)insertData:(NSArray *)data atIndexPath:(NSIndexPath *)indexPath;
 
+/// Replace specific item new data to specific section data metric
+- (void)replaceData:(NSArray *)data atIndexPath:(NSIndexPath *)indexPath;
+
 /// Remove the last section data metric
 - (void)removeLastSectionDataMetric;
 

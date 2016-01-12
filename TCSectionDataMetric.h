@@ -78,6 +78,12 @@
 /// Add new data for current setion data metric at specific index
 - (void)insertItemsDataFromArray:(NSArray *)data atIndex:(NSInteger)index;
 
+/// Replace single new data for current setion data metric at specific index.
+- (void)replaceWithNewData:(id)data atIndex:(NSInteger)index;
+
+/// Replace multiple new data for current setion data metric at specific index.
+- (void)replaceWithNewDataArray:(NSArray *)data atIndex:(NSInteger)index;
+
 /// Remove specific data at index
 - (void)removeDataForItemAtIndex:(NSInteger)index;
 
