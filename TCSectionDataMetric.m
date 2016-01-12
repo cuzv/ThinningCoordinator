@@ -26,6 +26,7 @@
 
 
 #import "TCSectionDataMetric.h"
+#import "TCHelper.h"
 
 @interface TCSectionDataMetric ()
 @property (nonatomic, copy) NSString *titleForHeader;
@@ -112,55 +113,34 @@
 }
 
 - (void)insertItemsDataFromArray:(NSArray *)data atIndex:(NSInteger)index {
-    NSInteger count = self.itemsData.count;
-    if (count <= index) {
-        NSLog(@"Index cross the bounds");
-        return;
-    }
+    TCValidateArrayArgument(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
     
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, data.count)];
     [_itemsData insertObjects:data atIndexes:indexSet];
 }
 
 - (void)replaceWithNewData:(id)data atIndex:(NSInteger)index {
-    NSInteger count = self.itemsData.count;
-    if (count <= index) {
-        NSLog(@"Index cross the bounds");
-        return;
-    }
+    TCValidateArrayArgument(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
 
     [_itemsData replaceObjectAtIndex:index withObject:data];
 }
 
 - (void)replaceWithNewDataArray:(NSArray *)data atIndex:(NSInteger)index {
-    NSInteger count = self.itemsData.count;
-    if (count <= index) {
-        NSLog(@"Index cross the bounds");
-        return;
-    }
+    TCValidateArrayArgument(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
 
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, data.count)];
     [_itemsData replaceObjectsAtIndexes:indexSet withObjects:data];
 }
 
 - (void)removeDataForItemAtIndex:(NSInteger)index {
-    NSInteger count = self.itemsData.count;
-    if (count <= index) {
-        NSLog(@"Index cross the bounds");
-        return;
-    }
-    
+    TCValidateArrayArgument(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
     [_itemsData removeObjectAtIndex:index];
 }
 
 - (void)exchangeDataAtIndex:(NSInteger)sourceIndex withDataAtIndex:(NSInteger)destinationIndex {
-    NSInteger count = self.itemsData.count;
-    if (count <= sourceIndex ||
-        count <= destinationIndex) {
-        NSLog(@"Index cross the bounds");
-        return;
-    }
-    
+    TCValidateArrayArgument(self.itemsData, sourceIndex, __FILE__, __LINE__, __FUNCTION__);
+    TCValidateArrayArgument(self.itemsData, destinationIndex, __FILE__, __LINE__, __FUNCTION__);
+
     [_itemsData exchangeObjectAtIndex:sourceIndex withObjectAtIndex:destinationIndex];
 }
 
@@ -203,5 +183,5 @@
 }
 
 
-
 @end
+

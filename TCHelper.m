@@ -30,4 +30,14 @@ BOOL TCTableViewSupportsConstraintsProperty() {
     return _supportsConstraintsProperty();
 }
 
+
+void TCValidateArrayArgument(NSArray *arr, const int index, const void *file, const int line, const void *method) {
+    if (arr.count <= index) {
+        NSString *message = [NSString stringWithFormat:@"index %@ extends beyond bounds: %s:%@:%s",
+                             @(index), file, @(line), method];
+        NSLog(@"%@", message);
+        [[NSException exceptionWithName:@"Index beyond boundary." reason:message userInfo:nil] raise];
+    }
+}
+
 @end

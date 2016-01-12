@@ -27,6 +27,7 @@
 
 #import "TCGlobalDataMetric.h"
 #import "TCSectionDataMetric.h"
+#import "TCHelper.h"
 
 @interface TCGlobalDataMetric ()
 @property (nonatomic, strong) NSMutableArray *sectionDataMetrics;
@@ -171,11 +172,7 @@
 }
 
 - (void)insertSectionDataMetric:(TCSectionDataMetric *)sectionDataMetric atIndex:(NSInteger)index {
-    NSInteger count = self.sectionDataMetrics.count;
-    if (count <= index) {
-        NSLog(@"Index cross the bounds");
-        return;
-    }
+    TCValidateArrayArgument(self.sectionDataMetrics, index, __FILE__, __LINE__, __FUNCTION__);
     [_sectionDataMetrics insertObject:sectionDataMetric atIndex:index];
 }
 
@@ -184,29 +181,17 @@
 }
 
 - (void)appendData:(NSArray *)data inSection:(NSInteger)section {
-    NSInteger count = self.sectionDataMetrics.count;
-    if (count <= section) {
-        NSLog(@"Index cross the bounds");
-        return;
-    }
+    TCValidateArrayArgument(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
     [[self.sectionDataMetrics objectAtIndex:section] addItemsDataFromArray:data];
 }
 
 - (void)insertData:(NSArray *)data atIndexPath:(NSIndexPath *)indexPath {
-    NSInteger count = self.sectionDataMetrics.count;
-    if (count <= indexPath.section) {
-        NSLog(@"Index cross the bounds");
-        return;
-    }
+    TCValidateArrayArgument(self.sectionDataMetrics, indexPath.section, __FILE__, __LINE__, __FUNCTION__);
     [[self.sectionDataMetrics objectAtIndex:indexPath.section] insertItemsDataFromArray:data atIndex:indexPath.item];
 }
 
 - (void)replaceData:(NSArray *)data atIndexPath:(NSIndexPath *)indexPath {
-    NSInteger count = self.sectionDataMetrics.count;
-    if (count <= indexPath.section) {
-        NSLog(@"Index cross the bounds");
-        return;
-    }
+    TCValidateArrayArgument(self.sectionDataMetrics, indexPath.section, __FILE__, __LINE__, __FUNCTION__);
     [[self.sectionDataMetrics objectAtIndex:indexPath.section] replaceWithNewDataArray:data atIndex:indexPath.item];
 }
 
@@ -215,20 +200,12 @@
 }
 
 - (void)removeSectionDataMetricAtIndex:(NSInteger)index {
-    NSInteger count = self.sectionDataMetrics.count;
-    if (count <= index) {
-        NSLog(@"Index cross the bounds");
-        return;
-    }
+    TCValidateArrayArgument(self.sectionDataMetrics, index, __FILE__, __LINE__, __FUNCTION__);
     [_sectionDataMetrics removeObjectAtIndex:index];
 }
 
 - (void)removeDataAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger count = self.sectionDataMetrics.count;
-    if (count <= indexPath.section) {
-        NSLog(@"Index cross the bounds");
-        return;
-    }
+    TCValidateArrayArgument(self.sectionDataMetrics, indexPath.section, __FILE__, __LINE__, __FUNCTION__);
     [[self.sectionDataMetrics objectAtIndex:indexPath.section] removeDataForItemAtIndex:indexPath.item];
 }
 

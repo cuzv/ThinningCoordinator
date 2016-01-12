@@ -12,5 +12,5 @@
 
 BOOL TCCollectionViewSupportsConstraintsProperty();
 BOOL TCCollectionViewSupportsConstraintsProperty();
-
+void TCValidateArrayArgument(NSArray *arr, const int index, const void *file, const int line, const void *method);
 @end
