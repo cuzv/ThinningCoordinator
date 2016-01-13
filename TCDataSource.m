@@ -126,22 +126,20 @@
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
     NSMutableArray *indexTitles = [NSMutableArray new];
-    BOOL respondsToSelector = [self.subclass respondsToSelector:@selector(indexTitleForSectionDataMetric:)];
-    if (!respondsToSelector) {
-        return nil;
-    }
 
     // If titles contains nil will crash
     __block BOOL valid = YES;
-    [[self.globalDataMetric allSectionDataMetrics] enumerateObjectsUsingBlock:^(TCSectionDataMetric *obj, NSUInteger idx, BOOL *stop) {
-        NSString *title = [self.subclass indexTitleForSectionDataMetric:obj];
-        if (!title) {
+    
+    [[self.globalDataMetric sectionDataMetrics] enumerateObjectsUsingBlock:^(__kindof TCSectionDataMetric * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *indexTitle =  obj.indexTitle;
+        if (!indexTitle) {
             valid = NO;
             *stop = YES;
         }
-        [indexTitles addObject:title];
+        
+        [indexTitles addObject:indexTitle];
     }];
-
+    
     if (!valid) {
         return nil;
     }

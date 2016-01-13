@@ -39,6 +39,8 @@
 /// UICollectionView only, NSDictionary keys like `UICollectionElementKindSectionHeader`/`UICollectionElementKindSectionFooter`...
 - (instancetype)initWithItemsData:(NSArray *)itemsData dataForSupplementaryElements:(NSDictionary *)dataForSupplementaryElements;
 
+@property (nonatomic, copy) NSString *indexTitle;
+
 #pragma mark - Retrieve
 
 /// Section data count

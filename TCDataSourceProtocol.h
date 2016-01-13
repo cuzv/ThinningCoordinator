@@ -67,9 +67,6 @@
 /// UICollectionView only, load data for specific supplementary view
 - (void)loadData:(id)data forReusableSupplementaryView:(UICollectionReusableView *)reusableView;
 
-/// Return the section index title
-- (NSString *)indexTitleForSectionDataMetric:(TCSectionDataMetric *)sectionDataMetric;
-
 /// Can edit the specific item
 - (BOOL)canEditItemAtIndexPath:(NSIndexPath *)indexPath;
 
