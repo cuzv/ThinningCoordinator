@@ -135,9 +135,9 @@
         if (!indexTitle) {
             valid = NO;
             *stop = YES;
+        } else {
+            [indexTitles addObject:indexTitle];
         }
-        
-        [indexTitles addObject:indexTitle];
     }];
     
     if (!valid) {
@@ -198,6 +198,7 @@
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     TCSectionDataMetric *sourceSectionDataMetric = [[self.globalDataMetric allSectionDataMetrics] objectAtIndex:sourceIndexPath.section];
     if (sourceIndexPath.section == destinationIndexPath.section) {
+        // FIXME: Use move, not exchange
         [sourceSectionDataMetric exchangeDataAtIndex:sourceIndexPath.item withDataAtIndex:destinationIndexPath.item];
     } else {
         // Take out the source data
@@ -212,6 +213,7 @@
 
 #pragma mark - UITableView delegate helper methods
 
+// FIXME: 先有高度，才有View
 - (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (TCCollectionViewSupportsConstraintsProperty()) {
         return UITableViewAutomaticDimension;
