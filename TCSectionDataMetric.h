@@ -41,6 +41,9 @@
 
 @property (nonatomic, copy) NSString *indexTitle;
 
+/// Return empty instance
++ (instancetype)empty;
+
 #pragma mark - Retrieve
 
 /// Section data count

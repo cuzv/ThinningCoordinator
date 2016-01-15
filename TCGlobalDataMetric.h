@@ -16,6 +16,9 @@
 /// UITableView only
 - (instancetype)initWithSectionDataMetrics:(NSArray<__kindof TCSectionDataMetric *> *)sectionDataMetrics tableHeaderData:(id)tableHeaderData tableFooterData:(id)tableFooterData;
 
+/// Return empty instance
++ (instancetype)empty;
+
 #pragma mark - Retrieve
 
 /// The count of sections

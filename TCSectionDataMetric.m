@@ -83,6 +83,10 @@
     return self;
 }
 
++ (instancetype)empty {
+    return [[[self class] alloc] initWithItemsData:@[]];
+}
+
 #pragma mark - Retrieve
 
 - (NSInteger)numberOfItems {

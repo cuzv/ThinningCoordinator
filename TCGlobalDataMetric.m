@@ -70,6 +70,9 @@
     return self;
 }
 
++ (instancetype)empty {
+    return [[[self class] alloc] initWithSectionDataMetrics:@[]];
+}
 
 #pragma mark - Retrieve
 
