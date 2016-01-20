@@ -11,13 +11,13 @@
 @class TCSectionDataMetric;
 @interface TCGlobalDataMetric : NSObject
 
-/// NSArray parameter must contains all instance kinda `TCSectionDataMetric`
-- (instancetype)initWithSectionDataMetrics:(NSArray<__kindof TCSectionDataMetric *> *)sectionDataMetrics;
-/// UITableView only
-- (instancetype)initWithSectionDataMetrics:(NSArray<__kindof TCSectionDataMetric *> *)sectionDataMetrics tableHeaderData:(id)tableHeaderData tableFooterData:(id)tableFooterData;
+/// NSArray parameter must contains all instance kinda `TCSectionDataMetric`.
+- (nullable instancetype)initWithSectionDataMetrics:(nonnull NSArray<TCSectionDataMetric *> *)sectionDataMetrics;
+/// UITableView only.
+- (nullable instancetype)initWithSectionDataMetrics:(nonnull NSArray<TCSectionDataMetric *> *)sectionDataMetrics dataForHeader:(nonnull id)dataForHeader dataForHeader:(nonnull id)dataForHeader;
 
 /// Return empty instance
-+ (instancetype)empty;
++ (nullable instancetype)empty;
 
 #pragma mark - Retrieve
 
@@ -27,78 +27,138 @@
 /// Each section items count
 - (NSInteger)numberOfItemsInSection:(NSInteger)section;
 
-/// Return the all section data metrics
-/// **Note**: Prepared for swift convert.
-- (NSArray<__kindof TCSectionDataMetric *> *)allSectionDataMetrics;
-
-/// Return the all section data metrics
-- (NSArray<__kindof TCSectionDataMetric *> *)sectionDataMetrics;
-
 /// The data from specific section
-- (NSArray *)dataInSection:(NSInteger)section;
+- (nullable NSArray *)dataInSection:(NSInteger)section;
 
 /// The data which should configure for the indexPath
-- (id)dataForItemAtIndexPath:(NSIndexPath *)indexPath;
+- (nullable id)dataForItemAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
 /// Return the data indexPath in UITableview/UICollection
-- (NSIndexPath *)indexPathOfData:(id)data;
+- (nullable NSIndexPath *)indexPathOfData:(nonnull id)data;
+
+/// Return the all section data metrics
+/// **Note**: Prepared for swift convert.
+- (nullable NSArray<TCSectionDataMetric *> *)allSectionDataMetrics __attribute__((deprecated("use `sectionDataMetrics:` instead.")));
+
+/// Return the all section data metrics
+- (nullable NSArray<TCSectionDataMetric *> *)sectionDataMetrics;
+
+/// All data.
+- (nullable NSArray *)allData;
 
 
 /// UITableView only, return the specific section header title
-- (NSString *)titleForHeaderInSection:(NSInteger)section;
+- (nullable NSString *)titleForHeaderInSection:(NSInteger)section;
 
 /// UITableView only, return the specific section footer title
-- (NSString *)titleForFooterInSection:(NSInteger)section;
+- (nullable NSString *)titleForFooterInSection:(NSInteger)section;
 
 /// UITableView only, return the specific section header data
-- (id)dataForHeaderInSection:(NSInteger)section;
+- (nullable id)dataForHeaderInSection:(NSInteger)section;
 
 /// UITableView only, return the specific section header data
-- (id)dataForFooterInSection:(NSInteger)section;
+- (nullable id)dataForFooterInSection:(NSInteger)section;
 
 /// UITableView only, return the specific header index
-- (NSInteger)indexOfHeaderData:(id)data;
+- (NSInteger)indexOfHeaderData:(nonnull id)data;
 
 /// UITableView only, return the specific footer index
-- (NSInteger)indexOfFooterData:(id)data;
+- (NSInteger)indexOfFooterData:(nonnull id)data;
 
 /// UITableView only, return the table view header data
-- (id)dataForHeader;
+- (nullable id)dataForHeader;
 
 /// UITableView only, return the table view footer data
-- (id)dataForFooter;
+- (nullable id)dataForFooter;
 
 /// UICollectionView only, the data for specific kind at indexPath
-- (id)dataForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath;
+- (nullable id)dataForSupplementaryHeaderAtIndexPath:(nonnull NSIndexPath *)indexPath;
+
+/// UICollectionView only, the data for specific kind at indexPath
+- (nullable id)dataForSupplementaryFooterAtIndexPath:(nonnull NSIndexPath *)indexPath;
+
+/// UICollectionView only,
+- (nullable id)dataForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath __attribute__((deprecated("use `dataForSupplementaryHeaderAtIndexPath:` or `dataForSupplementaryFooterAtIndexPath` instead.")));
+
 
 #pragma mark - Modify
 
+/// Append single `TCSectionDataMetric` to last for current section.
+- (void)append:(nonnull TCSectionDataMetric *)sectionDataMetric;
+
 /// Add new `TCSectionDataMetric` to last for current section
-- (void)appendSectionDataMetric:(TCSectionDataMetric *)sectionDataMetric;
+- (void)appendSectionDataMetric:(nonnull TCSectionDataMetric *)sectionDataMetric __attribute__((deprecated("use `append:` instead.")));
+
+/// Append multiple `TCSectionDataMetric` collection to last for current section.
+- (void)appendContentsOf:(nonnull NSArray<TCSectionDataMetric *> *)sectionDataMetrics;
+
+/// Append single `TCSectionDataMetric` for current setion at specific index.
+- (void)insert:(nonnull TCSectionDataMetric *)sectionDataMetric atIndex:(NSInteger)index;
+
+/// Append multiple `TCSectionDataMetric` for current setion at specific index.
+- (void)insertContentsOf:(nonnull NSArray<TCSectionDataMetric *> *)sectionDataMetrics atIndex:(NSInteger)index;;
 
 /// Add new `TCSectionDataMetric` for current setion at specific index
-- (void)insertSectionDataMetric:(TCSectionDataMetric *)sectionDataMetric atIndex:(NSInteger)index;
+- (void)insertSectionDataMetric:(nonnull TCSectionDataMetric *)sectionDataMetric atIndex:(NSInteger)index __attribute__((deprecated("use `insert:atIndex:` instead.")));
+
+/// Append single data to last section data metric.
+- (void)appendLastSection:(nonnull id )data;
+
+/// Append multiple data to last section data metric.
+- (void)appendLastSectionContentsOf:(nonnull NSArray *)data;
 
 /// Append new data to last section data metric
-- (void)appendLastSectionData:(NSArray *)data;
+- (void)appendLastSectionData:(nonnull NSArray *)data __attribute__((deprecated("use `appendLastSectionContentsOf:` instead.")));
+
+/// Append single data to specific section data metric.
+- (void)append:(nullable id)data inSection:(NSInteger)section;
+
+/// Append multiple data to specific section data metric.
+- (void)appendContentsOf:(nullable NSArray *)data inSection:(NSInteger)section;
 
 /// Append new data to specific section data metric
-- (void)appendData:(NSArray *)data inSection:(NSInteger)section;
+- (void)appendData:(nonnull NSArray *)data inSection:(NSInteger)section __attribute__((deprecated("use `appendContentsOf:inSection:` instead.")));
+
+/// Insert single data to specific section & item data metric.
+- (void)insert:(nonnull id)data atIndexPath:(nonnull NSIndexPath *)indexPath;
+
+/// Insert multiple data to specific section & item data metric.
+- (void)insertContentsOf:(nonnull NSArray *)data atIndexPath:(nonnull NSIndexPath *)indexPath;
 
 /// Insert specific item new data to specific section data metric
-- (void)insertData:(NSArray *)data atIndexPath:(NSIndexPath *)indexPath;
+- (void)insertData:(nonnull NSArray *)data atIndexPath:(nonnull NSIndexPath *)indexPath __attribute__((deprecated("use `insertContentsOf:atIndexPath` instead.")));
+
+/// Replace single data to specific section data metric.
+- (void)replace:(nonnull id)data atIndexPath:(nonnull NSIndexPath *)indexPath;
+
+/// Replace multiple data to specific section data metric.
+- (void)replaceContentsOf:(nonnull NSArray *)data atIndexPath:(nonnull NSIndexPath *)indexPath;
 
 /// Replace specific item new data to specific section data metric
-- (void)replaceData:(NSArray *)data atIndexPath:(NSIndexPath *)indexPath;
+- (void)replaceData:(nonnull NSArray *)data atIndexPath:(nonnull NSIndexPath *)indexPath __attribute__((deprecated("use `replaceContentsOf:atIndexPath:` instead.")));
+
+/// Remove the first section data metric.
+- (nullable TCSectionDataMetric *)removeFirst;
+
+/// Remove the last section data metric.
+- (nullable TCSectionDataMetric *)removeLast;
+
+/// Remove specific section data metric.
+- (nullable TCSectionDataMetric *)removeAtIndex:(NSInteger)index;
+
+/// Remove specific data for indexPath.
+- (nullable id)removeAtIndexPath:(nonnull NSIndexPath *)indexPath;
+
+/// Remove all data.
+- (nullable NSArray *)removeAll;
 
 /// Remove the last section data metric
-- (void)removeLastSectionDataMetric;
+- (nullable TCSectionDataMetric *)removeLastSectionDataMetric __attribute__((deprecated("use `removeLast` instead.")));
 
 /// Remove specific section data metric
-- (void)removeSectionDataMetricAtIndex:(NSInteger)index;
+- (nullable TCSectionDataMetric *)removeSectionDataMetricAtIndex:(NSInteger)index __attribute__((deprecated("use `removeAtIndex:` instead.")));
 
 /// Remove specific data for indexPath
-- (void)removeDataAtIndexPath:(NSIndexPath *)indexPath;
-
+- (nullable id)removeDataAtIndexPath:(nonnull NSIndexPath *)indexPath __attribute__((deprecated("use `removeAtIndexPath:` instead.")));
 
 @end

@@ -29,56 +29,68 @@
 #import "TCHelper.h"
 
 @interface TCSectionDataMetric ()
-@property (nonatomic, copy) NSString *titleForHeader;
-@property (nonatomic, copy) NSString *titleForFooter;
-@property (nonatomic, strong) id dataForHeader;
-@property (nonatomic, strong) id dataForFooter;
-@property (nonatomic, strong) NSMutableArray *itemsData;
-@property (nonatomic, strong) NSDictionary *dataForSupplementaryElements;
+@property (nonatomic, strong, readwrite, nonnull) NSMutableArray *itemsData;
+@property (nonatomic, copy, nonnull) NSString *titleForHeader;
+@property (nonatomic, copy, nonnull) NSString *titleForFooter;
+@property (nonatomic, strong, nonnull) id dataForHeader;
+@property (nonatomic, strong, nonnull) id dataForFooter;
+@property (nonatomic, copy, nonnull) NSString *indexTitle;
+
+@property (nonatomic, strong, nonnull) NSArray *dataForSupplementaryHeader;
+@property (nonatomic, strong, nonnull) NSArray *dataForSupplementaryFooter;
+
 @end
 
 @implementation TCSectionDataMetric
 
 #pragma mark - Initializer
 
-- (instancetype)init {
-    NSAssert(NO, NSLocalizedString(@"Ues designed initializer instead", nil));
+- (nullable instancetype)init {
+    [NSException raise:@"Ues designed initializer instead" format:@""];
     return nil;
 }
 
-- (instancetype)initWithItemsData:(NSArray *)itemsData {
+- (nullable instancetype)initWithItemsData:(nonnull NSArray *)itemsData {
     self = [super init];
-    if (!self) {
-        return nil;
-    }
-    
+    if (!self) { return nil; }
     _itemsData = [itemsData mutableCopy];
-    
     return self;
 }
 
-- (instancetype)initWithItemsData:(NSArray *)itemsData titleForHeader:(NSString *)titleForHeader titleForFooter:(NSString *)titleForFooter {
+- (nullable instancetype)initWithItemsData:(nonnull NSArray *)itemsData indexTitle:(nonnull NSString *)indexTitle {
     self = [self initWithItemsData:itemsData];
-    
+    _indexTitle = indexTitle;
+    return self;
+}
+
+- (nullable instancetype)initWithItemsData:(nonnull NSArray *)itemsData titleForHeader:(nonnull NSString *)titleForHeader titleForFooter:(nonnull NSString *)titleForFooter {
+    self = [self initWithItemsData:itemsData];
     _titleForHeader = titleForHeader;
     _titleForFooter = titleForFooter;
-    
     return self;
 }
 
-- (instancetype)initWithItemsData:(NSArray *)itemsData dataForHeader:(id)dataForHeader dataForFooter:(id)dataForFooter {
+- (nullable instancetype)initWithItemsData:(nonnull NSArray *)itemsData titleForHeader:(nonnull NSString *)titleForHeader titleForFooter:(nonnull NSString *)titleForFooter indexTitle:(nonnull NSString *)indexTitle {
+    self = [self initWithItemsData:itemsData titleForHeader:titleForHeader titleForFooter:titleForFooter];
+    _indexTitle = indexTitle;
+    return self;
+}
+
+- (nullable instancetype)initWithItemsData:(nonnull NSArray *)itemsData dataForHeader:(nonnull id)dataForHeader dataForFooter:(nonnull id)dataForFooter {
     self = [self initWithItemsData:itemsData];
-    
     _dataForHeader = dataForHeader;
     _dataForFooter = dataForFooter;
-    
     return self;
 }
 
-- (instancetype)initWithItemsData:(NSArray *)itemsData dataForSupplementaryElements:(NSDictionary *)dataForSupplementaryElements {
+- (nullable instancetype)initWithItemsData:(nonnull NSArray *)itemsData dataForHeader:(nonnull id)dataForHeader dataForFooter:(nonnull id)dataForFooter indexTitle:(nonnull NSString *)indexTitle {
+    self = [self initWithItemsData:itemsData dataForHeader:dataForHeader dataForFooter:dataForFooter];
+    _indexTitle = indexTitle;
+    return self;
+}
+
+- (nullable instancetype)initWithItemsData:(nonnull NSArray *)itemsData dataForSupplementaryHeader:(nonnull NSArray *)dataForSupplementaryHeader dataForSupplementaryFooter:(nonnull NSArray *)dataForSupplementaryFooter {
     self = [self initWithItemsData:itemsData];
-    
-    _dataForSupplementaryElements = dataForSupplementaryElements;
     
     return self;
 }
@@ -90,62 +102,162 @@
 #pragma mark - Retrieve
 
 - (NSInteger)numberOfItems {
-    return self.itemsData.count;
+    return _itemsData.count;
 }
 
-- (NSArray *)allItemsData {
+- (nonnull NSArray *)itemsData {
     return _itemsData;
 }
 
-- (NSArray *)itemsData {
-    return _itemsData;
+- (nullable id)dataAtIndex:(NSInteger)index {
+    if (self.numberOfItems <= index) {
+        return nil;
+    }
+
+    return self.itemsData[index];
 }
 
-- (id)dataAtIndex:(NSInteger)index {
-    return [self.itemsData objectAtIndex:index];
+- (nullable NSString *)titleForHeader {
+    return _titleForHeader;
 }
 
-- (id)dataForSupplementaryElementOfKind:(NSString *)kind atIndex:(NSInteger)index {
-    NSArray *data = [self.dataForSupplementaryElements objectForKey:kind];
-    return [data objectAtIndex:index];
+- (nullable NSString *)titleForFooter {
+    return _titleForFooter;
 }
+
+- (nullable id)dataForHeader {
+    return _dataForHeader;
+}
+
+- (nullable id)dataForFooter {
+    return _dataForFooter;
+}
+
+- (nullable NSString *)indexTitle {
+    return _indexTitle;
+}
+
+- (nullable id)dataForSupplementaryHeaderAtIndex:(NSInteger)index {
+    if (self.dataForSupplementaryHeader.count <= index) {
+        return nil;
+    }
+    
+    return self.dataForSupplementaryHeader[index];
+}
+
+- (nullable id)dataForSupplementaryFooterAtIndex:(NSInteger)index {
+    if (self.dataForSupplementaryFooter.count <= index) {
+        return nil;
+    }
+    
+    return self.dataForSupplementaryFooter[index];
+}
+
 
 #pragma mark - Modify
 
-- (void)addItemsDataFromArray:(NSArray *)data {
+- (void)append:(nonnull id)data {
+    [_itemsData addObject:data];
+}
+
+- (void)appendContentsOf:(nonnull NSArray *)data {
     [_itemsData addObjectsFromArray:data];
 }
 
-- (void)insertItemsDataFromArray:(NSArray *)data atIndex:(NSInteger)index {
-    TCValidateArrayArgument(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
-    
-    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, data.count)];
-    [_itemsData insertObjects:data atIndexes:indexSet];
+- (void)addItemsDataFromArray:(NSArray *)data {
+    [self appendContentsOf:data];
 }
 
-- (void)replaceWithNewData:(id)data atIndex:(NSInteger)index {
-    TCValidateArrayArgument(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+- (void)insert:(nonnull id)data atIndex:(NSInteger)index {
+    [self insertContentsOf:@[data] atIndex:index];
+}
 
+- (void)insertContentsOf:(nonnull NSArray *)data atIndex:(NSInteger)index {
+    validateInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    [_itemsData insertObjects:data atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, data.count)]];
+}
+
+- (void)insertItemsDataFromArray:(NSArray *)data atIndex:(NSInteger)index {
+    [self insertContentsOf:data atIndex:index];
+}
+
+- (void)replaceWith:(nonnull id)data atIndex:(NSInteger)index {
+    validateNoneInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
     [_itemsData replaceObjectAtIndex:index withObject:data];
 }
 
-- (void)replaceWithNewDataArray:(NSArray *)data atIndex:(NSInteger)index {
-    TCValidateArrayArgument(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
-
-    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, data.count)];
-    [_itemsData replaceObjectsAtIndexes:indexSet withObjects:data];
+- (void)replaceWithNewData:(id)data atIndex:(NSInteger)index {
+    [self replaceWith:data atIndex:index];
 }
 
-- (void)removeDataForItemAtIndex:(NSInteger)index {
-    TCValidateArrayArgument(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+- (void)replaceWithContentsOf:(nonnull NSArray *)data atIndex:(NSInteger)index {
+    validateNoneInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    [_itemsData replaceObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, data.count)] withObjects:data];
+}
+
+- (void)replaceWithNewDataArray:(NSArray *)data atIndex:(NSInteger)index {
+    [self replaceWithContentsOf:data atIndex:index];
+}
+
+- (nonnull id)removeFirst {
+    if ([_itemsData count] <= 0) {
+        return nil;
+    }
+
+    id first = _itemsData.firstObject;
+    [_itemsData removeObjectAtIndex:0];
+    
+    return first;
+}
+
+- (nonnull id)removeLast {
+    id last = _itemsData.lastObject;
+    [_itemsData removeLastObject];
+
+    return last;
+}
+
+- (nullable id)removeAtIndex:(NSInteger)index {
+    if (self.numberOfItems <= index) {
+        return nil;
+    }
+    
+    id removed = [_itemsData objectAtIndex:index];
     [_itemsData removeObjectAtIndex:index];
+    
+    return removed;
+}
+
+- (nullable id)removeDataForItemAtIndex:(NSInteger)index {
+    return [self removeAtIndex:index];
+}
+
+- (nullable NSArray *)removeAll {
+    NSArray *removed = [[NSArray alloc] initWithArray:_itemsData];
+    [_itemsData removeAllObjects];
+    return removed;
+}
+
+- (void)exchangeElementAtIndex:(NSInteger)index withElementAtIndex:(NSInteger)otherIndex {
+    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    [_itemsData exchangeObjectAtIndex:index withObjectAtIndex:otherIndex];
 }
 
 - (void)exchangeDataAtIndex:(NSInteger)sourceIndex withDataAtIndex:(NSInteger)destinationIndex {
-    TCValidateArrayArgument(self.itemsData, sourceIndex, __FILE__, __LINE__, __FUNCTION__);
-    TCValidateArrayArgument(self.itemsData, destinationIndex, __FILE__, __LINE__, __FUNCTION__);
+    [self exchangeElementAtIndex:sourceIndex withElementAtIndex:destinationIndex];
+}
 
-    [_itemsData exchangeObjectAtIndex:sourceIndex withObjectAtIndex:destinationIndex];
+- (void)moveElementAtIndex:(NSInteger)index toIndex:(NSInteger)otherIndex {
+    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    if (index == otherIndex) {
+        return;
+    }
+    
+    id moved = [_itemsData objectAtIndex:index];
+    [_itemsData removeObjectAtIndex:index];
+    [_itemsData insertObject:moved atIndex:otherIndex];
 }
 
 #pragma mark - Description
