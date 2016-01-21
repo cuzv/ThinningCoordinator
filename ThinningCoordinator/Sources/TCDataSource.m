@@ -240,7 +240,7 @@
         [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 
-    [editable commitEditingData:data atIndexPath:indexPath];
+    [editable commitEditingStyle:editingStyle forData:data];
 }
 
 

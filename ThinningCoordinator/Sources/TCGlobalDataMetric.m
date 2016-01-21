@@ -407,8 +407,7 @@
     else {
         // Take out the source data.
         id sourceData = [_sectionDataMetrics[sourceSection] removeAtIndex:sourceItem];
-        id destinationData = [_sectionDataMetrics[destinationSection] removeAtIndex:destinationItem];
-        if (sourceData && destinationData) {
+        if (sourceData) {
             // Insert to desitination position.
             [_sectionDataMetrics[destinationSection] insert:sourceData atIndex:destinationItem];
         } else {

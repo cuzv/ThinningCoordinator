@@ -13,6 +13,8 @@
 
 @implementation TableViewDataSource
 
+#pragma mark - TCDataSourceable
+
 - (void)registerReusableCell {
     [self.tableView registerClass:TableViewCell.class forCellReuseIdentifier:TableViewCell.tc_identifier];
 }
@@ -26,6 +28,7 @@
     [reusableCell setupData:data];
 }
 
+#pragma mark - TCTableViewHeaderFooterViewibility
 
 - (void)registerReusableHeaderFooterView {
     [self.tableView registerClass:TableViewHeaderView.class forHeaderFooterViewReuseIdentifier:TableViewHeaderView.tc_identifier];
@@ -49,5 +52,24 @@
     [reusableView setupData:data];
 }
 
+#pragma mark - TCTableViewEditable
+
+- (BOOL)canEditElementAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)commitEditingStyle:(UITableViewCellEditingStyle)style forData:(id)data {
+    NSLog(@"%@", self.globalDataMetric);
+}
+
+#pragma mark - TCTableViewCollectionViewMovable
+
+- (BOOL)canMoveElementAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)moveElementAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    NSLog(@"%@", self.globalDataMetric);
+}
 
 @end

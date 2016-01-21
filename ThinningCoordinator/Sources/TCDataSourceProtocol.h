@@ -92,8 +92,7 @@
 - (BOOL)canEditElementAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
 /// commit editing data behavior
-- (void)commitEditingData:(nonnull id)data atIndexPath:(nonnull NSIndexPath *)indexPath;
-
+- (void)commitEditingStyle:(UITableViewCellEditingStyle)style forData:(nonnull id)data;
 @end
 
 

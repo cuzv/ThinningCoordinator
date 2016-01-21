@@ -53,6 +53,16 @@ NSString *text4 = @"Please note that currently we only build static libraries. I
     [self.tableView reloadData];
 }
 
+
+- (IBAction)handleEdit:(UIBarButtonItem *)sender {
+    self.tableView.editing = !self.tableView.editing;
+}
+
+- (IBAction)handleInsert:(UIBarButtonItem *)sender {
+    [self.dataSource.globalDataMetric insert:@"Inserted" atIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+    [self.tableView reloadData];
+}
+
 - (UITableView *)tableView {
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];

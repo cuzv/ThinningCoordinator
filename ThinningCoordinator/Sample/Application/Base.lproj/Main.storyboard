@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -64,7 +65,7 @@
             </objects>
             <point key="canvasLocation" x="484" y="673"/>
         </scene>
-        <!--Table View Sample View Controller-->
+        <!--TableViewSample-->
         <scene sceneID="T3G-5i-7iA">
             <objects>
                 <viewController id="E7q-R3-o0m" customClass="TableViewSampleViewController" sceneMemberID="viewController">
@@ -77,6 +78,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" title="TableViewSample" id="nJF-lq-uUs">
+                        <rightBarButtonItems>
+                            <barButtonItem title="Insert" id="sjV-4x-Xle">
+                                <connections>
+                                    <action selector="handleInsert:" destination="E7q-R3-o0m" id="a4e-lX-605"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Edit" id="ErE-pL-5OB">
+                                <connections>
+                                    <action selector="handleEdit:" destination="E7q-R3-o0m" id="PBq-qX-hpE"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZST-ah-GtI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
