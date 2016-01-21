@@ -1,9 +1,9 @@
 //
-//  UICollectionReusableView+CHXLayoutSizeFittingSize.h
-//  WildAppExtensionRunner
+//  ResuableView+Extension.h
+//  ThinningCoordinator
 //
-//  Created by Moch Xiao on 8/22/15.
-//  Copyright (c) 2015 Haioo. All rights reserved.
+//  Created by Moch Xiao on 1/21/16.
+//  Copyright (c) 2015 Moch Xiao (https://github.com/cuzv).
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,18 @@
 
 #import <UIKit/UIKit.h>
 
-/// Code base on Apple's WWDC14 AdvancedCollectionView Session sample
 @interface UICollectionReusableView (CHXLayoutSizeFittingSize)
+- (CGSize)tc_preferredLayoutSizeFittingSize:(CGSize)fittingSize;
+@end
+
+@interface UICollectionViewCell (CHXLayoutSizeFittingSize)
+- (CGSize)tc_preferredLayoutSizeFittingSize:(CGSize)fittingSize;
+@end
+
+@interface UITableViewCell (TCLayoutSizeFittingSize)
+- (CGSize)tc_preferredLayoutSizeFittingSize:(CGSize)fittingSize;
+@end
+
+@interface UITableViewHeaderFooterView (TCLayoutSizeFittingSize)
 - (CGSize)tc_preferredLayoutSizeFittingSize:(CGSize)fittingSize;
 @end

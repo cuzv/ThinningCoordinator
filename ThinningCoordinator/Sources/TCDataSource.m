@@ -215,7 +215,7 @@
 
 // FIXME: 先有高度，才有View
 - (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (TCCollectionViewSupportsConstraintsProperty()) {
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1) {
         return UITableViewAutomaticDimension;
     }
     

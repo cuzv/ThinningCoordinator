@@ -95,7 +95,7 @@
     return self;
 }
 
-+ (instancetype)empty {
++ (nullable instancetype)empty {
     return [[[self class] alloc] initWithItemsData:@[]];
 }
 
@@ -279,25 +279,6 @@
     
     return [NSString stringWithString:desc];
 }
-
-#pragma mark - Helpers
-
-+ (NSDictionary *)supplementaryElementsWithHeaderData:(NSArray *)headerData footerData:(NSArray *)footerData {
-    if (!headerData && !footerData) {
-        return nil;
-    }
-
-    NSMutableDictionary *supplementaryElements = [NSMutableDictionary new];
-    if (headerData) {
-        [supplementaryElements setObject:headerData forKey:UICollectionElementKindSectionHeader];
-    }
-    if (footerData) {
-        [supplementaryElements setObject:footerData forKey:UICollectionElementKindSectionFooter];
-    }
-
-    return supplementaryElements;
-}
-
 
 @end
 

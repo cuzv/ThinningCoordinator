@@ -18,7 +18,7 @@
 		46997CD31C4FA9A100D30602 /* TCGlobalDataMetric.m in Sources */ = {isa = PBXBuildFile; fileRef = 46997CCB1C4FA9A100D30602 /* TCGlobalDataMetric.m */; };
 		46997CD41C4FA9A100D30602 /* TCHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 46997CCD1C4FA9A100D30602 /* TCHelper.m */; };
 		46997CD51C4FA9A100D30602 /* TCSectionDataMetric.m in Sources */ = {isa = PBXBuildFile; fileRef = 46997CCF1C4FA9A100D30602 /* TCSectionDataMetric.m */; };
-		46997CD91C4FA9A900D30602 /* UICollectionReusableView+TCLayoutSizeFittingSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 46997CD81C4FA9A900D30602 /* UICollectionReusableView+TCLayoutSizeFittingSize.m */; };
+		46F2E7A91C507B21005D6CD6 /* ResuableView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7A81C507B21005D6CD6 /* ResuableView+Extension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,8 +45,8 @@
 		46997CCE1C4FA9A100D30602 /* TCSectionDataMetric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSectionDataMetric.h; sourceTree = "<group>"; };
 		46997CCF1C4FA9A100D30602 /* TCSectionDataMetric.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSectionDataMetric.m; sourceTree = "<group>"; };
 		46997CD61C4FA9A900D30602 /* ThinningCoordinator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThinningCoordinator.h; sourceTree = "<group>"; };
-		46997CD71C4FA9A900D30602 /* UICollectionReusableView+TCLayoutSizeFittingSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UICollectionReusableView+TCLayoutSizeFittingSize.h"; sourceTree = "<group>"; };
-		46997CD81C4FA9A900D30602 /* UICollectionReusableView+TCLayoutSizeFittingSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionReusableView+TCLayoutSizeFittingSize.m"; sourceTree = "<group>"; };
+		46F2E7A71C507B21005D6CD6 /* ResuableView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ResuableView+Extension.h"; sourceTree = "<group>"; };
+		46F2E7A81C507B21005D6CD6 /* ResuableView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ResuableView+Extension.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,8 +125,8 @@
 				46997CCE1C4FA9A100D30602 /* TCSectionDataMetric.h */,
 				46997CCF1C4FA9A100D30602 /* TCSectionDataMetric.m */,
 				46997CD61C4FA9A900D30602 /* ThinningCoordinator.h */,
-				46997CD71C4FA9A900D30602 /* UICollectionReusableView+TCLayoutSizeFittingSize.h */,
-				46997CD81C4FA9A900D30602 /* UICollectionReusableView+TCLayoutSizeFittingSize.m */,
+				46F2E7A71C507B21005D6CD6 /* ResuableView+Extension.h */,
+				46F2E7A81C507B21005D6CD6 /* ResuableView+Extension.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -205,11 +205,11 @@
 				46997CB11C4FA8F600D30602 /* ViewController.m in Sources */,
 				46997CD21C4FA9A100D30602 /* TCDelegate.m in Sources */,
 				46997CAE1C4FA8F600D30602 /* AppDelegate.m in Sources */,
-				46997CD91C4FA9A900D30602 /* UICollectionReusableView+TCLayoutSizeFittingSize.m in Sources */,
 				46997CD41C4FA9A100D30602 /* TCHelper.m in Sources */,
 				46997CAB1C4FA8F600D30602 /* main.m in Sources */,
 				46997CD51C4FA9A100D30602 /* TCSectionDataMetric.m in Sources */,
 				46997CD11C4FA9A100D30602 /* TCDataSource.m in Sources */,
+				46F2E7A91C507B21005D6CD6 /* ResuableView+Extension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
