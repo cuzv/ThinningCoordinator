@@ -98,7 +98,7 @@
 /// UICollectionView only,
 - (nullable id)dataForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath __attribute__((deprecated("use `dataForSupplementaryHeaderAtIndexPath:` or `dataForSupplementaryFooterAtIndexPath` instead.")));
 
-/// Private: Section titles.
+/// Private: Section index titles.
 - (nullable NSArray<NSString *> *)sectionIndexTitles;
 
 #pragma mark - Modify

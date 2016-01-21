@@ -1,22 +1,24 @@
 //
-//  TableViewCell.m
+//  TableViewHeaderView.m
 //  ThinningCoordinator
 //
 //  Created by Moch Xiao on 1/21/16.
 //  Copyright © 2016 Moch. All rights reserved.
 //
 
-#import "TableViewCell.h"
+#import "TableViewHeaderView.h"
 #import <Masonry/Masonry.h>
 
-@interface TableViewCell ()
+
+@interface TableViewHeaderView ()
 @property (nonatomic, strong) UILabel *nameLabel;
 @end
 
-@implementation TableViewCell
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+@implementation TableViewHeaderView
+
+- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithReuseIdentifier:reuseIdentifier];
     if (!self) {
         return nil;
     }
@@ -58,6 +60,7 @@
     if (!_nameLabel) {
         _nameLabel = [UILabel new];
         _nameLabel.numberOfLines = 0;
+        _nameLabel.backgroundColor = [UIColor yellowColor];
     }
     return _nameLabel;
 }

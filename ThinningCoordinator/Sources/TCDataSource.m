@@ -291,8 +291,11 @@
     if (!identifier) {
         return 10.0f;
     }
-
     id data = [self.globalDataMetric dataForHeaderInSection:section];
+    if (!data) {
+        return 10.0f;
+    }
+    
     CGFloat height = [self.tableView tc_heightForReusableHeaderFooterViewByIdentifier:identifier dataConfigurationHandler:^(UITableViewHeaderFooterView * _Nonnull reusableHeaderFooterView) {
         [headerFooterViewibility loadData:data forReusableHeaderView:reusableHeaderFooterView];
     }];
@@ -313,11 +316,14 @@
     if (!headerView) {
         return nil;
     }
+    id data = [self.globalDataMetric dataForHeaderInSection:section];
+    if (!data) {
+        return nil;
+    }
     
     [headerView prepareForReuse];
 
-    id data = [self.globalDataMetric dataForHeaderInSection:section];
-    if (data && !self.delegate.scrollingToTop) {
+    if (!self.delegate.scrollingToTop) {
         [headerFooterViewibility loadData:data forReusableHeaderView:headerView];
     }
     
@@ -336,8 +342,11 @@
     if (!identifier) {
         return 10.0f;
     }
-
     id data = [self.globalDataMetric dataForFooterInSection:section];
+    if (!data) {
+        return 10.0f;
+    }
+
     CGFloat height = [self.tableView tc_heightForReusableHeaderFooterViewByIdentifier:identifier dataConfigurationHandler:^(UITableViewHeaderFooterView * _Nonnull reusableHeaderFooterView) {
         [headerFooterViewibility loadData:data forReusableFooterView:reusableHeaderFooterView];
     }];
@@ -358,11 +367,14 @@
     if (!footerView) {
         return nil;
     }
+    id data = [self.globalDataMetric dataForFooterInSection:section];
+    if (!data) {
+        return nil;
+    }
     
     [footerView prepareForReuse];
 
-    id data = [self.globalDataMetric dataForFooterInSection:section];
-    if (data && !self.delegate.scrollingToTop) {
+    if (!self.delegate.scrollingToTop) {
         [headerFooterViewibility loadData:data forReusableFooterView:footerView];
     }
     

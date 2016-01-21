@@ -8,6 +8,6 @@
 
 #import "TCDataSource.h"
 
-@interface TableViewDataSource : TCDataSource <TCDataSourceable>
+@interface TableViewDataSource : TCDataSource <TCDataSourceable, TCTableViewHeaderFooterViewibility>
 
 @end

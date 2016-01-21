@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4650F5071C50EFDB00A8AEDA /* TableViewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4650F5061C50EFDB00A8AEDA /* TableViewHeaderView.m */; };
 		46997CAB1C4FA8F600D30602 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 46997CAA1C4FA8F600D30602 /* main.m */; };
 		46997CAE1C4FA8F600D30602 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 46997CAD1C4FA8F600D30602 /* AppDelegate.m */; };
 		46997CB11C4FA8F600D30602 /* TableViewSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46997CB01C4FA8F600D30602 /* TableViewSampleViewController.m */; };
@@ -29,6 +30,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4650F5051C50EFDB00A8AEDA /* TableViewHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewHeaderView.h; sourceTree = "<group>"; };
+		4650F5061C50EFDB00A8AEDA /* TableViewHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewHeaderView.m; sourceTree = "<group>"; };
 		46997CA61C4FA8F600D30602 /* ThinningCoordinator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThinningCoordinator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46997CAA1C4FA8F600D30602 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		46997CAC1C4FA8F600D30602 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -173,6 +176,8 @@
 				46F2E7B61C50AD0A005D6CD6 /* TableViewDelegate.m */,
 				46F2E7AF1C50ABC6005D6CD6 /* TableViewCell.h */,
 				46F2E7B01C50ABC6005D6CD6 /* TableViewCell.m */,
+				4650F5051C50EFDB00A8AEDA /* TableViewHeaderView.h */,
+				4650F5061C50EFDB00A8AEDA /* TableViewHeaderView.m */,
 			);
 			path = TableViewSample;
 			sourceTree = "<group>";
@@ -331,6 +336,7 @@
 				46F2E7BD1C50B6B6005D6CD6 /* TCDefaultSupplementaryView.m in Sources */,
 				46F2E7AE1C50AAE8005D6CD6 /* CollectionViewSampleViewController.m in Sources */,
 				46997CAE1C4FA8F600D30602 /* AppDelegate.m in Sources */,
+				4650F5071C50EFDB00A8AEDA /* TableViewHeaderView.m in Sources */,
 				46997CD41C4FA9A100D30602 /* TCHelper.m in Sources */,
 				46F2E7B71C50AD0A005D6CD6 /* TableViewDelegate.m in Sources */,
 				46F2E7B41C50ACF6005D6CD6 /* TableViewDataSource.m in Sources */,
