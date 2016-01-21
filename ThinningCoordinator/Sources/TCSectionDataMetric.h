@@ -146,4 +146,14 @@
 /// Move data.
 - (void)moveElementAtIndex:(NSInteger)index toIndex:(NSInteger)otherIndex;
 
+
+#pragma mark - Cache Size & Height
+
+- (void)invalidateCachedCellHeightForIndex:(NSInteger)index;
+- (void)invalidateCachedCellSizeForIndex:(NSInteger)index;
+- (void)invalidateCachedHeightForHeader;
+- (void)invalidateCachedHeightForFooter;
+- (void)invalidateCachedSizeForHeader;
+- (void)invalidateCachedSizeForFooter;
+
 @end

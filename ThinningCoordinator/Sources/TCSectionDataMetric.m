@@ -39,6 +39,15 @@
 @property (nonatomic, strong, nonnull) NSArray *dataForSupplementaryHeader;
 @property (nonatomic, strong, nonnull) NSArray *dataForSupplementaryFooter;
 
+@property (nonatomic, strong) NSMutableArray<NSNumber *> *cachedHeightForCell;
+@property (nonatomic, strong) NSMutableArray<NSValue *> *cachedSizeForCell;
+
+@property (nonatomic, assign) CGFloat cachedHeightForHeader;
+@property (nonatomic, assign) CGFloat cachedHeightForFooter;
+
+@property (nonatomic, assign) CGSize cachedSizeForHeader;
+@property (nonatomic, assign) CGSize cachedSizeForFooter;
+
 @end
 
 @implementation TCSectionDataMetric
@@ -113,6 +122,32 @@
 + (nullable instancetype)empty {
     return [[[self class] alloc] initWithItemsData:@[]];
 }
+
+- (NSMutableArray<NSNumber *> *)cachedHeightForCell {
+    if (!_cachedHeightForCell) {
+        NSInteger count = self.numberOfItems;
+        _cachedHeightForCell = [[NSMutableArray alloc] initWithCapacity:count];
+        for (int index = 0; index < count; index++) {
+            [_cachedHeightForCell addObject:@(UITableViewAutomaticDimension)];
+        }
+    }
+    
+    return _cachedHeightForCell;
+}
+
+
+- (NSMutableArray<NSValue *> *)cachedSizeForCell {
+    if (!_cachedSizeForCell) {
+        NSInteger count = self.numberOfItems;
+        _cachedSizeForCell = [[NSMutableArray alloc] initWithCapacity:count];
+        for (int index = 0; index < count; index++) {
+            [_cachedSizeForCell addObject:[NSValue valueWithCGSize:CGSizeZero]];
+        }
+    }
+    
+    return _cachedSizeForCell;
+}
+
 
 #pragma mark - Retrieve
 
@@ -274,6 +309,58 @@
     [_itemsData removeObjectAtIndex:index];
     [_itemsData insertObject:moved atIndex:otherIndex];
 }
+
+#pragma mark - Cache Height
+
+- (void)cacheHeight:(CGFloat)height forIndex:(NSInteger)index {
+    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    _cachedHeightForCell[index] = @(height);
+}
+- (CGFloat)cachedHeightForIndex:(NSInteger)index {
+    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+#if defined(__LP64__) && __LP64__
+    return [_cachedHeightForCell[index] doubleValue];
+#else
+    return [_cachedHeightForCell[index] floatValue];
+#endif
+}
+
+- (void)cacheSize:(CGSize)size forIndex:(NSInteger)index {
+    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    _cachedSizeForCell[index] = [NSValue valueWithCGSize:size];
+}
+
+- (CGSize)cachedSizeForIndex:(NSInteger)index {
+    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    return [_cachedSizeForCell[index] CGSizeValue];
+}
+
+- (void)invalidateCachedCellHeightForIndex:(NSInteger)index {
+    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    _cachedHeightForCell[index] = @(UITableViewAutomaticDimension);
+}
+
+- (void)invalidateCachedCellSizeForIndex:(NSInteger)index {
+    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    _cachedSizeForCell[index] = [NSValue valueWithCGSize:CGSizeZero];
+}
+
+- (void)invalidateCachedHeightForHeader {
+    _cachedHeightForHeader = 0.0f;
+}
+
+- (void)invalidateCachedHeightForFooter {
+    _cachedHeightForFooter = 0.0f;
+}
+
+- (void)invalidateCachedSizeForHeader {
+    _cachedSizeForHeader = CGSizeZero;
+}
+
+- (void)invalidateCachedSizeForFooter {
+    _cachedSizeForFooter = CGSizeZero;
+}
+
 
 #pragma mark - Description
 
