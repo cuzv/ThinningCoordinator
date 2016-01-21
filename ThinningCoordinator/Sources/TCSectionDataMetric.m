@@ -52,34 +52,46 @@
 
 - (nullable instancetype)initWithItemsData:(nonnull NSArray *)itemsData {
     self = [super init];
-    if (!self) { return nil; }
+    if (!self) {
+        return nil;
+    }
+    
     _itemsData = [itemsData mutableCopy];
+    
     return self;
 }
 
 - (nullable instancetype)initWithItemsData:(nonnull NSArray *)itemsData indexTitle:(nonnull NSString *)indexTitle {
     self = [self initWithItemsData:itemsData];
+
     _indexTitle = indexTitle;
+    
     return self;
 }
 
 - (nullable instancetype)initWithItemsData:(nonnull NSArray *)itemsData titleForHeader:(nonnull NSString *)titleForHeader titleForFooter:(nonnull NSString *)titleForFooter {
     self = [self initWithItemsData:itemsData];
+    
     _titleForHeader = titleForHeader;
     _titleForFooter = titleForFooter;
+    
     return self;
 }
 
 - (nullable instancetype)initWithItemsData:(nonnull NSArray *)itemsData titleForHeader:(nonnull NSString *)titleForHeader titleForFooter:(nonnull NSString *)titleForFooter indexTitle:(nonnull NSString *)indexTitle {
     self = [self initWithItemsData:itemsData titleForHeader:titleForHeader titleForFooter:titleForFooter];
+    
     _indexTitle = indexTitle;
+    
     return self;
 }
 
 - (nullable instancetype)initWithItemsData:(nonnull NSArray *)itemsData dataForHeader:(nonnull id)dataForHeader dataForFooter:(nonnull id)dataForFooter {
     self = [self initWithItemsData:itemsData];
+    
     _dataForHeader = dataForHeader;
     _dataForFooter = dataForFooter;
+    
     return self;
 }
 
@@ -94,7 +106,7 @@
     
     _dataForSupplementaryHeader = dataForSupplementaryHeader;
     _dataForSupplementaryFooter = dataForSupplementaryFooter;
-
+    
     return self;
 }
 
