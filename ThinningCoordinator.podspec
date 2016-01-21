@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.author             = { "Moch Xiao" => "cuzval@gmail.com" }
   s.author = { "Moch Xiao" => "cuzval@gmail.com" }
   s.source       = { :git => "https://github.com/cuzv/ThinningCoordinator.git", :tag => s.version }
-  s.source_files  = "Sources/*.{h,m}}"
+  s.source_files  = "ThinningCoordinator/Sources/*.{h,m}"
   s.framework  = "UIKit"
   s.platform     = :ios, "7.0"
   s.requires_arc = true
