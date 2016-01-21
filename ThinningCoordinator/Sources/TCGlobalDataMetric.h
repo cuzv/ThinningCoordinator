@@ -98,6 +98,8 @@
 /// UICollectionView only,
 - (nullable id)dataForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath __attribute__((deprecated("use `dataForSupplementaryHeaderAtIndexPath:` or `dataForSupplementaryFooterAtIndexPath` instead.")));
 
+/// Private: Section titles.
+- (nullable NSArray<NSString *> *)sectionIndexTitles;
 
 #pragma mark - Modify
 
@@ -178,5 +180,11 @@
 
 /// Remove specific data for indexPath
 - (nullable id)removeDataAtIndexPath:(nonnull NSIndexPath *)indexPath __attribute__((deprecated("use `removeAtIndexPath:` instead.")));
+
+/// Exchange data.
+- (void)exchageAtIndexPath:(nonnull NSIndexPath *)sourceIndexPath withIndexPath:(nonnull NSIndexPath *)destinationIndexPath;
+
+/// Move data.
+- (void)moveAtIndexPath:(nonnull NSIndexPath *)sourceIndexPath toIndexPath:(nonnull NSIndexPath *)destinationIndexPath;
 
 @end

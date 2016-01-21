@@ -26,11 +26,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UICollectionReusableView (CHXLayoutSizeFittingSize)
+@interface UICollectionReusableView (TCXLayoutSizeFittingSize)
 - (CGSize)tc_preferredLayoutSizeFittingSize:(CGSize)fittingSize;
 @end
 
-@interface UICollectionViewCell (CHXLayoutSizeFittingSize)
+@interface UICollectionViewCell (TCLayoutSizeFittingSize)
 - (CGSize)tc_preferredLayoutSizeFittingSize:(CGSize)fittingSize;
 @end
 
@@ -40,4 +40,15 @@
 
 @interface UITableViewHeaderFooterView (TCLayoutSizeFittingSize)
 - (CGSize)tc_preferredLayoutSizeFittingSize:(CGSize)fittingSize;
+@end
+
+
+
+@interface UITableView (TCComputeLayoutSize)
+- (CGFloat)tc_heightForReusableCellByIdentifier:(nonnull NSString *)identifier dataConfigurationHandler:(nonnull void (^)(UITableViewCell * _Nonnull cell))dataConfigurationHandler;
+- (CGFloat)tc_heightForReusableHeaderFooterViewByIdentifier:(nonnull NSString *)identifier dataConfigurationHandler:(nonnull void (^)(UITableViewHeaderFooterView * _Nonnull reusableHeaderFooterView))dataConfigurationHandler;
+@end
+
+@interface UICollectionView (TCComputeLayoutSize)
+- (CGSize)tc_sizeForReusableViewByClass:(nonnull Class)cls preferredLayoutSizeFittingSize:(CGSize)fittingSize dataConfigurationHandler:(nonnull void (^)(UICollectionReusableView * _Nonnull cell))dataConfigurationHandler;
 @end

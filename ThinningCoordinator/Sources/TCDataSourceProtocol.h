@@ -28,61 +28,93 @@
 
 @class TCSectionDataMetric;
 
-@protocol TCDataSourceProtocol <NSObject>
+#pragma mark TCDataSourceable
 
-@required
+@protocol TCDataSourceable <NSObject>
 
 /// Regiseter the cell class for reuse
 - (void)registerReusableCell;
 
 /// return the cell reuse identifier for indexpath
-- (NSString *)reusableCellIdentifierForIndexPath:(NSIndexPath *)indexPath;
+- (nonnull NSString *)reusableCellIdentifierForIndexPath:(nonnull NSIndexPath *)indexPath;
 
 /// load data for specific cell
-- (void)loadData:(id)data forReusableCell:(id)cell;
+- (void)loadData:(nonnull id)data forReusableCell:(nonnull id)cell;
 
-@optional
+@end
+
+
+#pragma mark TCTableViewHeaderFooterViewibility
+
+@protocol TCTableViewHeaderFooterViewibility <NSObject>
 
 /// UITableView only, register the reuse header or footer view
 - (void)registerReusableHeaderFooterView;
 
 /// UITableView only, return the HeaderFooterView header reuse identifier for section
-- (NSString *)reusableHeaderViewIdentifierInSection:(NSInteger)section;
+- (nullable NSString *)reusableHeaderViewIdentifierInSection:(NSInteger)section;
+/// UITableView only, load data for specific UITableViewHeaderFooterView header
+- (void)loadData:(nonnull id)data forReusableHeaderView:(nonnull UITableViewHeaderFooterView *)headerView;
 
 /// UITableView only, return the HeaderFooterView footer reuse identifier for section
-- (NSString *)reusableFooterViewIdentifierInSection:(NSInteger)section;
-
-/// UITableView only, load data for specific UITableViewHeaderFooterView header
-- (void)loadData:(id)data forReusableHeaderView:(UITableViewHeaderFooterView *)headerView;
-
+- (nullable NSString *)reusableFooterViewIdentifierInSection:(NSInteger)section;
 /// UITableView only, load data for specific UITableViewHeaderFooterView footer
-- (void)loadData:(id)data forReusableFooterView:(UITableViewHeaderFooterView *)footerView;
+- (void)loadData:(nonnull id)data forReusableFooterView:(nonnull UITableViewHeaderFooterView *)footerView;
+
+@end
+
+
+#pragma mark TCCollectionSupplementaryViewibility
+
+@protocol TCCollectionSupplementaryViewibility <NSObject>
 
 /// UICollectionView only, regiseter the supplementary class for reuse
 - (void)registerReusableSupplementaryView;
 
-/// UICollectionView only, return the supplementary view reuse identifier for indexpath
-- (NSString *)reusableSupplementaryViewIdentifierForIndexPath:(NSIndexPath *)indexPath ofKind:(NSString *)kind;
+/// UICollectionView only, return the supplementary header view reuse identifier for indexPath.
+- (nullable NSString *)reusableSupplementaryHeaderViewIdentifierForIndexPath:(nonnull NSIndexPath *)indexPath;
+/// UICollectionView only, load data for flow layout specific supplementary header view.
+- (void)loadData:(nonnull id)data forReusableSupplementaryHeaderView:(nonnull UICollectionReusableView *)reusableView;
 
-/// UICollectionView only, load data for specific supplementary view
-- (void)loadData:(id)data forReusableSupplementaryView:(UICollectionReusableView *)reusableView;
+/// UICollectionView only, return the supplementary footer view reuse identifier for indexPath.
+- (nullable NSString *)reusableSupplementaryFooterViewIdentifierForIndexPath:(nonnull NSIndexPath *)indexPath;
+/// UICollectionView only, load data for flow layout specific supplementary footer view.
+- (void)loadData:(nonnull id)data forReusableSupplementaryFooterView:(nonnull UICollectionReusableView *)reusableView;
+
+@end
+
+
+#pragma mark TCTableViewEditable
+
+@protocol TCTableViewEditable <NSObject>
 
 /// Can edit the specific item
-- (BOOL)canEditItemAtIndexPath:(NSIndexPath *)indexPath;
+- (BOOL)canEditElementAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
 /// commit editing data behavior
-- (void)commitEditingData:(id)data atIndexPath:(NSIndexPath *)indexPath;
+- (void)commitEditingData:(nonnull id)data atIndexPath:(nonnull NSIndexPath *)indexPath;
+
+@end
+
+
+#pragma mark TCTableViewCollectionViewMovable
+
+@protocol TCTableViewCollectionViewMovable <NSObject>
 
 /// Can move the specific item
-- (BOOL)canMoveItemAtIndexPath:(NSIndexPath *)indexPath;
+- (BOOL)canMoveElementAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
-/// Lazy load images
-- (void)lazyLoadImagesData:(id)data forReusableCell:(id)cell;
+/// Move data position.
+- (void)moveElementAtIndexPath:(nonnull NSIndexPath *)sourceIndexPath toIndexPath:(nonnull NSIndexPath *)destinationIndexPath;
 
-#pragma mark - Deprecated
+@end
 
-/// UITableView only, return the HeaderFooterView reuse identifier for section
-/// **Note**: deprecated
-- (NSString *)reusableHeaderFooterViewIdentifierInSection:(NSInteger)section isHeader:(BOOL)isHeader __attribute__((deprecated("use `viewForHeaderInSection:` or `viewForFooterInSection:` instead")));
+
+#pragma mark TCImageLazyLoadable
+
+@protocol TCImageLazyLoadable <NSObject>
+
+/// Lazy load images.
+- (void)lazyLoadImagesData:(nonnull id)data forReusableCell:(nullable id)cell;
 
 @end

@@ -26,6 +26,7 @@
 
 #import "ResuableView+Extension.h"
 #import "TCHelper.h"
+#import <objc/runtime.h>
 
 BOOL TCTableViewSupportsConstraintsProperty();
 BOOL TCCollectionViewSupportsConstraintsProperty();
@@ -204,3 +205,72 @@ BOOL TCTableViewSupportsConstraintsProperty() {
 BOOL TCCollectionViewSupportsConstraintsProperty() {
     return _supportsConstraintsProperty();
 }
+
+
+#pragma mark - UITableView TCComputeLayoutSize
+
+@implementation UITableView (TCComputeLayoutSize)
+
+- (CGFloat)tc_heightForReusableCellByIdentifier:(nonnull NSString *)identifier dataConfigurationHandler:(nonnull void (^)(UITableViewCell * _Nonnull cell))dataConfigurationHandler {
+    UITableViewCell *reusableCell = [self dequeueReusableCellWithIdentifier:identifier];
+    if (!reusableCell) {
+        [NSException raise:@"FatalError" format:@"Cell must be registered to tableView for identifier: %@", identifier];
+    }
+    
+    [reusableCell prepareForReuse];
+    dataConfigurationHandler(reusableCell);
+    
+    CGSize fittingSize = CGSizeMake(CGRectGetWidth(self.bounds), UILayoutFittingExpandedSize.height);
+    return [reusableCell tc_preferredLayoutSizeFittingSize:fittingSize].height + 1.0f / [UIScreen mainScreen].scale;
+}
+
+- (CGFloat)tc_heightForReusableHeaderFooterViewByIdentifier:(nonnull NSString *)identifier dataConfigurationHandler:(nonnull void (^)(UITableViewHeaderFooterView * _Nonnull reusableHeaderFooterView))dataConfigurationHandler {
+    UITableViewHeaderFooterView *reusableHeaderFooterView = [self dequeueReusableHeaderFooterViewWithIdentifier:identifier];
+    if (!reusableHeaderFooterView) {
+        [NSException raise:@"FatalError" format:@"HeaderFooterView must be registered to tableView for identifier: %@", identifier];
+    }
+    
+    [reusableHeaderFooterView prepareForReuse];
+    dataConfigurationHandler(reusableHeaderFooterView);
+    
+    CGSize fittingSize = CGSizeMake(CGRectGetWidth(self.bounds), UILayoutFittingExpandedSize.height);
+    return [reusableHeaderFooterView tc_preferredLayoutSizeFittingSize:fittingSize].height + 1.0f / [UIScreen mainScreen].scale;
+}
+
+@end
+
+
+#pragma mark - 
+
+@implementation UICollectionView (TCComputeLayoutSize)
+
+- (CGSize)tc_sizeForReusableViewByClass:(nonnull Class)cls preferredLayoutSizeFittingSize:(CGSize)fittingSize dataConfigurationHandler:(nonnull void (^)(UICollectionReusableView * _Nonnull cell))dataConfigurationHandler {
+    NSDictionary<NSString *, UICollectionReusableView *> *reusableViews = self.tc_reusableViews;
+    if (!reusableViews) {
+        reusableViews = @{};
+    }
+    
+    NSString *key = NSStringFromClass(cls);
+    UICollectionReusableView *reusableView = [reusableViews objectForKey:key];
+    if (!reusableView) {
+        reusableView = [[cls alloc] initWithFrame:CGRectZero];
+        [reusableViews setValue:reusableView forKey:key];
+        [self tc_setReusableViews:reusableViews];
+    }
+  
+    [reusableView prepareForReuse];
+    dataConfigurationHandler(reusableView);
+    
+    return [reusableView tc_preferredLayoutSizeFittingSize:fittingSize];
+}
+
+static const void *ReusableViewsAccocaitionKey = @"reusableViews";
+- (NSDictionary<NSString *, UICollectionReusableView *> *)tc_reusableViews {
+    return objc_getAssociatedObject(self, &ReusableViewsAccocaitionKey);
+}
+
+- (void)tc_setReusableViews:(NSDictionary<NSString *, UICollectionReusableView *> *)reusableViews {
+    objc_setAssociatedObject(self, &ReusableViewsAccocaitionKey, reusableViews, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+@end

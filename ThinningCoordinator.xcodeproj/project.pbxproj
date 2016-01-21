@@ -24,6 +24,7 @@
 		46F2E7B41C50ACF6005D6CD6 /* TableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7B31C50ACF6005D6CD6 /* TableViewDataSource.m */; };
 		46F2E7B71C50AD0A005D6CD6 /* TableViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7B61C50AD0A005D6CD6 /* TableViewDelegate.m */; };
 		46F2E7BA1C50ADAF005D6CD6 /* NSObject+TCIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7B91C50ADAF005D6CD6 /* NSObject+TCIdentifier.m */; };
+		46F2E7BD1C50B6B6005D6CD6 /* TCDefaultSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7BC1C50B6B6005D6CD6 /* TCDefaultSupplementaryView.m */; };
 		9D397E64A3D3ECB894B102C7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD30927262BCC04728CDC2F /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +64,9 @@
 		46F2E7B61C50AD0A005D6CD6 /* TableViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewDelegate.m; sourceTree = "<group>"; };
 		46F2E7B81C50ADAF005D6CD6 /* NSObject+TCIdentifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+TCIdentifier.h"; sourceTree = "<group>"; };
 		46F2E7B91C50ADAF005D6CD6 /* NSObject+TCIdentifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+TCIdentifier.m"; sourceTree = "<group>"; };
+		46F2E7BB1C50B6B6005D6CD6 /* TCDefaultSupplementaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCDefaultSupplementaryView.h; sourceTree = "<group>"; };
+		46F2E7BC1C50B6B6005D6CD6 /* TCDefaultSupplementaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCDefaultSupplementaryView.m; sourceTree = "<group>"; };
+		46F2E7BE1C50CD7C005D6CD6 /* TCDelegate+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TCDelegate+Private.h"; sourceTree = "<group>"; };
 		5239C93AB0A6B93A02C03BD4 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		81A76FF816AABC767F30FD6E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		FAD30927262BCC04728CDC2F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,6 +147,7 @@
 				46997CC61C4FA9A100D30602 /* TCDataSource+Private.h */,
 				46997CC41C4FA9A100D30602 /* TCDataSource.h */,
 				46997CC51C4FA9A100D30602 /* TCDataSource.m */,
+				46F2E7BE1C50CD7C005D6CD6 /* TCDelegate+Private.h */,
 				46997CC81C4FA9A100D30602 /* TCDelegate.h */,
 				46997CC91C4FA9A100D30602 /* TCDelegate.m */,
 				46997CCC1C4FA9A100D30602 /* TCHelper.h */,
@@ -151,6 +156,8 @@
 				46F2E7A81C507B21005D6CD6 /* ResuableView+Extension.m */,
 				46F2E7B81C50ADAF005D6CD6 /* NSObject+TCIdentifier.h */,
 				46F2E7B91C50ADAF005D6CD6 /* NSObject+TCIdentifier.m */,
+				46F2E7BB1C50B6B6005D6CD6 /* TCDefaultSupplementaryView.h */,
+				46F2E7BC1C50B6B6005D6CD6 /* TCDefaultSupplementaryView.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -321,6 +328,7 @@
 				46997CB11C4FA8F600D30602 /* TableViewSampleViewController.m in Sources */,
 				46997CD21C4FA9A100D30602 /* TCDelegate.m in Sources */,
 				46F2E7BA1C50ADAF005D6CD6 /* NSObject+TCIdentifier.m in Sources */,
+				46F2E7BD1C50B6B6005D6CD6 /* TCDefaultSupplementaryView.m in Sources */,
 				46F2E7AE1C50AAE8005D6CD6 /* CollectionViewSampleViewController.m in Sources */,
 				46997CAE1C4FA8F600D30602 /* AppDelegate.m in Sources */,
 				46997CD41C4FA9A100D30602 /* TCHelper.m in Sources */,
@@ -445,6 +453,7 @@
 			baseConfigurationReference = 81A76FF816AABC767F30FD6E /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				INFOPLIST_FILE = ThinningCoordinator/Sample/Application/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -458,6 +467,7 @@
 			baseConfigurationReference = 5239C93AB0A6B93A02C03BD4 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				INFOPLIST_FILE = ThinningCoordinator/Sample/Application/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

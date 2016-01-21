@@ -28,46 +28,18 @@
 #import "TCDataSourceProtocol.h"
 
 @class TCGlobalDataMetric;
+@class TCDelegate;
 @interface TCDataSource : NSObject <UITableViewDataSource, UICollectionViewDataSource>
 
-/// The tableview or collction view data metric
-@property (nonatomic, strong) TCGlobalDataMetric *globalDataMetric;
-
 @property (nonatomic, weak, readonly) UITableView *tableView;
-- (instancetype)initWithTableView:(UITableView *)tableView;
-
-#pragma mark - UITableViewDelegate helper methods
-
-/// TCDelegate subclass UITableViewDelegate require row height, simple return this method
-- (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath;
-
-/// TCDelegate subclass UITableViewDelegate require footer view, simple return this method
-- (UIView *)viewForHeaderInSection:(NSInteger)section;
-/// TCDelegate subclass UITableViewDelegate require footer view, simple return this method
-- (UIView *)viewForFooterInSection:(NSInteger)section;
-
-/// TCDelegate subclass UITableViewDelegate require header view height, simple return this method
-- (CGFloat)heightForHeaderInSection:(NSInteger)section;
-/// TCDelegate subclass UITableViewDelegate require footer view height, simple return this method
-- (CGFloat)heightForFooterInSection:(NSInteger)section;
+- (nullable instancetype)initWithTableView:(nonnull UITableView *)tableView;
 
 @property (nonatomic, weak, readonly) UICollectionView *collectionView;
-- (instancetype)initWithCollectionView:(UICollectionView *)collectionView;
+- (nullable instancetype)initWithCollectionView:(nonnull UICollectionView *)collectionView;
 
-#pragma mark - UICollectionViewDataSource helper methods
+/// The tableview or collction view data metric.
+@property (nonatomic, strong, nonnull) TCGlobalDataMetric *globalDataMetric;
 
-/// TCDataSource Subclas UICollectionViewDataSource require supplementary view, simple return this method
-/// Note: register first
-- (UICollectionReusableView *)viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath;
-
-#pragma mark - Deprecated
-
-/// TCDelegate subclass UITableViewDelegate require header/footer view, simple return this method
-/// **Note**: deprecated
-- (UIView *)viewForHeaderFooterInSection:(NSInteger)section isHeader:(BOOL)isHeader __attribute__((deprecated("use `viewForHeaderInSection:` or `viewForFooterInSection:` instead")));
-/// TCDelegate subclass UITableViewDelegate require header/footer view height, simple return this method
-/// **Note**: deprecated
-- (CGFloat)heightForHeaderFooterInSection:(NSInteger)section isHeader:(BOOL)isHeader __attribute__((deprecated("use `heightForHeaderInSection:` or `heightForFooterInSection:` instead")));
-
+- (nullable TCDelegate *)delegate;
 
 @end

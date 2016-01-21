@@ -28,117 +28,171 @@
 #import "TCDataSource.h"
 #import "TCDataSource+Private.h"
 #import "TCGlobalDataMetric.h"
+#import "TCDataSourceProtocol.h"
 
 @interface TCDelegate ()
 @property (nonatomic, weak, readwrite) UITableView *tableView;
 @property (nonatomic, weak, readwrite) UICollectionView *collectionView;
+
+@property (nonatomic, assign) BOOL scrollingToTop;
+@property (nonatomic, strong, readwrite, nullable) NSValue *targetRect;
 @end
 
 @implementation TCDelegate
 
-- (instancetype)init {
-    NSAssert(NO, NSLocalizedString(@"Use designed initializer instead!", nil));
+#pragma mark - Initializer
+
+- (nullable instancetype)init {
+    [NSException raise:@"Use `initWithTableView:` or `initWithCollectionView:` instead." format:@""];
     return nil;
 }
 
-- (instancetype)__init__ {
+- (nullable instancetype)initWithTableView:(nonnull UITableView *)tableView {
+    NSAssert(tableView, NSLocalizedString(@"Tableview can not be nil", nil));
     self = [super init];
     if (!self) {
         return nil;
     }
     
-    return self;
-}
-
-#pragma mark - UITableViewDataSource
-
-- (instancetype)initWithTableView:(UITableView *)tableView {
-    self = [self __init__];
-    
-    NSAssert(tableView, NSLocalizedString(@"Tableview can not be nil", nil));
     _tableView = tableView;
     
     return self;
 }
 
-#pragma mark - UITableViewDelegate helper methods
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    TCDataSource *dataSource = (TCDataSource *)tableView.dataSource;
-    return [dataSource heightForRowAtIndexPath:indexPath];
-}
-
-- (UIView *)viewForHeaderInSection:(NSInteger)section {
-    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
-    return [dataSource viewForHeaderInSection:section];
-}
-
-- (UIView *)viewForFooterInSection:(NSInteger)section {
-    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
-   return [dataSource viewForFooterInSection:section];
-}
-
-- (CGFloat)heightForHeaderInSection:(NSInteger)section {
-    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
-    return [dataSource heightForHeaderInSection:section];
-}
-
-- (CGFloat)heightForFooterInSection:(NSInteger)section {
-    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
-    return [dataSource heightForFooterInSection:section];
-}
-
-#pragma mark - UICollectionViewDataSource
-
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView {
-    self = [self __init__];
-    
     NSAssert(collectionView, NSLocalizedString(@"CollectionView can not be nil", nil));
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+
     _collectionView = collectionView;
     
     return self;
 }
 
-#pragma mark - UIScrollViewDelegate
 
-///// Fix second time scrolling before first scrolling not ended intermediate state
-//- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-//    [self loadImagesForOnscreenItems];
-//}
+#pragma mark - Accessor
 
-///  Load images for all onscreen rows when scrolling is finished.
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (!decelerate) {
-        [self loadImagesForOnscreenItems];
-    }
-}
-
-///  When scrolling stops, proceed to load the app images that are on screen.
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    [self loadImagesForOnscreenItems];
-}
-
-- (void)loadImagesForOnscreenItems {
-    // visible index paths
-    NSArray *visibleIndexPaths = self.tableView ? [self.tableView indexPathsForVisibleRows] : [self.collectionView indexPathsForVisibleItems];
-    TCDataSource *dataSource = self.tableView ? (TCDataSource *)self.tableView.dataSource : (TCDataSource *)self.collectionView.dataSource;
-    for (NSIndexPath *indexPath in visibleIndexPaths) {
-        // cell data
-        id data = [dataSource.globalDataMetric dataForItemAtIndexPath:indexPath];
-        // cell
-        id cell = self.tableView ? [self.tableView cellForRowAtIndexPath:indexPath] : [self.collectionView cellForItemAtIndexPath:indexPath];
-        [dataSource _lazyLoadImagesData:data forReusableCell:cell];
-    }
-}
-
-#pragma mark - Helper
-
-- (TCDataSource *)dataSource {
+- (nonnull TCDataSource *)dataSource {
     if (self.tableView) {
         return (TCDataSource *)self.tableView.dataSource;
     }
     
     return (TCDataSource *)self.collectionView.dataSource;
+}
+
+- (nonnull TCGlobalDataMetric *)globalDataMetric {
+    return self.dataSource.globalDataMetric;
+}
+
+- (void)setGlobalDataMetric:(nonnull TCGlobalDataMetric *)globalDataMetric {
+    self.dataSource.globalDataMetric = globalDataMetric;
+}
+
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    self.targetRect = nil;
+    [self loadImagesForVisibleElements];
+}
+
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
+    CGRect rect = CGRectMake((*targetContentOffset).x, (*targetContentOffset).y, CGRectGetWidth(scrollView.frame), CGRectGetHeight(scrollView.frame));
+    self.targetRect = [NSValue valueWithCGRect:rect];
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    self.targetRect = nil;
+    [self loadImagesForVisibleElements];
+}
+
+- (void)loadImagesForVisibleElements {
+    id lazyLoadable = self.dataSource.lazyLoadable;
+    if (!lazyLoadable) {
+        return;
+    }
+    NSArray *visibleIndexPaths = self.tableView ? [self.tableView indexPathsForVisibleRows] : [self.collectionView indexPathsForVisibleItems];
+    for (NSIndexPath *indexPath in visibleIndexPaths) {
+        id cell = self.tableView ? [self.tableView cellForRowAtIndexPath:indexPath] : [self.collectionView cellForItemAtIndexPath:indexPath];
+        id data = [self.dataSource.globalDataMetric dataForItemAtIndexPath:indexPath];
+        if (cell && data) {
+            [lazyLoadable lazyLoadImagesData:data forReusableCell:cell];
+        }
+    }
+}
+
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
+    self.scrollingToTop = YES;
+    return YES;
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    self.scrollingToTop = NO;
+    [self loadContent];
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
+    self.scrollingToTop = NO;
+    [self loadContent];
+}
+
+- (void)loadContent {
+    if (self.scrollingToTop) {
+        return;
+    }
+    
+    if (self.tableView) {
+        [self loadContentForTableView];
+    }
+    else {
+        [self loadConentForCollectionView];
+    }
+}
+
+- (void)loadContentForTableView {
+    if (self.tableView.indexPathsForVisibleRows.count <= 0) {
+        return;
+    }
+    [self.tableView reloadData];
+}
+
+- (void)loadConentForCollectionView {
+    if (self.collectionView.indexPathsForVisibleItems.count <= 0) {
+        return;
+    }
+    [self.collectionView reloadData];
+
+}
+
+
+#pragma mark - UITableViewDelegate helper methods
+
+- (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
+    return [dataSource _heightForRowAtIndexPath:indexPath];
+}
+
+- (CGFloat)heightForHeaderInSection:(NSInteger)section {
+    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
+    return [dataSource _heightForHeaderInSection:section];
+}
+
+- (nullable UIView *)viewForHeaderInSection:(NSInteger)section {
+    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
+    return [dataSource _viewForHeaderInSection:section];
+}
+
+- (nullable UIView *)viewForFooterInSection:(NSInteger)section {
+    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
+   return [dataSource _viewForFooterInSection:section];
+}
+
+- (CGFloat)heightForFooterInSection:(NSInteger)section {
+    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
+    return [dataSource _heightForFooterInSection:section];
 }
 
 @end

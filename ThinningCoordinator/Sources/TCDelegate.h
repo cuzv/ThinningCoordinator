@@ -27,39 +27,47 @@
 #import <UIKit/UIKit.h>
 
 @class TCDataSource;
+@class TCGlobalDataMetric;
+
 @interface TCDelegate : NSObject <UITableViewDelegate, UICollectionViewDelegate>
 
 @property (nonatomic, weak, readonly) UITableView *tableView;
-- (instancetype)initWithTableView:(UITableView *)tableView;
+- (nullable instancetype)initWithTableView:(nonnull UITableView *)tableView;
+
+@property (nonatomic, weak, readonly) UICollectionView *collectionView;
+- (nullable instancetype)initWithCollectionView:(nonnull UICollectionView *)collectionView;
+
+- (nonnull TCDataSource *)dataSource;
+@property (nonatomic, assign, nonnull) TCGlobalDataMetric *globalDataMetric;
+
 
 #pragma mark - UITableViewDelegate helper methods
 
-/// TCDelegate subclass UITableViewDelegate require section header view, simple return this method
-- (UIView *)viewForHeaderInSection:(NSInteger)section;
-
-/// TCDelegate subclass UITableViewDelegate require section footer view, simple return this method
-- (UIView *)viewForFooterInSection:(NSInteger)section;
-
 /// TCDelegate subclass UITableViewDelegate require section header view height, simple return this method
 - (CGFloat)heightForHeaderInSection:(NSInteger)section;
+
+/// TCDelegate subclass UITableViewDelegate require section header view, simple return this method
+- (nullable UIView *)viewForHeaderInSection:(NSInteger)section;
+
+/// TCDelegate subclass UITableViewDelegate require section footer view, simple return this method
+- (nullable UIView *)viewForFooterInSection:(NSInteger)section;
 
 /// TCDelegate subclass UITableViewDelegate require section footer view height, simple return this method
 - (CGFloat)heightForFooterInSection:(NSInteger)section;
 
 
-@property (nonatomic, weak, readonly) UICollectionView *collectionView;
-- (instancetype)initWithCollectionView:(UICollectionView *)collectionView;
-
 #pragma mark - UIScrollViewDelegate
 
-/// Implemented by `TCDelegate`, If you wanna implement you own version, invoke super first
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
+NS_ASSUME_NONNULL_BEGIN
 
-/// Implemented by `TCDelegate`, If you wanna implement you own version, invoke super first
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset;
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView;
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView;
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView;
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView;
 
-#pragma mark - Helper
+NS_ASSUME_NONNULL_END
 
-@property (nonatomic, weak, readonly) TCDataSource *dataSource;
 
 @end

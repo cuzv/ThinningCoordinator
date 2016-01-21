@@ -211,6 +211,22 @@
     return nil;
 }
 
+- (nullable NSArray<NSString *> *)sectionIndexTitles {
+    NSMutableArray *indexTitles = [NSMutableArray new];
+    for (TCSectionDataMetric *sectionDataMetric in _sectionDataMetrics) {
+        NSString *indexTitle = sectionDataMetric.indexTitle;
+        if (indexTitle) {
+            [indexTitles addObject:indexTitle];
+        }
+    }
+    
+    if (indexTitles.count <= 0) {
+        return nil;
+    }
+    
+    return indexTitles;
+}
+
 #pragma mark - Modify
 
 - (void)append:(nonnull TCSectionDataMetric *)sectionDataMetric {
@@ -355,6 +371,52 @@
 - (nullable id)removeDataAtIndexPath:(nonnull NSIndexPath *)indexPath {
     return [self removeAtIndexPath:indexPath];
 }
+
+- (void)exchageAtIndexPath:(nonnull NSIndexPath *)sourceIndexPath withIndexPath:(nonnull NSIndexPath *)destinationIndexPath {
+    NSInteger sourceSection = sourceIndexPath.section;
+    NSInteger sourceItem = sourceIndexPath.item;
+    NSInteger destinationSection = destinationIndexPath.section;
+    NSInteger destinationItem = destinationIndexPath.item;
+    
+    if (sourceSection == destinationSection) {
+        [_sectionDataMetrics[sourceSection] exchangeElementAtIndex:sourceItem withElementAtIndex:destinationItem];
+    }
+    else {
+        // Take out the source data.
+        id sourceData = [_sectionDataMetrics[sourceSection] removeAtIndex:sourceItem];
+        id destinationData = [_sectionDataMetrics[destinationSection] removeAtIndex:destinationItem];
+        if (sourceData && destinationData) {
+            [_sectionDataMetrics[destinationSection] insert:sourceData atIndex:destinationItem];
+            [_sectionDataMetrics[sourceSection] insert:destinationData atIndex:sourceItem];
+        }
+        else {
+            [NSException raise:@"FatalError: take out data faild." format:@""];
+        }
+    }
+}
+
+- (void)moveAtIndexPath:(nonnull NSIndexPath *)sourceIndexPath toIndexPath:(nonnull NSIndexPath *)destinationIndexPath {
+    NSInteger sourceSection = sourceIndexPath.section;
+    NSInteger sourceItem = sourceIndexPath.item;
+    NSInteger destinationSection = destinationIndexPath.section;
+    NSInteger destinationItem = destinationIndexPath.item;
+    
+    if (sourceSection == destinationSection) {
+        [_sectionDataMetrics[sourceSection] moveElementAtIndex:sourceItem toIndex:destinationItem];
+    }
+    else {
+        // Take out the source data.
+        id sourceData = [_sectionDataMetrics[sourceSection] removeAtIndex:sourceItem];
+        id destinationData = [_sectionDataMetrics[destinationSection] removeAtIndex:destinationItem];
+        if (sourceData && destinationData) {
+            // Insert to desitination position.
+            [_sectionDataMetrics[destinationSection] insert:sourceData atIndex:destinationItem];
+        } else {
+            [NSException raise:@"FatalError: take out data faild." format:@""];
+        }
+    }
+}
+
 
 #pragma mark - Description
 

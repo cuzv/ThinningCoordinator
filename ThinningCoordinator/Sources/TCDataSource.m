@@ -25,59 +25,124 @@
 //
 
 #import "TCDataSource.h"
+#import "TCDelegate.h"
+#import "TCDelegate+Private.h"
 #import "TCGlobalDataMetric.h"
 #import "TCDataSourceProtocol.h"
 #import "TCSectionDataMetric.h"
 #import "TCHelper.h"
+#import "TCDefaultSupplementaryView.h"
+#import "NSObject+TCIdentifier.h"
+#import "ResuableView+Extension.h"
 
 @interface TCDataSource ()
+
 @property (nonatomic, weak, readwrite) UITableView *tableView;
 @property (nonatomic, weak, readwrite) UICollectionView *collectionView;
-@property (nonatomic, weak, readwrite) id <TCDataSourceProtocol> subclass;
+
+@property (nonatomic, weak, nullable) id<TCDataSourceable> sourceable;
+@property (nonatomic, weak, nullable, readwrite) id<TCImageLazyLoadable> lazyLoadable;
+@property (nonatomic, weak, nullable) id<TCTableViewCollectionViewMovable> movable;
+
+@property (nonatomic, weak, nullable) id<TCTableViewHeaderFooterViewibility> headerFooterViewibility;
+@property (nonatomic, weak, nullable) id<TCCollectionSupplementaryViewibility> supplementaryViewibility;
+
+@property (nonatomic, weak, nullable) id<TCTableViewEditable> editable;
+
 @end
 
 @implementation TCDataSource
 
-- (instancetype)init {
-    NSAssert(NO, NSLocalizedString(@"Use designed initializer instead!", nil));
+#pragma mark - Initializer
+
+- (nullable instancetype)init {
+    [NSException raise:@"Use `initWithTableView:` or `initWithCollectionView:` instead." format:@""];
     return nil;
 }
 
-- (instancetype)__init__ {
+- (nullable instancetype)__init__ {
     self = [super init];
     if (!self) {
         return nil;
     }
     
-    if ([self conformsToProtocol:@protocol(TCDataSourceProtocol)]) {
-        self.subclass = (id <TCDataSourceProtocol>) self;
+    if ([self conformsToProtocol:@protocol(TCDataSourceable)]) {
+        self.sourceable = (id<TCDataSourceable>)self;
     } else {
-        NSAssert(NO, NSLocalizedString(@"subclass must conforms TCDataSourceProtocol!", nil));
+        [NSException raise:@"Must conforms protocol `TCDataSourceable`." format:@""];
     }
     
     return self;
 }
 
-#pragma mark - UITableViewDataSource
-
-- (instancetype)initWithTableView:(UITableView *)tableView {
-    self = [self __init__];
-
+- (nullable instancetype)initWithTableView:(nonnull UITableView *)tableView {
     NSAssert(tableView, NSLocalizedString(@"Tableview can not be nil", nil));
+    
+    self = [self __init__];
     _tableView = tableView;
     [self registerTableViewReusableView];
+    if ([self conformsToProtocol:@protocol(TCTableViewEditable)]) {
+        self.editable = (id<TCTableViewEditable>)self;
+    }
+    if ([self conformsToProtocol:@protocol(TCTableViewCollectionViewMovable)]) {
+        self.movable = (id<TCTableViewCollectionViewMovable>)self;
+    }
 
     return self;
 }
 
 - (void)registerTableViewReusableView {
-    [self.subclass registerReusableCell];
-    if ([self.subclass respondsToSelector:@selector(registerReusableHeaderFooterView)]) {
-        [self.subclass registerReusableHeaderFooterView];
+    [self.sourceable registerReusableCell];
+    
+    if ([self conformsToProtocol:@protocol(TCTableViewHeaderFooterViewibility)]) {
+        id headerFooterViewibility = (id<TCTableViewHeaderFooterViewibility>)self;
+        [headerFooterViewibility registerReusableHeaderFooterView];
+        self.headerFooterViewibility = headerFooterViewibility;
     }
 }
 
-#pragma mark -
+- (instancetype)initWithCollectionView:(UICollectionView *)collectionView {
+    NSAssert(collectionView, NSLocalizedString(@"CollectionView can not be nil", nil));
+
+    self = [self __init__];
+    _collectionView = collectionView;
+    [self registerCollectionViewReusableView];
+    if ([self conformsToProtocol:@protocol(TCTableViewCollectionViewMovable)]) {
+        self.movable = (id<TCTableViewCollectionViewMovable>)self;
+    }
+    
+    return self;
+}
+
+- (void)registerCollectionViewReusableView {
+    [self.sourceable registerReusableCell];
+    
+    if ([self conformsToProtocol:@protocol(TCCollectionSupplementaryViewibility)]) {
+        id supplementaryViewibility = (id<TCCollectionSupplementaryViewibility>)self;
+        [supplementaryViewibility registerReusableSupplementaryView];
+        self.supplementaryViewibility = supplementaryViewibility;
+        
+        [self.collectionView registerClass:TCDefaultSupplementaryView.class forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:TCDefaultSupplementaryView.tc_identifier];
+        [self.collectionView registerClass:TCDefaultSupplementaryView.class forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:TCDefaultSupplementaryView.tc_identifier];
+    }
+}
+
+#pragma mark - Accessor
+
+- (nullable TCDelegate *)delegate {
+    if (self.tableView) {
+        return (TCDelegate *)self.tableView.delegate;
+    }
+    else if (self.collectionView) {
+        return (TCDelegate *)self.collectionView.delegate;
+    }
+    
+    return nil;
+}
+
+#pragma mark - UITableViewDataSource
+
+#pragma mark - TCDataSourceable
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return [self.globalDataMetric numberOfSections];
@@ -94,27 +159,34 @@
 /// Session 200 - What's New in Cocoa Touch from WWDC 2012 discusses the (then-new) forIndexPath: version starting around 8m30s. It says that “you will always get an initialized cell” (without mentioning that it will crash if you didn't register a class or nib).
 /// The video also says that “it will be the right size for that index path”. Presumably this means that it will set the cell's size before returning it, by looking at the table view's own width and calling your delegate's tableView:heightForRowAtIndexPath: method (if defined). This is why it needs the index path.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *identifier = [self.subclass reusableCellIdentifierForIndexPath:indexPath];
+    NSString *identifier = [self.sourceable reusableCellIdentifierForIndexPath:indexPath];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        [NSException raise:@"Must conforms protocol `TCDataSourceable`." format:@""];
+    }
     [cell prepareForReuse];
     
     id data = [self.globalDataMetric dataForItemAtIndexPath:indexPath];
-    [self.subclass loadData:data forReusableCell:cell];
-    
-    // The first time load tableView, tableview will not draggin or decelerating
-    // But need load images anyway, so perform load action manual
-    // Note that see the collectionView logic in the same where
-    if (!self.tableView.dragging &&
-        !self.tableView.decelerating &&
-        CGRectContainsPoint(self.tableView.frame, cell.frame.origin)) {
-        [self _lazyLoadImagesData:data forReusableCell:cell];
+    if (data && !self.delegate.scrollingToTop) {
+        [self.sourceable loadData:data forReusableCell:cell];
+        
+        if ([self conformsToProtocol:@protocol(TCImageLazyLoadable)]) {
+            CGRect targetRect = self.delegate.targetRect.CGRectValue;
+            if (CGRectIntersectsRect(targetRect, cell.frame)) {
+                id lazyLoadable = (id<TCImageLazyLoadable>)self;
+                [lazyLoadable lazyLoadImagesData:data forReusableCell:cell];
+            }
+        }
     }
-
+    
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
     
     return cell;
 }
+
+
+#pragma mark - Section Title
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return [self.globalDataMetric titleForHeaderInSection:section];
@@ -124,134 +196,131 @@
     return [self.globalDataMetric titleForFooterInSection:section];
 }
 
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    NSMutableArray *indexTitles = [NSMutableArray new];
 
-    // If titles contains nil will crash
-    __block BOOL valid = YES;
-    
-    [[self.globalDataMetric sectionDataMetrics] enumerateObjectsUsingBlock:^(__kindof TCSectionDataMetric * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSString *indexTitle =  obj.indexTitle;
-        if (!indexTitle) {
-            valid = NO;
-            *stop = YES;
-        } else {
-            [indexTitles addObject:indexTitle];
-        }
-    }];
-    
-    if (!valid) {
-        return nil;
-    }
-    
-    return indexTitles;
+#pragma mark - Section Index
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    return [self.globalDataMetric sectionIndexTitles];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-    NSArray *sectionIndexTitles = [self sectionIndexTitlesForTableView:self.tableView];
-    return [sectionIndexTitles indexOfObjectIdenticalTo:title];
+    return [[self.globalDataMetric sectionIndexTitles] indexOfObjectIdenticalTo:title];
 }
 
+
+#pragma mark - TCTableViewEditable
+
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    BOOL respondsToSelector = [self.subclass respondsToSelector:@selector(canEditItemAtIndexPath:)];
-    if (!respondsToSelector) {
-        return respondsToSelector;
+    id editable = self.editable;
+    if (!editable) {
+        return NO;
     }
-    
-    return [self.subclass canEditItemAtIndexPath:indexPath];
+
+    return [editable canEditElementAtIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    BOOL respondsToSelector = [self.subclass respondsToSelector:@selector(commitEditingData:atIndexPath:)];
-    if (!respondsToSelector) {
+    id editable = self.editable;
+    if (!editable) {
         return;
     }
     
     id data = [self.globalDataMetric dataForItemAtIndexPath:indexPath];
+    if (!data) {
+        return;
+    }
+    
     if (UITableViewCellEditingStyleDelete == editingStyle) {
-        [self.globalDataMetric removeDataAtIndexPath:indexPath];
+        [self.globalDataMetric removeAtIndexPath:indexPath];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     } else if (UITableViewCellEditingStyleInsert == editingStyle) {
         // Duplicate last content item, in case reload data error, should not use it.
-        if (!data) {
-            NSLog(NSLocalizedString(@"Array index cross the bounds", nil));
-            return;
-        }
-        
         NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.item + 1 inSection:indexPath.section];
-        [self.globalDataMetric insertData:@[data] atIndexPath:newIndexPath];
+        [self.globalDataMetric insert:data atIndexPath:newIndexPath];
         [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 
-    [self.subclass commitEditingData:data atIndexPath:indexPath];
+    [editable commitEditingData:data atIndexPath:indexPath];
 }
 
+
+#pragma mark - TCTableViewCollectionViewMovable
+
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    BOOL respondsToSelector = [self.subclass respondsToSelector:@selector(canMoveItemAtIndexPath:)];
-    if (!respondsToSelector) {
-        return respondsToSelector;
+    id moable = self.movable;
+    if (!moable) {
+        return NO;
     }
     
-    return [self.subclass canMoveItemAtIndexPath:indexPath];
+    return [moable canMoveElementAtIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    TCSectionDataMetric *sourceSectionDataMetric = [[self.globalDataMetric allSectionDataMetrics] objectAtIndex:sourceIndexPath.section];
-    if (sourceIndexPath.section == destinationIndexPath.section) {
-        // FIXME: Use move, not exchange
-        [sourceSectionDataMetric exchangeDataAtIndex:sourceIndexPath.item withDataAtIndex:destinationIndexPath.item];
-    } else {
-        // Take out the source data
-        id data = [sourceSectionDataMetric dataAtIndex:sourceIndexPath.item];
-        [sourceSectionDataMetric removeDataForItemAtIndex:sourceIndexPath.item];
-
-        // Insert to desitination position
-        TCSectionDataMetric *destinationSectionDataMetric = [[self.globalDataMetric allSectionDataMetrics] objectAtIndex:destinationIndexPath.section];
-        [destinationSectionDataMetric insertItemsDataFromArray:@[data] atIndex:destinationIndexPath.item];
-    }    
-}
-
-#pragma mark - UITableView delegate helper methods
-
-// FIXME: 先有高度，才有View
-- (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1) {
-        return UITableViewAutomaticDimension;
+    id moable = self.movable;
+    if (!moable) {
+        return;
     }
     
-    UITableViewCell *cell = [self tableView:self.tableView cellForRowAtIndexPath:indexPath];
-    
-    // Give the initialize bounds
-    cell.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.tableView.bounds), CGRectGetHeight(cell.bounds));
-    // break iOS7 issue
-    cell.contentView.frame = cell.bounds;
-    CGFloat height = [cell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height + 1;
-    
-    [cell removeFromSuperview];
+    [self.globalDataMetric moveAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
+    [moable moveElementAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
+}
+
+#pragma mark - TCDelegate subclass helper
+
+- (CGFloat)_heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    id data = [self.globalDataMetric dataForItemAtIndexPath:indexPath];
+    if (!data) {
+        return UITableViewAutomaticDimension;
+    }
+    NSString *identifier = [self.sourceable reusableCellIdentifierForIndexPath:indexPath];
+    __weak typeof(self) weak_self = self;
+    CGFloat height = [self.tableView tc_heightForReusableCellByIdentifier:identifier dataConfigurationHandler:^(UITableViewCell * _Nonnull cell) {
+        __strong typeof(weak_self) strong_self = weak_self;
+        [strong_self.sourceable loadData:data forReusableCell:cell];
+    }];
  
+    return height;
+}
+
+- (CGFloat)heightForHeaderInSection:(NSInteger)section {
+    id headerFooterViewibility = self.headerFooterViewibility;
+    if (!headerFooterViewibility) {
+        return 10.0f;
+    }
+    NSString *identifier = [headerFooterViewibility reusableHeaderViewIdentifierInSection:section];
+    if (!identifier) {
+        return 10.0f;
+    }
+
+    id data = [self.globalDataMetric dataForHeaderInSection:section];
+    CGFloat height = [self.tableView tc_heightForReusableHeaderFooterViewByIdentifier:identifier dataConfigurationHandler:^(UITableViewHeaderFooterView * _Nonnull reusableHeaderFooterView) {
+        [headerFooterViewibility loadData:data forReusableHeaderView:reusableHeaderFooterView];
+    }];
+    
     return height;
 }
 
 /// TCDelegate subclass UITableViewDelegate require footer view, simple return this method
 - (UIView *)viewForHeaderInSection:(NSInteger)section {
-    if (![self.subclass respondsToSelector:@selector(reusableHeaderViewIdentifierInSection:)]) {
-        return [UIView new];
+    id headerFooterViewibility = self.headerFooterViewibility;
+    if (!headerFooterViewibility) {
+        return nil;
     }
-    
-    NSString *identifier = [self.subclass reusableHeaderViewIdentifierInSection:section];
-    if (!identifier || !identifier.length) {
-        return [UIView new];
+    NSString *identifier = [headerFooterViewibility reusableHeaderViewIdentifierInSection:section];
+    if (!identifier) {
+        return nil;
     }
-    
     UITableViewHeaderFooterView *headerView = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
     if (!headerView) {
-        return [UIView new];
+        return nil;
     }
     
     [headerView prepareForReuse];
 
-    id headerData = [self.globalDataMetric dataForHeaderInSection:section];
-    [self.subclass loadData:headerData forReusableHeaderView:headerView];
+    id data = [self.globalDataMetric dataForHeaderInSection:section];
+    if (data && !self.delegate.scrollingToTop) {
+        [headerFooterViewibility loadData:data forReusableHeaderView:headerView];
+    }
     
     [headerView setNeedsUpdateConstraints];
     [headerView updateConstraintsIfNeeded];
@@ -259,26 +328,46 @@
     return headerView;
 }
 
+
+- (CGFloat)heightForFooterInSection:(NSInteger)section {
+    id headerFooterViewibility = self.headerFooterViewibility;
+    if (!headerFooterViewibility) {
+        return 10.0f;
+    }
+    NSString *identifier = [headerFooterViewibility reusableFooterViewIdentifierInSection:section];
+    if (!identifier) {
+        return 10.0f;
+    }
+
+    id data = [self.globalDataMetric dataForFooterInSection:section];
+    CGFloat height = [self.tableView tc_heightForReusableHeaderFooterViewByIdentifier:identifier dataConfigurationHandler:^(UITableViewHeaderFooterView * _Nonnull reusableHeaderFooterView) {
+        [headerFooterViewibility loadData:data forReusableFooterView:reusableHeaderFooterView];
+    }];
+    
+    return height;
+}
+
 /// TCDelegate subclass UITableViewDelegate require footer view, simple return this method
 - (UIView *)viewForFooterInSection:(NSInteger)section {
-    if (![self.subclass respondsToSelector:@selector(reusableFooterViewIdentifierInSection:)]) {
-        return [UIView new];
+    id headerFooterViewibility = self.headerFooterViewibility;
+    if (!headerFooterViewibility) {
+        return nil;
     }
-    
-    NSString *identifier = [self.subclass reusableFooterViewIdentifierInSection:section];
-    if (!identifier || !identifier.length) {
-        return [UIView new];
+    NSString *identifier = [headerFooterViewibility reusableFooterViewIdentifierInSection:section];
+    if (!identifier) {
+        return nil;
     }
-    
     UITableViewHeaderFooterView *footerView = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
     if (!footerView) {
-        return [UIView new];
+        return nil;
     }
     
     [footerView prepareForReuse];
 
-    id footerData = [self.globalDataMetric dataForFooterInSection:section];
-    [self.subclass loadData:footerData forReusableFooterView:footerView];
+    id data = [self.globalDataMetric dataForFooterInSection:section];
+    if (data && !self.delegate.scrollingToTop) {
+        [headerFooterViewibility loadData:data forReusableFooterView:footerView];
+    }
     
     [footerView setNeedsUpdateConstraints];
     [footerView updateConstraintsIfNeeded];
@@ -286,131 +375,10 @@
     return footerView;
 }
 
-/// Deprecated
-- (UIView *)viewForHeaderFooterInSection:(NSInteger)section isHeader:(BOOL)isHeader {
-    BOOL respondsToSelector = [self.subclass respondsToSelector:@selector(reusableHeaderFooterViewIdentifierInSection:isHeader:)];
-    if (!respondsToSelector) {
-        return [UIView new];
-    }
-    
-    NSString *identifier = [self.subclass reusableHeaderFooterViewIdentifierInSection:section isHeader:isHeader];
-    if (!identifier || !identifier.length) {
-        return [UIView new];
-    }
-
-    UITableViewHeaderFooterView *headerFooterView = [self.tableView dequeueReusableHeaderFooterViewWithIdentifier:identifier];
-    if (!headerFooterView) {
-        return [UIView new];
-    }
-
-    [headerFooterView prepareForReuse];
-    
-    if (isHeader) {
-        id headerData = [self.globalDataMetric dataForHeaderInSection:section];
-        if ([self.subclass respondsToSelector:@selector(loadData:forReusableHeaderView:)]) {
-            [self.subclass loadData:headerData forReusableHeaderView:headerFooterView];
-        }
-    } else {
-        id footerData = [self.globalDataMetric dataForFooterInSection:section];
-        if ([self.subclass respondsToSelector:@selector(loadData:forReusableFooterView:)]) {
-            [self.subclass loadData:footerData forReusableFooterView:headerFooterView];
-        }
-    }
-    
-    [headerFooterView setNeedsUpdateConstraints];
-    [headerFooterView updateConstraintsIfNeeded];
-    
-    return headerFooterView;
-}
-
-- (CGFloat)heightForHeaderInSection:(NSInteger)section {
-    UIView *view = [self viewForHeaderInSection:section];
-    if (![view isKindOfClass:[UITableViewHeaderFooterView class]]) {
-        return 10;
-    }
-    if (![self.subclass respondsToSelector:@selector(loadData:forReusableHeaderView:)]) {
-        return 10;
-    }
-    
-    UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView *)view;
-    // Give the initialize bounds
-    headerView.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.tableView.bounds), CGRectGetHeight(headerView.bounds));
-    // break iOS7 issue
-    headerView.contentView.frame = headerView.bounds;
-    CGFloat height = [headerView.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    [headerView removeFromSuperview];
-
-    return height;
-}
-
-- (CGFloat)heightForFooterInSection:(NSInteger)section {
-    UIView *view = [self viewForFooterInSection:section];
-    if (![view isKindOfClass:[UITableViewHeaderFooterView class]]) {
-        return 10;
-    }
-    if (![self.subclass respondsToSelector:@selector(loadData:forReusableFooterView:)]) {
-        return 10;
-    }
-    
-    UITableViewHeaderFooterView *footerView = (UITableViewHeaderFooterView *)view;
-    // Give the initialize bounds
-    footerView.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.tableView.bounds), CGRectGetHeight(footerView.bounds));
-    // break iOS7 issue
-    footerView.contentView.frame = footerView.bounds;
-    CGFloat height = [footerView.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-    [footerView removeFromSuperview];
-    
-    return height;
-}
-
-/// Deprecated
-- (CGFloat)heightForHeaderFooterInSection:(NSInteger)section isHeader:(BOOL)isHeader {
-    UIView *view = [self viewForHeaderFooterInSection:section isHeader:isHeader];
-    if (![view isKindOfClass:[UITableViewHeaderFooterView class]]) {
-        return 10;
-    }
-    
-    BOOL respondsHeader = [self.subclass respondsToSelector:@selector(loadData:forReusableHeaderView:)];
-    BOOL respondsFooter = [self.subclass respondsToSelector:@selector(loadData:forReusableFooterView:)];
-    if (!respondsHeader && !respondsFooter) {
-        return 10.0f;
-    }
-    
-    UITableViewHeaderFooterView *headerFooterView = (UITableViewHeaderFooterView *)view;
-    // Give the initialize bounds
-    headerFooterView.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.tableView.bounds), CGRectGetHeight(headerFooterView.bounds));
-    // break iOS7 issue
-    headerFooterView.contentView.frame = headerFooterView.bounds;
-
-    CGFloat height = [headerFooterView.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize].height;
-
-    [headerFooterView removeFromSuperview];
-    
-    return height;
-}
-
 
 #pragma mark - UICollectionViewDataSource
 
-- (instancetype)initWithCollectionView:(UICollectionView *)collectionView {
-    self = [self __init__];
-
-    NSAssert(collectionView, NSLocalizedString(@"CollectionView can not be nil", nil));
-    _collectionView = collectionView;
-    
-    [self registerCollectionViewReusableView];
-    
-    return self;
-}
-
-- (void)registerCollectionViewReusableView {
-    [self.subclass registerReusableCell];
-    if ([self.subclass respondsToSelector:@selector(registerReusableSupplementaryView)]) {
-        [self.subclass registerReusableSupplementaryView];
-    }
-}
-
-#pragma mark -
+#pragma mark - TCDataSourceable
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return [self.globalDataMetric numberOfSections];
@@ -421,48 +389,49 @@
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *identifier = [self.subclass reusableCellIdentifierForIndexPath:indexPath];
+    NSString *identifier = [self.sourceable reusableCellIdentifierForIndexPath:indexPath];
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
     [cell prepareForReuse];
     
     id data = [self.globalDataMetric dataForItemAtIndexPath:indexPath];
-    [self.subclass loadData:data forReusableCell:cell];
-    
-    // The first time load collectionView, collectionView will not draggin or decelerating
-    // But need load images anyway, so perform load action manual
-    // First time. I try to add condiition `[[self.collectionView indexPathsForVisibleItems] containsObject:indexPath]`
-    // But finally found that collectionView can not get the indexPath in `indexPathsForVisibleItems` before
-    // you really can see it on the screen
-    if (!self.collectionView.dragging &&
-        !self.collectionView.decelerating &&
-        CGRectContainsPoint(self.collectionView.frame, cell.frame.origin)) {
-        [self _lazyLoadImagesData:data forReusableCell:cell];
+    if (data && !self.delegate.scrollingToTop) {
+        [self.sourceable loadData:data forReusableCell:cell];
+        
+        if ([self conformsToProtocol:@protocol(TCImageLazyLoadable)]) {
+            CGRect targetRect = self.delegate.targetRect.CGRectValue;
+            if (CGRectIntersectsRect(targetRect, cell.frame)) {
+                id lazyLoadable = (id<TCImageLazyLoadable>)self;
+                [lazyLoadable lazyLoadImagesData:data forReusableCell:cell];
+            }
+        }
     }
 
+    [cell setNeedsUpdateConstraints];
+    [cell updateConstraintsIfNeeded];
+    
     return cell;
 }
 
-- (UICollectionReusableView *)viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    NSString *identifier = [self.subclass respondsToSelector:@selector(reusableSupplementaryViewIdentifierForIndexPath:ofKind:)]
-                                            ? [self.subclass reusableSupplementaryViewIdentifierForIndexPath:indexPath ofKind:kind]
-                                            : nil;
-    NSAssert(identifier, NSLocalizedString(@"Supplementary view reuse identifier can not be nil", nil));
-    UICollectionReusableView *reusableView = [self.collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:identifier forIndexPath:indexPath];
+
+#pragma mark - TCTableViewCollectionViewMovable
+
+- (BOOL)collectionView:(UICollectionView *)collectionView canMoveItemAtIndexPath:(NSIndexPath *)indexPath {
+    id moable = self.movable;
+    if (!moable) {
+        return NO;
+    }
     
-    id data = [self.globalDataMetric dataForSupplementaryElementOfKind:kind atIndexPath:indexPath];
-    BOOL respondsToSelector = [self.subclass respondsToSelector:@selector(loadData:forReusableSupplementaryView:)];
-    NSAssert(respondsToSelector, NSLocalizedString(@"sub class must responds to selector `loadData:forReusableSupplementaryView:`", nil));
-    [self.subclass loadData:data forReusableSupplementaryView:reusableView];
-    
-    return reusableView;
+    return [moable canMoveElementAtIndexPath:indexPath];
 }
 
-#pragma mark - Lazy load images
-
-- (void)_lazyLoadImagesData:(id)data forReusableCell:(id)cell {
-    if ([self.subclass respondsToSelector:@selector(lazyLoadImagesData:forReusableCell:)]) {
-        [self.subclass lazyLoadImagesData:data forReusableCell:cell];
+- (void)collectionView:(UICollectionView *)collectionView moveItemAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    id moable = self.movable;
+    if (!moable) {
+        return;
     }
+    
+    [self.globalDataMetric moveAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
+    [moable moveElementAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
 }
 
 @end
