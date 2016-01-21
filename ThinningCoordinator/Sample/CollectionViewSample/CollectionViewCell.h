@@ -1,5 +1,5 @@
 //
-//  TableViewHeaderView.h
+//  CollectionViewCell.h
 //  ThinningCoordinator
 //
 //  Created by Moch Xiao on 1/21/16.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TableViewHeaderView : UITableViewHeaderFooterView
+@interface CollectionViewCell : UICollectionViewCell
 - (void)setupData:(id)data;
 @end

@@ -9,7 +9,7 @@
 #import "TableViewDataSource.h"
 #import "TableViewCell.h"
 #import "NSObject+TCIdentifier.h"
-#import "TableViewHeaderView.h"
+#import "TableViewHeaderFooterView.h"
 
 @implementation TableViewDataSource
 
@@ -31,24 +31,24 @@
 #pragma mark - TCTableViewHeaderFooterViewibility
 
 - (void)registerReusableHeaderFooterView {
-    [self.tableView registerClass:TableViewHeaderView.class forHeaderFooterViewReuseIdentifier:TableViewHeaderView.tc_identifier];
+    [self.tableView registerClass:TableViewHeaderFooterView.class forHeaderFooterViewReuseIdentifier:TableViewHeaderFooterView.tc_identifier];
 }
 
 - (NSString *)reusableHeaderViewIdentifierInSection:(NSInteger)section {
-    return TableViewHeaderView.tc_identifier;
+    return TableViewHeaderFooterView.tc_identifier;
 }
 
 - (NSString *)reusableFooterViewIdentifierInSection:(NSInteger)section {
-    return TableViewHeaderView.tc_identifier;
+    return TableViewHeaderFooterView.tc_identifier;
 }
 
 - (void)loadData:(id)data forReusableHeaderView:(UITableViewHeaderFooterView *)headerView {
-    TableViewHeaderView *reusableView = (TableViewHeaderView *)headerView;
+    TableViewHeaderFooterView *reusableView = (TableViewHeaderFooterView *)headerView;
     [reusableView setupData:data];
 }
 
 - (void)loadData:(id)data forReusableFooterView:(UITableViewHeaderFooterView *)footerView {
-    TableViewHeaderView *reusableView = (TableViewHeaderView *)footerView;
+    TableViewHeaderFooterView *reusableView = (TableViewHeaderFooterView *)footerView;
     [reusableView setupData:data];
 }
 

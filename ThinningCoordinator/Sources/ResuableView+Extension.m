@@ -245,16 +245,16 @@ BOOL TCCollectionViewSupportsConstraintsProperty() {
 @implementation UICollectionView (TCComputeLayoutSize)
 
 - (CGSize)tc_sizeForReusableViewByClass:(nonnull Class)cls preferredLayoutSizeFittingSize:(CGSize)fittingSize dataConfigurationHandler:(nonnull void (^)(UICollectionReusableView * _Nonnull reusableView))dataConfigurationHandler {
-    NSDictionary<NSString *, UICollectionReusableView *> *reusableViews = self.tc_reusableViews;
+    NSMutableDictionary<NSString *, UICollectionReusableView *> *reusableViews = [self.tc_reusableViews mutableCopy];
     if (!reusableViews) {
-        reusableViews = @{};
+        reusableViews = [NSMutableDictionary new];
     }
     
     NSString *key = NSStringFromClass(cls);
     UICollectionReusableView *reusableView = [reusableViews objectForKey:key];
     if (!reusableView) {
         reusableView = [[cls alloc] initWithFrame:CGRectZero];
-        [reusableViews setValue:reusableView forKey:key];
+        [reusableViews setObject:reusableView forKey:key];
         [self tc_setReusableViews:reusableViews];
     }
   

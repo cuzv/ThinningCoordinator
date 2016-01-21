@@ -47,7 +47,7 @@
             </objects>
             <point key="canvasLocation" x="87" y="275"/>
         </scene>
-        <!--Collection View Sample View Controller-->
+        <!--CollectionViewSample-->
         <scene sceneID="Y28-Ol-ydW">
             <objects>
                 <viewController id="U3l-lz-3LZ" customClass="CollectionViewSampleViewController" sceneMemberID="viewController">
@@ -60,6 +60,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" title="CollectionViewSample" id="jIL-iN-rBg">
+                        <barButtonItem key="rightBarButtonItem" title="Move" id="ilN-a2-Xs3">
+                            <connections>
+                                <action selector="handleMove:" destination="U3l-lz-3LZ" id="GRK-0B-oKk"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QM1-6c-w1X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4650F5071C50EFDB00A8AEDA /* TableViewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4650F5061C50EFDB00A8AEDA /* TableViewHeaderView.m */; };
+		4650F5071C50EFDB00A8AEDA /* TableViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4650F5061C50EFDB00A8AEDA /* TableViewHeaderFooterView.m */; };
 		46997CAB1C4FA8F600D30602 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 46997CAA1C4FA8F600D30602 /* main.m */; };
 		46997CAE1C4FA8F600D30602 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 46997CAD1C4FA8F600D30602 /* AppDelegate.m */; };
 		46997CB11C4FA8F600D30602 /* TableViewSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46997CB01C4FA8F600D30602 /* TableViewSampleViewController.m */; };
@@ -19,6 +19,12 @@
 		46997CD31C4FA9A100D30602 /* TCGlobalDataMetric.m in Sources */ = {isa = PBXBuildFile; fileRef = 46997CCB1C4FA9A100D30602 /* TCGlobalDataMetric.m */; };
 		46997CD41C4FA9A100D30602 /* TCHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 46997CCD1C4FA9A100D30602 /* TCHelper.m */; };
 		46997CD51C4FA9A100D30602 /* TCSectionDataMetric.m in Sources */ = {isa = PBXBuildFile; fileRef = 46997CCF1C4FA9A100D30602 /* TCSectionDataMetric.m */; };
+		46EF52DB1C50FB1F00E3117E /* CollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EF52DA1C50FB1F00E3117E /* CollectionViewDataSource.m */; };
+		46EF52DE1C50FB2C00E3117E /* CollectionViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EF52DD1C50FB2C00E3117E /* CollectionViewDelegate.m */; };
+		46EF52E11C50FB4000E3117E /* CollectionViewHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EF52E01C50FB4000E3117E /* CollectionViewHeaderFooterView.m */; };
+		46EF52E41C50FB4D00E3117E /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EF52E31C50FB4D00E3117E /* CollectionViewCell.m */; };
+		46EF52E71C50FED800E3117E /* Text.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EF52E61C50FED800E3117E /* Text.m */; };
+		46EF52EA1C51116A00E3117E /* CollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EF52E91C51116A00E3117E /* CollectionViewFlowLayout.m */; };
 		46F2E7A91C507B21005D6CD6 /* ResuableView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7A81C507B21005D6CD6 /* ResuableView+Extension.m */; };
 		46F2E7AE1C50AAE8005D6CD6 /* CollectionViewSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7AD1C50AAE8005D6CD6 /* CollectionViewSampleViewController.m */; };
 		46F2E7B11C50ABC6005D6CD6 /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7B01C50ABC6005D6CD6 /* TableViewCell.m */; };
@@ -30,8 +36,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4650F5051C50EFDB00A8AEDA /* TableViewHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewHeaderView.h; sourceTree = "<group>"; };
-		4650F5061C50EFDB00A8AEDA /* TableViewHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewHeaderView.m; sourceTree = "<group>"; };
+		4650F5051C50EFDB00A8AEDA /* TableViewHeaderFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewHeaderFooterView.h; sourceTree = "<group>"; };
+		4650F5061C50EFDB00A8AEDA /* TableViewHeaderFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewHeaderFooterView.m; sourceTree = "<group>"; };
 		46997CA61C4FA8F600D30602 /* ThinningCoordinator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThinningCoordinator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46997CAA1C4FA8F600D30602 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		46997CAC1C4FA8F600D30602 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -55,6 +61,18 @@
 		46997CCE1C4FA9A100D30602 /* TCSectionDataMetric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCSectionDataMetric.h; sourceTree = "<group>"; };
 		46997CCF1C4FA9A100D30602 /* TCSectionDataMetric.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCSectionDataMetric.m; sourceTree = "<group>"; };
 		46997CD61C4FA9A900D30602 /* ThinningCoordinator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThinningCoordinator.h; sourceTree = "<group>"; };
+		46EF52D91C50FB1F00E3117E /* CollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewDataSource.h; sourceTree = "<group>"; };
+		46EF52DA1C50FB1F00E3117E /* CollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewDataSource.m; sourceTree = "<group>"; };
+		46EF52DC1C50FB2C00E3117E /* CollectionViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewDelegate.h; sourceTree = "<group>"; };
+		46EF52DD1C50FB2C00E3117E /* CollectionViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewDelegate.m; sourceTree = "<group>"; };
+		46EF52DF1C50FB4000E3117E /* CollectionViewHeaderFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewHeaderFooterView.h; sourceTree = "<group>"; };
+		46EF52E01C50FB4000E3117E /* CollectionViewHeaderFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewHeaderFooterView.m; sourceTree = "<group>"; };
+		46EF52E21C50FB4D00E3117E /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
+		46EF52E31C50FB4D00E3117E /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
+		46EF52E51C50FED800E3117E /* Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
+		46EF52E61C50FED800E3117E /* Text.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Text.m; sourceTree = "<group>"; };
+		46EF52E81C51116A00E3117E /* CollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewFlowLayout.h; sourceTree = "<group>"; };
+		46EF52E91C51116A00E3117E /* CollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		46F2E7A71C507B21005D6CD6 /* ResuableView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ResuableView+Extension.h"; sourceTree = "<group>"; };
 		46F2E7A81C507B21005D6CD6 /* ResuableView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ResuableView+Extension.m"; sourceTree = "<group>"; };
 		46F2E7AC1C50AAE8005D6CD6 /* CollectionViewSampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewSampleViewController.h; sourceTree = "<group>"; };
@@ -134,6 +152,8 @@
 				46997CB71C4FA8F600D30602 /* LaunchScreen.storyboard */,
 				46997CB21C4FA8F600D30602 /* Main.storyboard */,
 				46997CAA1C4FA8F600D30602 /* main.m */,
+				46EF52E51C50FED800E3117E /* Text.h */,
+				46EF52E61C50FED800E3117E /* Text.m */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -176,8 +196,8 @@
 				46F2E7B61C50AD0A005D6CD6 /* TableViewDelegate.m */,
 				46F2E7AF1C50ABC6005D6CD6 /* TableViewCell.h */,
 				46F2E7B01C50ABC6005D6CD6 /* TableViewCell.m */,
-				4650F5051C50EFDB00A8AEDA /* TableViewHeaderView.h */,
-				4650F5061C50EFDB00A8AEDA /* TableViewHeaderView.m */,
+				4650F5051C50EFDB00A8AEDA /* TableViewHeaderFooterView.h */,
+				4650F5061C50EFDB00A8AEDA /* TableViewHeaderFooterView.m */,
 			);
 			path = TableViewSample;
 			sourceTree = "<group>";
@@ -187,6 +207,16 @@
 			children = (
 				46F2E7AC1C50AAE8005D6CD6 /* CollectionViewSampleViewController.h */,
 				46F2E7AD1C50AAE8005D6CD6 /* CollectionViewSampleViewController.m */,
+				46EF52D91C50FB1F00E3117E /* CollectionViewDataSource.h */,
+				46EF52DA1C50FB1F00E3117E /* CollectionViewDataSource.m */,
+				46EF52DC1C50FB2C00E3117E /* CollectionViewDelegate.h */,
+				46EF52DD1C50FB2C00E3117E /* CollectionViewDelegate.m */,
+				46EF52E21C50FB4D00E3117E /* CollectionViewCell.h */,
+				46EF52E31C50FB4D00E3117E /* CollectionViewCell.m */,
+				46EF52DF1C50FB4000E3117E /* CollectionViewHeaderFooterView.h */,
+				46EF52E01C50FB4000E3117E /* CollectionViewHeaderFooterView.m */,
+				46EF52E81C51116A00E3117E /* CollectionViewFlowLayout.h */,
+				46EF52E91C51116A00E3117E /* CollectionViewFlowLayout.m */,
 			);
 			path = CollectionViewSample;
 			sourceTree = "<group>";
@@ -334,13 +364,19 @@
 				46997CD21C4FA9A100D30602 /* TCDelegate.m in Sources */,
 				46F2E7BA1C50ADAF005D6CD6 /* NSObject+TCIdentifier.m in Sources */,
 				46F2E7BD1C50B6B6005D6CD6 /* TCDefaultSupplementaryView.m in Sources */,
+				46EF52E11C50FB4000E3117E /* CollectionViewHeaderFooterView.m in Sources */,
+				46EF52E41C50FB4D00E3117E /* CollectionViewCell.m in Sources */,
 				46F2E7AE1C50AAE8005D6CD6 /* CollectionViewSampleViewController.m in Sources */,
+				46EF52E71C50FED800E3117E /* Text.m in Sources */,
 				46997CAE1C4FA8F600D30602 /* AppDelegate.m in Sources */,
-				4650F5071C50EFDB00A8AEDA /* TableViewHeaderView.m in Sources */,
+				4650F5071C50EFDB00A8AEDA /* TableViewHeaderFooterView.m in Sources */,
 				46997CD41C4FA9A100D30602 /* TCHelper.m in Sources */,
+				46EF52DB1C50FB1F00E3117E /* CollectionViewDataSource.m in Sources */,
 				46F2E7B71C50AD0A005D6CD6 /* TableViewDelegate.m in Sources */,
+				46EF52EA1C51116A00E3117E /* CollectionViewFlowLayout.m in Sources */,
 				46F2E7B41C50ACF6005D6CD6 /* TableViewDataSource.m in Sources */,
 				46997CAB1C4FA8F600D30602 /* main.m in Sources */,
+				46EF52DE1C50FB2C00E3117E /* CollectionViewDelegate.m in Sources */,
 				46997CD51C4FA9A100D30602 /* TCSectionDataMetric.m in Sources */,
 				46997CD11C4FA9A100D30602 /* TCDataSource.m in Sources */,
 				46F2E7B11C50ABC6005D6CD6 /* TableViewCell.m in Sources */,

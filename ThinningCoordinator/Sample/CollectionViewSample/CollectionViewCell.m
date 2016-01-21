@@ -1,24 +1,22 @@
 //
-//  TableViewHeaderView.m
+//  CollectionViewCell.m
 //  ThinningCoordinator
 //
 //  Created by Moch Xiao on 1/21/16.
 //  Copyright © 2016 Moch. All rights reserved.
 //
 
-#import "TableViewHeaderView.h"
+#import "CollectionViewCell.h"
 #import <Masonry/Masonry.h>
 
-
-@interface TableViewHeaderView ()
+@interface CollectionViewCell ()
 @property (nonatomic, strong) UILabel *nameLabel;
 @end
 
+@implementation CollectionViewCell
 
-@implementation TableViewHeaderView
-
-- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
-    self = [super initWithReuseIdentifier:reuseIdentifier];
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
     if (!self) {
         return nil;
     }
@@ -41,6 +39,9 @@
     [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView).insets(UIEdgeInsetsMake(8, 8, 8, 8));
     }];
+    
+    self.contentView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.contentView.layer.borderWidth = 0.5f;
 }
 
 - (void)setupReactiveCocoa {
@@ -60,7 +61,8 @@
     if (!_nameLabel) {
         _nameLabel = [UILabel new];
         _nameLabel.numberOfLines = 0;
-        _nameLabel.backgroundColor = [UIColor yellowColor];
+        _nameLabel.layer.borderColor = [UIColor redColor].CGColor;
+        _nameLabel.layer.borderWidth = 0.5f;
     }
     return _nameLabel;
 }
