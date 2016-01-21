@@ -32,7 +32,7 @@
 /// NSArray parameter must contains all instance kinda `TCSectionDataMetric`.
 - (nullable instancetype)initWithSectionDataMetrics:(nonnull NSArray<TCSectionDataMetric *> *)sectionDataMetrics;
 /// UITableView only.
-- (nullable instancetype)initWithSectionDataMetrics:(nonnull NSArray<TCSectionDataMetric *> *)sectionDataMetrics dataForHeader:(nonnull id)dataForHeader dataForHeader:(nonnull id)dataForHeader;
+- (nullable instancetype)initWithSectionDataMetrics:(nonnull NSArray<TCSectionDataMetric *> *)sectionDataMetrics dataForHeader:(nonnull id)dataForHeader dataForFooter:(nonnull id)dataForFooter;
 
 /// Return empty instance
 + (nullable instancetype)empty;

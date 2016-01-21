@@ -90,8 +90,11 @@
 }
 
 - (nullable instancetype)initWithItemsData:(nonnull NSArray *)itemsData dataForSupplementaryHeader:(nonnull NSArray *)dataForSupplementaryHeader dataForSupplementaryFooter:(nonnull NSArray *)dataForSupplementaryFooter {
-    self = [self initWithItemsData:itemsData];
+   self = [self initWithItemsData:itemsData];
     
+    _dataForSupplementaryHeader = dataForSupplementaryHeader;
+    _dataForSupplementaryFooter = dataForSupplementaryFooter;
+
     return self;
 }
 

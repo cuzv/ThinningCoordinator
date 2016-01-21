@@ -56,7 +56,7 @@
     return self;
 }
 
-- (nullable instancetype)initWithSectionDataMetrics:(nonnull NSArray<TCSectionDataMetric *> *)sectionDataMetrics dataForHeader:(nonnull id)dataForHeader dataForHeader:(nonnull id)dataForFooter {
+- (nullable instancetype)initWithSectionDataMetrics:(nonnull NSArray<TCSectionDataMetric *> *)sectionDataMetrics dataForHeader:(nonnull id)dataForHeader dataForFooter:(nonnull id)dataForFooter {
     self = [self initWithSectionDataMetrics:sectionDataMetrics];
     
     self.dataForHeader = dataForHeader;
@@ -179,7 +179,7 @@
 }
 
 - (nullable id)dataForFooter {
-    return _dataForHeader;
+    return _dataForFooter;
 }
 
 - (nullable id)dataForSupplementaryHeaderAtIndexPath:(nonnull NSIndexPath *)indexPath {
