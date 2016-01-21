@@ -1,9 +1,9 @@
 //
-//  ThinningCoordinator.h
+//  NSObject+TCIdentifier.m
 //  ThinningCoordinator
 //
-//  Created by Moch Xiao on 8/24/15.
-//  Copyright (c) 2015 Moch Xiao (https://github.com/cuzv).
+//  Created by Moch Xiao on 1/21/16.
+//  Copyright © @2016 Moch Xiao (https://github.com/cuzv).
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,15 +24,12 @@
 //  THE SOFTWARE.
 //
 
-#ifndef Haioo_ThinningCoordinator_h
-#define Haioo_ThinningCoordinator_h
-
-#import "TCDataSourceProtocol.h"
-#import "TCGlobalDataMetric.h"
-#import "TCSectionDataMetric.h"
-#import "TCDataSource.h"
-#import "TCDelegate.h"
-#import "ResuableView+Extension.h"
 #import "NSObject+TCIdentifier.h"
 
-#endif
+@implementation NSObject (TCIdentifier)
+
++ (nonnull NSString *)tc_identifier {
+    return NSStringFromClass(self.class);
+}
+
+@end

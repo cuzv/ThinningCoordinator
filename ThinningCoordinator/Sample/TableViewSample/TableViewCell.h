@@ -1,15 +1,13 @@
 //
-//  ViewController.h
+//  TableViewCell.h
 //  ThinningCoordinator
 //
-//  Created by Moch Xiao on 1/20/16.
+//  Created by Moch Xiao on 1/21/16.
 //  Copyright © 2016 Moch. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface TableViewCell : UITableViewCell
 
 @end
-
