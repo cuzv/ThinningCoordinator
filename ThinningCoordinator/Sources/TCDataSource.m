@@ -265,7 +265,7 @@
     [moable moveElementAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
 }
 
-#pragma mark - TCDelegate subclass helper
+#pragma mark - TCTableViewHeaderFooterViewibility
 
 - (CGFloat)_heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     id data = [self.globalDataMetric dataForItemAtIndexPath:indexPath];
@@ -282,7 +282,7 @@
     return height;
 }
 
-- (CGFloat)heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)_heightForHeaderInSection:(NSInteger)section {
     id headerFooterViewibility = self.headerFooterViewibility;
     if (!headerFooterViewibility) {
         return 10.0f;
@@ -300,8 +300,7 @@
     return height;
 }
 
-/// TCDelegate subclass UITableViewDelegate require footer view, simple return this method
-- (UIView *)viewForHeaderInSection:(NSInteger)section {
+- (UIView *)_viewForHeaderInSection:(NSInteger)section {
     id headerFooterViewibility = self.headerFooterViewibility;
     if (!headerFooterViewibility) {
         return nil;
@@ -328,8 +327,7 @@
     return headerView;
 }
 
-
-- (CGFloat)heightForFooterInSection:(NSInteger)section {
+- (CGFloat)_heightForFooterInSection:(NSInteger)section {
     id headerFooterViewibility = self.headerFooterViewibility;
     if (!headerFooterViewibility) {
         return 10.0f;
@@ -347,8 +345,7 @@
     return height;
 }
 
-/// TCDelegate subclass UITableViewDelegate require footer view, simple return this method
-- (UIView *)viewForFooterInSection:(NSInteger)section {
+- (UIView *)_viewForFooterInSection:(NSInteger)section {
     id headerFooterViewibility = self.headerFooterViewibility;
     if (!headerFooterViewibility) {
         return nil;
@@ -432,6 +429,99 @@
     
     [self.globalDataMetric moveAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
     [moable moveElementAtIndexPath:sourceIndexPath toIndexPath:destinationIndexPath];
+}
+
+#pragma mark - TCCollectionSupplementaryViewibility
+
+- (CGSize)_sizeForItemAtIndexPath:(nonnull NSIndexPath *)indexPath preferredLayoutSizeFittingSize:(CGSize)fittingSize cellType:(nonnull Class)type {
+    id sourceable = self.sourceable;
+    if (!sourceable) {
+        [NSException raise:@"FatalError" format:@"Must conforms protocol `TCCollectionSupplementaryViewibility`."];
+    }
+    id data = [self.globalDataMetric dataForItemAtIndexPath:indexPath];
+    if (!data) {
+        return CGSizeZero;
+    }
+    
+    CGSize szie = [self.collectionView tc_sizeForReusableViewByClass:type preferredLayoutSizeFittingSize:fittingSize dataConfigurationHandler:^(UICollectionReusableView * _Nonnull reusableView) {
+        [sourceable loadData:data forReusableCell:reusableView];
+    }];
+
+    return szie;
+}
+
+- (CGSize)_sizeForSupplementaryViewAtIndexPath:(nonnull NSIndexPath *)indexPath preferredLayoutSizeFittingSize:(CGSize)fittingSize cellType:(nonnull Class)type ofKind:(nonnull NSString *)kind {
+    id sourceable = self.sourceable;
+    if (!sourceable) {
+        [NSException raise:@"FatalError" format:@"Must conforms protocol `TCCollectionSupplementaryViewibility`."];
+    }
+    
+    CGSize size = CGSizeZero;
+    id data = nil;
+    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+        data = [self.globalDataMetric dataForSupplementaryHeaderAtIndexPath:indexPath];
+        if (data) {
+            size = [self.collectionView tc_sizeForReusableViewByClass:type preferredLayoutSizeFittingSize:fittingSize dataConfigurationHandler:^(UICollectionReusableView * _Nonnull reusableView) {
+                [sourceable loadData:data forReusableSupplementaryHeaderView:reusableView];
+            }];
+        }
+    }
+    else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
+        data = [self.globalDataMetric dataForSupplementaryFooterAtIndexPath:indexPath];
+        if (data) {
+            size = [self.collectionView tc_sizeForReusableViewByClass:type preferredLayoutSizeFittingSize:fittingSize dataConfigurationHandler:^(UICollectionReusableView * _Nonnull reusableView) {
+                [sourceable loadData:data forReusableSupplementaryFooterView:reusableView];
+            }];
+        }
+    }
+    
+    return size;
+}
+
+- (nonnull UICollectionReusableView *)_viewForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath {
+    id supplementaryViewibility = self.supplementaryViewibility;
+    if (!supplementaryViewibility) {
+        [NSException raise:@"FatalError" format:@"Must conforms protocol `TCCollectionSupplementaryViewibility`."];
+    }
+    
+    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+        NSString *identifier = [supplementaryViewibility reusableHeaderViewIdentifierInSection:indexPath.section];
+        if (!identifier) {
+            return [self.collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:TCDefaultSupplementaryView.tc_identifier forIndexPath:indexPath];
+        }
+        id data = [self.globalDataMetric dataForSupplementaryHeaderAtIndexPath:indexPath];
+        if (!data) {
+            return [self.collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:TCDefaultSupplementaryView.tc_identifier forIndexPath:indexPath];
+        }
+
+        UICollectionReusableView *reusableView = [self.collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:identifier forIndexPath:indexPath];
+        if (!self.delegate.scrollingToTop) {
+            [supplementaryViewibility loadData:data forReusableSupplementaryHeaderView:reusableView];
+        }
+        
+        return reusableView;
+    }
+    else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
+        NSString *identifier = [supplementaryViewibility reusableFooterViewIdentifierInSection:indexPath.section];
+        if (!identifier) {
+            return [self.collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:TCDefaultSupplementaryView.tc_identifier forIndexPath:indexPath];
+        }
+        id data = [self.globalDataMetric dataForSupplementaryFooterAtIndexPath:indexPath];
+        if (!data) {
+            return [self.collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:TCDefaultSupplementaryView.tc_identifier forIndexPath:indexPath];
+        }
+
+        UICollectionReusableView *reusableView = [self.collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:identifier forIndexPath:indexPath];
+        if (!self.delegate.scrollingToTop) {
+            [supplementaryViewibility loadData:data forReusableSupplementaryFooterView:reusableView];
+        }
+
+        return reusableView;
+    }
+    else {
+        [NSException raise:@"FatalError" format:@"kind only support `UICollectionElementKindSectionHeader` adn `UICollectionElementKindSectionFooter` currently."];
+        return nil;
+    }
 }
 
 @end

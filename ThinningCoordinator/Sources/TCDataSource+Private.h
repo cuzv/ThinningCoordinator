@@ -25,6 +25,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <objc/runtime.h>
 
 @protocol TCImageLazyLoadable;
 
@@ -46,5 +47,12 @@
 - (CGFloat)_heightForFooterInSection:(NSInteger)section;
 /// TCDelegate subclass UITableViewDelegate require footer view, simple return this method
 - (nullable UIView *)_viewForFooterInSection:(NSInteger)section;
+
+
+#pragma mark - UICollectionViewDelegate helper methods
+
+- (CGSize)_sizeForItemAtIndexPath:(nonnull NSIndexPath *)indexPath preferredLayoutSizeFittingSize:(CGSize)fittingSize cellType:(nonnull Class)type;
+- (CGSize)_sizeForSupplementaryViewAtIndexPath:(nonnull NSIndexPath *)indexPath preferredLayoutSizeFittingSize:(CGSize)fittingSize cellType:(nonnull Class)type ofKind:(nonnull NSString *)kind;
+- (nonnull UICollectionReusableView *)_viewForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath;
 
 @end

@@ -43,17 +43,29 @@
 
 #pragma mark - UITableViewDelegate helper methods
 
-/// TCDelegate subclass UITableViewDelegate require section header view height, simple return this method
-- (CGFloat)heightForHeaderInSection:(NSInteger)section;
+/// TCDelegate subclass UITableViewDelegate require section cell height, simple return this method.
+- (CGFloat)heightForRowAtIndexPath:(nullable NSIndexPath *)indexPath;
 
-/// TCDelegate subclass UITableViewDelegate require section header view, simple return this method
+/// TCDelegate subclass UITableViewDelegate require section header view height, simple return this method.
+- (CGFloat)heightForHeaderInSection:(NSInteger)section;
+/// TCDelegate subclass UITableViewDelegate require section header view, simple return this method.
 - (nullable UIView *)viewForHeaderInSection:(NSInteger)section;
 
-/// TCDelegate subclass UITableViewDelegate require section footer view, simple return this method
+
+/// TCDelegate subclass UITableViewDelegate require section footer view height, simple return this method.
+- (CGFloat)heightForFooterInSection:(NSInteger)section;
+/// TCDelegate subclass UITableViewDelegate require section footer view, simple return this method.
 - (nullable UIView *)viewForFooterInSection:(NSInteger)section;
 
-/// TCDelegate subclass UITableViewDelegate require section footer view height, simple return this method
-- (CGFloat)heightForFooterInSection:(NSInteger)section;
+
+#pragma mark - UICollectionViewDelegate helper methods
+
+/// TCDelegate subclass UICollectionViewDelegate flow layout require cell size, simple return this method.
+- (CGSize)sizeForItemAtIndexPath:(nonnull NSIndexPath *)indexPath preferredLayoutSizeFittingSize:(CGSize)fittingSize cellType:(nonnull Class)type;
+/// TCDelegate subclass UICollectionViewDelegate flow layout require SupplementaryView size, simple return this method.
+- (CGSize)sizeForSupplementaryViewAtIndexPath:(nonnull NSIndexPath *)indexPath preferredLayoutSizeFittingSize:(CGSize)fittingSize cellType:(nonnull Class)type ofKind:(nonnull NSString *)kind;
+/// TCDelegate subclass UICollectionViewDelegate flow layout require SupplementaryView, simple return this method.
+- (nonnull UICollectionReusableView *)viewForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath;
 
 
 #pragma mark - UIScrollViewDelegate

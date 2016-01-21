@@ -50,5 +50,5 @@
 @end
 
 @interface UICollectionView (TCComputeLayoutSize)
-- (CGSize)tc_sizeForReusableViewByClass:(nonnull Class)cls preferredLayoutSizeFittingSize:(CGSize)fittingSize dataConfigurationHandler:(nonnull void (^)(UICollectionReusableView * _Nonnull cell))dataConfigurationHandler;
+- (CGSize)tc_sizeForReusableViewByClass:(nonnull Class)cls preferredLayoutSizeFittingSize:(CGSize)fittingSize dataConfigurationHandler:(nonnull void (^)(UICollectionReusableView * _Nonnull reusableView))dataConfigurationHandler;
 @end

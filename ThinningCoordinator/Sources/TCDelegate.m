@@ -171,28 +171,38 @@
 #pragma mark - UITableViewDelegate helper methods
 
 - (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
-    return [dataSource _heightForRowAtIndexPath:indexPath];
+    return [self.dataSource _heightForRowAtIndexPath:indexPath];
 }
 
 - (CGFloat)heightForHeaderInSection:(NSInteger)section {
-    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
-    return [dataSource _heightForHeaderInSection:section];
+    return [self.dataSource _heightForHeaderInSection:section];
 }
 
 - (nullable UIView *)viewForHeaderInSection:(NSInteger)section {
-    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
-    return [dataSource _viewForHeaderInSection:section];
-}
-
-- (nullable UIView *)viewForFooterInSection:(NSInteger)section {
-    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
-   return [dataSource _viewForFooterInSection:section];
+    return [self.dataSource _viewForHeaderInSection:section];
 }
 
 - (CGFloat)heightForFooterInSection:(NSInteger)section {
-    TCDataSource *dataSource = (TCDataSource *)self.tableView.dataSource;
-    return [dataSource _heightForFooterInSection:section];
+    return [self.dataSource _heightForFooterInSection:section];
+}
+
+- (nullable UIView *)viewForFooterInSection:(NSInteger)section {
+   return [self.dataSource _viewForFooterInSection:section];
+}
+
+
+#pragma mark - UICollectionViewDelegate helper methods
+
+- (CGSize)sizeForItemAtIndexPath:(nonnull NSIndexPath *)indexPath preferredLayoutSizeFittingSize:(CGSize)fittingSize cellType:(nonnull Class)type {
+    return [self.dataSource _sizeForItemAtIndexPath:indexPath preferredLayoutSizeFittingSize:fittingSize cellType:type];
+}
+
+- (CGSize)sizeForSupplementaryViewAtIndexPath:(nonnull NSIndexPath *)indexPath preferredLayoutSizeFittingSize:(CGSize)fittingSize cellType:(nonnull Class)type ofKind:(nonnull NSString *)kind {
+    return [self.dataSource _sizeForSupplementaryViewAtIndexPath:indexPath preferredLayoutSizeFittingSize:fittingSize cellType:type ofKind:kind];
+}
+
+- (nonnull UICollectionReusableView *)viewForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath {
+    return [self.dataSource _viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
 }
 
 @end

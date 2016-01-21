@@ -244,7 +244,7 @@ BOOL TCCollectionViewSupportsConstraintsProperty() {
 
 @implementation UICollectionView (TCComputeLayoutSize)
 
-- (CGSize)tc_sizeForReusableViewByClass:(nonnull Class)cls preferredLayoutSizeFittingSize:(CGSize)fittingSize dataConfigurationHandler:(nonnull void (^)(UICollectionReusableView * _Nonnull cell))dataConfigurationHandler {
+- (CGSize)tc_sizeForReusableViewByClass:(nonnull Class)cls preferredLayoutSizeFittingSize:(CGSize)fittingSize dataConfigurationHandler:(nonnull void (^)(UICollectionReusableView * _Nonnull reusableView))dataConfigurationHandler {
     NSDictionary<NSString *, UICollectionReusableView *> *reusableViews = self.tc_reusableViews;
     if (!reusableViews) {
         reusableViews = @{};
