@@ -42,4 +42,7 @@
 
 - (nullable TCDelegate *)delegate;
 
+/// TCDataSource subclass UICollectionViewDataSource flow layout require SupplementaryView, simple return this method.
+- (nonnull UICollectionReusableView *)viewForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath;
+
 @end

@@ -534,7 +534,7 @@
     return size;
 }
 
-- (nonnull UICollectionReusableView *)_viewForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath {
+- (nonnull UICollectionReusableView *)viewForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath {
     id supplementaryViewibility = self.supplementaryViewibility;
     if (!supplementaryViewibility) {
         [NSException raise:@"FatalError" format:@"Must conforms protocol `TCCollectionSupplementaryViewibility`."];

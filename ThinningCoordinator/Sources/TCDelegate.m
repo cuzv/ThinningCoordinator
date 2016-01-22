@@ -201,8 +201,4 @@
     return [self.dataSource _sizeForSupplementaryViewAtIndexPath:indexPath preferredLayoutSizeFittingSize:fittingSize cellType:type ofKind:kind];
 }
 
-- (nonnull UICollectionReusableView *)viewForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath {
-    return [self.dataSource _viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
-}
-
 @end

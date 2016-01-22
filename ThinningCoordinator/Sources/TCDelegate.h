@@ -64,8 +64,6 @@
 - (CGSize)sizeForItemAtIndexPath:(nonnull NSIndexPath *)indexPath preferredLayoutSizeFittingSize:(CGSize)fittingSize cellType:(nonnull Class)type;
 /// TCDelegate subclass UICollectionViewDelegate flow layout require SupplementaryView size, simple return this method.
 - (CGSize)sizeForSupplementaryViewAtIndexPath:(nonnull NSIndexPath *)indexPath preferredLayoutSizeFittingSize:(CGSize)fittingSize cellType:(nonnull Class)type ofKind:(nonnull NSString *)kind;
-/// TCDelegate subclass UICollectionViewDelegate flow layout require SupplementaryView, simple return this method.
-- (nonnull UICollectionReusableView *)viewForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath;
 
 
 #pragma mark - UIScrollViewDelegate
