@@ -541,7 +541,7 @@
     }
     
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
-        NSString *identifier = [supplementaryViewibility reusableHeaderViewIdentifierInSection:indexPath.section];
+        NSString *identifier = [supplementaryViewibility reusableSupplementaryHeaderViewIdentifierForIndexPath:indexPath];
         if (!identifier) {
             return [self.collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:TCDefaultSupplementaryView.tc_identifier forIndexPath:indexPath];
         }
@@ -558,7 +558,7 @@
         return reusableView;
     }
     else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
-        NSString *identifier = [supplementaryViewibility reusableFooterViewIdentifierInSection:indexPath.section];
+        NSString *identifier = [supplementaryViewibility reusableSupplementaryFooterViewIdentifierForIndexPath:indexPath];
         if (!identifier) {
             return [self.collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:TCDefaultSupplementaryView.tc_identifier forIndexPath:indexPath];
         }

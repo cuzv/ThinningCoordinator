@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "ThinningCoordinator"
-  s.version      = "2.0.2"
+  s.version      = "2.0.3"
   s.summary      = "Focus on lighter view controllers."
   s.homepage     = "https://github.com/cuzv/ThinningCoordinator"
   s.license      = "MIT"
