@@ -28,6 +28,7 @@
 #import "TCDelegate.h"
 #import "TCDelegate+Private.h"
 #import "TCGlobalDataMetric.h"
+#import "TCGlobalDataMetric+Private.h"
 #import "TCDataSourceProtocol.h"
 #import "TCSectionDataMetric.h"
 #import "TCHelper.h"
@@ -268,37 +269,52 @@
 #pragma mark - TCTableViewHeaderFooterViewibility
 
 - (CGFloat)_heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    CGFloat height = [self.globalDataMetric cachedHeightForIndexPath:indexPath];
+    if (height != UITableViewAutomaticDimension) {
+        return height;
+    }
+    
     id data = [self.globalDataMetric dataForItemAtIndexPath:indexPath];
     if (!data) {
         return UITableViewAutomaticDimension;
     }
+    
     NSString *identifier = [self.sourceable reusableCellIdentifierForIndexPath:indexPath];
     __weak typeof(self) weak_self = self;
-    CGFloat height = [self.tableView tc_heightForReusableCellByIdentifier:identifier dataConfigurationHandler:^(UITableViewCell * _Nonnull cell) {
+    height = [self.tableView tc_heightForReusableCellByIdentifier:identifier dataConfigurationHandler:^(UITableViewCell * _Nonnull cell) {
         __strong typeof(weak_self) strong_self = weak_self;
         [strong_self.sourceable loadData:data forReusableCell:cell];
     }];
+    [self.globalDataMetric cacheHeight:height forIndexPath:indexPath];
  
     return height;
 }
 
 - (CGFloat)_heightForHeaderInSection:(NSInteger)section {
+    CGFloat height = [self.globalDataMetric cachedHeightForHeaderInSection:section];
+    if (height != UITableViewAutomaticDimension) {
+        return height;
+    }
+    
     id headerFooterViewibility = self.headerFooterViewibility;
     if (!headerFooterViewibility) {
         return 10.0f;
     }
+    
     NSString *identifier = [headerFooterViewibility reusableHeaderViewIdentifierInSection:section];
     if (!identifier) {
         return 10.0f;
     }
+    
     id data = [self.globalDataMetric dataForHeaderInSection:section];
     if (!data) {
         return 10.0f;
     }
     
-    CGFloat height = [self.tableView tc_heightForReusableHeaderFooterViewByIdentifier:identifier dataConfigurationHandler:^(UITableViewHeaderFooterView * _Nonnull reusableHeaderFooterView) {
+    height = [self.tableView tc_heightForReusableHeaderFooterViewByIdentifier:identifier dataConfigurationHandler:^(UITableViewHeaderFooterView * _Nonnull reusableHeaderFooterView) {
         [headerFooterViewibility loadData:data forReusableHeaderView:reusableHeaderFooterView];
     }];
+    [self.globalDataMetric cacheHeight:height forHeaderInSection:section];
     
     return height;
 }
@@ -334,22 +350,30 @@
 }
 
 - (CGFloat)_heightForFooterInSection:(NSInteger)section {
+    CGFloat height = [self.globalDataMetric cachedHeightForFooterInSection:section];
+    if (height != UITableViewAutomaticDimension) {
+        return height;
+    }
+
     id headerFooterViewibility = self.headerFooterViewibility;
     if (!headerFooterViewibility) {
         return 10.0f;
     }
+    
     NSString *identifier = [headerFooterViewibility reusableFooterViewIdentifierInSection:section];
     if (!identifier) {
         return 10.0f;
     }
+    
     id data = [self.globalDataMetric dataForFooterInSection:section];
     if (!data) {
         return 10.0f;
     }
 
-    CGFloat height = [self.tableView tc_heightForReusableHeaderFooterViewByIdentifier:identifier dataConfigurationHandler:^(UITableViewHeaderFooterView * _Nonnull reusableHeaderFooterView) {
+    height = [self.tableView tc_heightForReusableHeaderFooterViewByIdentifier:identifier dataConfigurationHandler:^(UITableViewHeaderFooterView * _Nonnull reusableHeaderFooterView) {
         [headerFooterViewibility loadData:data forReusableFooterView:reusableHeaderFooterView];
     }];
+    [self.globalDataMetric cacheHeight:height forFooterInSection:section];
     
     return height;
 }
@@ -450,16 +474,23 @@
     if (!sourceable) {
         [NSException raise:@"FatalError" format:@"Must conforms protocol `TCCollectionSupplementaryViewibility`."];
     }
+    
+    CGSize size = [self.globalDataMetric cachedSizeForIndexPath:indexPath];
+    if (!CGSizeEqualToSize(CGSizeZero, size)) {
+        return size;
+    }
+    
     id data = [self.globalDataMetric dataForItemAtIndexPath:indexPath];
     if (!data) {
         return CGSizeZero;
     }
     
-    CGSize szie = [self.collectionView tc_sizeForReusableViewByClass:type preferredLayoutSizeFittingSize:fittingSize dataConfigurationHandler:^(UICollectionReusableView * _Nonnull reusableView) {
+    size = [self.collectionView tc_sizeForReusableViewByClass:type preferredLayoutSizeFittingSize:fittingSize dataConfigurationHandler:^(UICollectionReusableView * _Nonnull reusableView) {
         [sourceable loadData:data forReusableCell:reusableView];
     }];
+    [self.globalDataMetric cacheSize:size forIndexPath:indexPath];
 
-    return szie;
+    return size;
 }
 
 - (CGSize)_sizeForSupplementaryViewAtIndexPath:(nonnull NSIndexPath *)indexPath preferredLayoutSizeFittingSize:(CGSize)fittingSize cellType:(nonnull Class)type ofKind:(nonnull NSString *)kind {
@@ -468,22 +499,35 @@
         [NSException raise:@"FatalError" format:@"Must conforms protocol `TCCollectionSupplementaryViewibility`."];
     }
     
-    CGSize size = CGSizeZero;
+    NSInteger section = indexPath.section;
     id data = nil;
+    CGSize size = CGSizeZero;
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+        size = [self.globalDataMetric cachedSizeForHeaderInSection:section];
+        if (!CGSizeEqualToSize(CGSizeZero, size)) {
+            return size;
+        }
+        
         data = [self.globalDataMetric dataForSupplementaryHeaderAtIndexPath:indexPath];
         if (data) {
             size = [self.collectionView tc_sizeForReusableViewByClass:type preferredLayoutSizeFittingSize:fittingSize dataConfigurationHandler:^(UICollectionReusableView * _Nonnull reusableView) {
                 [sourceable loadData:data forReusableSupplementaryHeaderView:reusableView];
             }];
+            [self.globalDataMetric cacheSize:size forHeaderInSection:section];
         }
     }
     else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
+        CGSize size = [self.globalDataMetric cachedSizeForFooterInSection:section];
+        if (!CGSizeEqualToSize(CGSizeZero, size)) {
+            return size;
+        }
+        
         data = [self.globalDataMetric dataForSupplementaryFooterAtIndexPath:indexPath];
         if (data) {
             size = [self.collectionView tc_sizeForReusableViewByClass:type preferredLayoutSizeFittingSize:fittingSize dataConfigurationHandler:^(UICollectionReusableView * _Nonnull reusableView) {
                 [sourceable loadData:data forReusableSupplementaryFooterView:reusableView];
             }];
+            [self.globalDataMetric cacheSize:size forFooterInSection:section];
         }
     }
     

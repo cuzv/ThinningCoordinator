@@ -29,7 +29,6 @@
         make.edges.equalTo(self.view);
     }];
 
-
     NSArray *data0 = @[@"Michael", @"Moch", @"KKKK"];
     TCSectionDataMetric *section0 = [[TCSectionDataMetric alloc] initWithItemsData:data0 dataForHeader:header dataForFooter:footer];
 
@@ -41,13 +40,16 @@
     
     TCGlobalDataMetric *globalDataMetric = [[TCGlobalDataMetric alloc] initWithSectionDataMetrics:@[section0, section1, section2]];
 
-    self.dataSource.globalDataMetric = globalDataMetric;
-    [self.tableView reloadData];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.dataSource.globalDataMetric = globalDataMetric;
+        [self.tableView reloadData];
+    });
 }
 
 
 - (IBAction)handleEdit:(UIBarButtonItem *)sender {
     self.tableView.editing = !self.tableView.editing;
+    sender.title = self.tableView.editing ? @"Done" : @"Edit";
 }
 
 - (IBAction)handleInsert:(UIBarButtonItem *)sender {
@@ -60,8 +62,8 @@
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _tableView.delegate = self.delegate;
         _tableView.dataSource = self.dataSource;
-        _tableView.rowHeight = UITableViewAutomaticDimension;
-        _tableView.estimatedRowHeight = 44;
+//        _tableView.rowHeight = UITableViewAutomaticDimension;
+//        _tableView.estimatedRowHeight = 44;
         if ([_tableView respondsToSelector:@selector(layoutMargins)]) {
             _tableView.layoutMargins = UIEdgeInsetsZero;
         }

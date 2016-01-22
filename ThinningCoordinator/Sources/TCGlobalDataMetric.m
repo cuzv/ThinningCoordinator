@@ -73,15 +73,15 @@
 #pragma mark - Retrieve
 
 - (NSInteger)numberOfSections {
-    return _sectionDataMetrics.count;
+    return self.sectionDataMetrics.count;
 }
 
 - (NSInteger)numberOfItemsInSection:(NSInteger)section {
-    return [[_sectionDataMetrics objectAtIndex:section] numberOfItems];
+    return [[self.sectionDataMetrics objectAtIndex:section] numberOfItems];
 }
 
 - (nullable NSArray<TCSectionDataMetric *> *)allSectionDataMetrics {
-    return _sectionDataMetrics;
+    return self.sectionDataMetrics;
 }
 
 - (nullable NSArray<TCSectionDataMetric *> *)sectionDataMetrics {
@@ -89,22 +89,22 @@
 }
 
 - (nullable NSArray *)dataInSection:(NSInteger)section {
-    TCSectionDataMetric *sectionDataMetric = [_sectionDataMetrics objectAtIndex:section];
+    TCSectionDataMetric *sectionDataMetric = [self.sectionDataMetrics objectAtIndex:section];
     return [sectionDataMetric itemsData];
 }
 
 - (nullable id)dataForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    if ([_sectionDataMetrics count] <= section) {
+    if ([self.sectionDataMetrics count] <= section) {
         return nil;
     }
 
-    return [[_sectionDataMetrics objectAtIndex:section] dataAtIndex:indexPath.item];
+    return [[self.sectionDataMetrics objectAtIndex:section] dataAtIndex:indexPath.item];
 }
 
 - (nullable NSIndexPath *)indexPathOfData:(nonnull id)data {
     __block NSIndexPath *indexPath = nil;
-    [_sectionDataMetrics enumerateObjectsUsingBlock:^(TCSectionDataMetric *sectionDataMetric, NSUInteger idx, BOOL *stop) {
+    [self.sectionDataMetrics enumerateObjectsUsingBlock:^(TCSectionDataMetric *sectionDataMetric, NSUInteger idx, BOOL *stop) {
         NSArray *items = [sectionDataMetric itemsData];
         if ([items containsObject:data]) {
             NSInteger row = [items indexOfObjectIdenticalTo:data];
@@ -118,7 +118,7 @@
 
 - (nullable NSArray *)allData {
     NSMutableArray *allData = [NSMutableArray new];
-    for (TCSectionDataMetric *sectionDataMetric in _sectionDataMetrics) {
+    for (TCSectionDataMetric *sectionDataMetric in self.sectionDataMetrics) {
         [allData addObjectsFromArray:sectionDataMetric.itemsData];
     }
     
@@ -126,39 +126,39 @@
 }
 
 - (nullable NSString *)titleForHeaderInSection:(NSInteger)section {
-    if ([_sectionDataMetrics count] <= section) {
+    if ([self.sectionDataMetrics count] <= section) {
         return nil;
     }
 
-    return [[_sectionDataMetrics objectAtIndex:section] titleForHeader];
+    return [[self.sectionDataMetrics objectAtIndex:section] titleForHeader];
 }
 
 - (nullable NSString *)titleForFooterInSection:(NSInteger)section {
-    if ([_sectionDataMetrics count] <= section) {
+    if ([self.sectionDataMetrics count] <= section) {
         return nil;
     }
  
-    return [[_sectionDataMetrics objectAtIndex:section] titleForFooter];
+    return [[self.sectionDataMetrics objectAtIndex:section] titleForFooter];
 }
 
 - (nullable id)dataForHeaderInSection:(NSInteger)section {
-    if ([_sectionDataMetrics count] <= section) {
+    if ([self.sectionDataMetrics count] <= section) {
         return nil;
     }
 
-    return [[_sectionDataMetrics objectAtIndex:section] dataForHeader];
+    return [[self.sectionDataMetrics objectAtIndex:section] dataForHeader];
 }
 
 - (nullable id)dataForFooterInSection:(NSInteger)section {
-    if ([_sectionDataMetrics count] <= section) {
+    if ([self.sectionDataMetrics count] <= section) {
         return nil;
     }
 
-    return [[_sectionDataMetrics objectAtIndex:section] dataForFooter];
+    return [[self.sectionDataMetrics objectAtIndex:section] dataForFooter];
 }
 
 - (NSInteger)indexOfHeaderData:(nonnull id)data {
-    NSArray *headerData = [_sectionDataMetrics valueForKey:@"dataForHeader"];
+    NSArray *headerData = [self.sectionDataMetrics valueForKey:@"dataForHeader"];
     if ([headerData containsObject:data]) {
         return [headerData indexOfObjectIdenticalTo:data];
     }
@@ -167,7 +167,7 @@
 }
 
 - (NSInteger)indexOfFooterData:(nonnull id)data {
-    NSArray *footerData = [_sectionDataMetrics valueForKey:@"dataForFooter"];
+    NSArray *footerData = [self.sectionDataMetrics valueForKey:@"dataForFooter"];
     if ([footerData containsObject:data]) {
         return [footerData indexOfObjectIdenticalTo:data];
     }
@@ -185,20 +185,20 @@
 
 - (nullable id)dataForSupplementaryHeaderAtIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    if ([_sectionDataMetrics count] <= section) {
+    if ([self.sectionDataMetrics count] <= section) {
         return nil;
     }
     
-    return [_sectionDataMetrics[section] dataForSupplementaryHeaderAtIndex:indexPath.item];
+    return [self.sectionDataMetrics[section] dataForSupplementaryHeaderAtIndex:indexPath.item];
 }
 
 - (nullable id)dataForSupplementaryFooterAtIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    if ([_sectionDataMetrics count] <= section) {
+    if ([self.sectionDataMetrics count] <= section) {
         return nil;
     }
     
-    return [_sectionDataMetrics[section] dataForSupplementaryFooterAtIndex:indexPath.item];
+    return [self.sectionDataMetrics[section] dataForSupplementaryFooterAtIndex:indexPath.item];
 }
 
 - (nullable id)dataForSupplementaryElementOfKind:(nonnull NSString *)kind atIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -214,7 +214,7 @@
 
 - (nullable NSArray<NSString *> *)sectionIndexTitles {
     NSMutableArray *indexTitles = [NSMutableArray new];
-    for (TCSectionDataMetric *sectionDataMetric in _sectionDataMetrics) {
+    for (TCSectionDataMetric *sectionDataMetric in self.sectionDataMetrics) {
         NSString *indexTitle = sectionDataMetric.indexTitle;
         if (indexTitle) {
             [indexTitles addObject:indexTitle];
@@ -268,13 +268,13 @@
 }
 
 - (void)append:(nullable id)data inSection:(NSInteger)section {
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    [_sectionDataMetrics[section] append:data];
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    [self.sectionDataMetrics[section] append:data];
 }
 
 - (void)appendContentsOf:(nullable NSArray *)data inSection:(NSInteger)section {
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    [_sectionDataMetrics[section] appendContentsOf:data];
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    [self.sectionDataMetrics[section] appendContentsOf:data];
 }
 
 - (void)appendData:(NSArray *)data inSection:(NSInteger)section {
@@ -283,14 +283,14 @@
 
 - (void)insert:(nonnull id)data atIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    [_sectionDataMetrics[section] insert:data atIndex:indexPath.item];
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    [self.sectionDataMetrics[section] insert:data atIndex:indexPath.item];
 }
 
 - (void)insertContentsOf:(nonnull NSArray *)data atIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    [_sectionDataMetrics[section] insertContentsOf:data atIndex:indexPath.item];
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    [self.sectionDataMetrics[section] insertContentsOf:data atIndex:indexPath.item];
 }
 
 - (void)insertData:(NSArray *)data atIndexPath:(NSIndexPath *)indexPath {
@@ -299,14 +299,14 @@
 
 - (void)replace:(nonnull id)data atIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    [_sectionDataMetrics[section] replaceWith:data atIndex:indexPath.item];
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    [self.sectionDataMetrics[section] replaceWith:data atIndex:indexPath.item];
 }
 
 - (void)replaceContentsOf:(nonnull NSArray *)data atIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    [_sectionDataMetrics[section] replaceWithContentsOf:data atIndex:indexPath.item];
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    [self.sectionDataMetrics[section] replaceWithContentsOf:data atIndex:indexPath.item];
 }
 
 - (void)replaceData:(NSArray *)data atIndexPath:(NSIndexPath *)indexPath {
@@ -314,32 +314,32 @@
 }
 
 - (nullable TCSectionDataMetric *)removeFirst {
-    if (_sectionDataMetrics.count <= 0) {
+    if (self.sectionDataMetrics.count <= 0) {
         return nil;
     }
 
-    TCSectionDataMetric *first = _sectionDataMetrics.firstObject;
+    TCSectionDataMetric *first = self.sectionDataMetrics.firstObject;
     [_sectionDataMetrics removeObjectAtIndex:0];
     return first;
 }
 
 - (nullable TCSectionDataMetric *)removeLast {
-    if (_sectionDataMetrics.count <= 0) {
+    if (self.sectionDataMetrics.count <= 0) {
         return nil;
     }
     
-    TCSectionDataMetric *last = _sectionDataMetrics.lastObject;
+    TCSectionDataMetric *last = self.sectionDataMetrics.lastObject;
     [_sectionDataMetrics removeLastObject];
 
     return last;
 }
 
 - (nullable TCSectionDataMetric *)removeAtIndex:(NSInteger)index {
-    if (_sectionDataMetrics.count <= index) {
+    if (self.sectionDataMetrics.count <= index) {
         return nil;
     }
     
-    TCSectionDataMetric *removed = [_sectionDataMetrics objectAtIndex:index];
+    TCSectionDataMetric *removed = [self.sectionDataMetrics objectAtIndex:index];
     [_sectionDataMetrics removeObjectAtIndex:index];
     
     return removed;
@@ -347,15 +347,15 @@
 
 - (nullable id)removeAtIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    if (_sectionDataMetrics.count <= section) {
+    if (self.sectionDataMetrics.count <= section) {
         return nil;
     }
     
-    return [_sectionDataMetrics[section] removeAtIndex:indexPath.item];
+    return [self.sectionDataMetrics[section] removeAtIndex:indexPath.item];
 }
 
 - (nullable NSArray *)removeAll {
-    NSArray *all = [[NSArray alloc] initWithArray:_sectionDataMetrics];
+    NSArray *all = [[NSArray alloc] initWithArray:self.sectionDataMetrics];
     [_sectionDataMetrics removeAllObjects];
     
     return all;
@@ -380,15 +380,15 @@
     NSInteger destinationItem = destinationIndexPath.item;
     
     if (sourceSection == destinationSection) {
-        [_sectionDataMetrics[sourceSection] exchangeElementAtIndex:sourceItem withElementAtIndex:destinationItem];
+        [self.sectionDataMetrics[sourceSection] exchangeElementAtIndex:sourceItem withElementAtIndex:destinationItem];
     }
     else {
         // Take out the source data.
-        id sourceData = [_sectionDataMetrics[sourceSection] removeAtIndex:sourceItem];
-        id destinationData = [_sectionDataMetrics[destinationSection] removeAtIndex:destinationItem];
+        id sourceData = [self.sectionDataMetrics[sourceSection] removeAtIndex:sourceItem];
+        id destinationData = [self.sectionDataMetrics[destinationSection] removeAtIndex:destinationItem];
         if (sourceData && destinationData) {
-            [_sectionDataMetrics[destinationSection] insert:sourceData atIndex:destinationItem];
-            [_sectionDataMetrics[sourceSection] insert:destinationData atIndex:sourceItem];
+            [self.sectionDataMetrics[destinationSection] insert:sourceData atIndex:destinationItem];
+            [self.sectionDataMetrics[sourceSection] insert:destinationData atIndex:sourceItem];
         }
         else {
             [NSException raise:@"FatalError: take out data faild." format:@""];
@@ -403,14 +403,14 @@
     NSInteger destinationItem = destinationIndexPath.item;
     
     if (sourceSection == destinationSection) {
-        [_sectionDataMetrics[sourceSection] moveElementAtIndex:sourceItem toIndex:destinationItem];
+        [self.sectionDataMetrics[sourceSection] moveElementAtIndex:sourceItem toIndex:destinationItem];
     }
     else {
         // Take out the source data.
-        id sourceData = [_sectionDataMetrics[sourceSection] removeAtIndex:sourceItem];
+        id sourceData = [self.sectionDataMetrics[sourceSection] removeAtIndex:sourceItem];
         if (sourceData) {
             // Insert to desitination position.
-            [_sectionDataMetrics[destinationSection] insert:sourceData atIndex:destinationItem];
+            [self.sectionDataMetrics[destinationSection] insert:sourceData atIndex:destinationItem];
         } else {
             [NSException raise:@"FatalError: take out data faild." format:@""];
         }
@@ -422,98 +422,98 @@
 
 - (void)cacheHeight:(CGFloat)height forIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    [_sectionDataMetrics[section] cacheHeight:height forIndex:indexPath.item];
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    [self.sectionDataMetrics[section] cacheHeight:height forIndex:indexPath.item];
 }
 
 - (CGFloat)cachedHeightForIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    return [_sectionDataMetrics[section] cachedHeightForIndex:indexPath.item];
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    return [self.sectionDataMetrics[section] cachedHeightForIndex:indexPath.item];
 }
 
 - (void)cacheSize:(CGSize)size forIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    [_sectionDataMetrics[section] cacheSize:size forIndex:indexPath.item];
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    [self.sectionDataMetrics[section] cacheSize:size forIndex:indexPath.item];
 }
 
 - (CGSize)cachedSizeForIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    return [_sectionDataMetrics[section] cachedSizeForIndex:indexPath.item];
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    return [self.sectionDataMetrics[section] cachedSizeForIndex:indexPath.item];
 }
 
 - (void)cacheHeight:(CGFloat)height forHeaderInSection:(NSInteger)section {
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    _sectionDataMetrics[section].cachedHeightForHeader = height;
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    self.sectionDataMetrics[section].cachedHeightForHeader = height;
 }
 
 - (CGFloat)cachedHeightForHeaderInSection:(NSInteger)section {
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    return _sectionDataMetrics[section].cachedHeightForHeader;
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    return self.sectionDataMetrics[section].cachedHeightForHeader;
 }
 
 - (void)cacheSize:(CGSize)size forHeaderInSection:(NSInteger)section {
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    _sectionDataMetrics[section].cachedSizeForHeader = size;
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    self.sectionDataMetrics[section].cachedSizeForHeader = size;
 }
 
 - (CGSize)cachedSizeForHeaderInSection:(NSInteger)section {
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    return _sectionDataMetrics[section].cachedSizeForHeader;
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    return self.sectionDataMetrics[section].cachedSizeForHeader;
 }
 
 - (void)cacheHeight:(CGFloat)height forFooterInSection:(NSInteger)section {
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    _sectionDataMetrics[section].cachedHeightForFooter = height;
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    self.sectionDataMetrics[section].cachedHeightForFooter = height;
 }
 
 - (CGFloat)cachedHeightForFooterInSection:(NSInteger)section {
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    return _sectionDataMetrics[section].cachedHeightForFooter;
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    return self.sectionDataMetrics[section].cachedHeightForFooter;
 }
 
 - (void)cacheSize:(CGSize)size forFooterInSection:(NSInteger)section {
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    _sectionDataMetrics[section].cachedSizeForFooter = size;
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    self.sectionDataMetrics[section].cachedSizeForFooter = size;
 }
 
 - (CGSize)cachedSizeForFooterInSection:(NSInteger)section {
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    return _sectionDataMetrics[section].cachedSizeForFooter;
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    return self.sectionDataMetrics[section].cachedSizeForFooter;
 }
 
 - (void)invalidateCachedCellHeightForIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    [_sectionDataMetrics[section] invalidateCachedCellHeightForIndex:indexPath.item];
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    [self.sectionDataMetrics[section] invalidateCachedCellHeightForIndex:indexPath.item];
 }
 
 - (void)invalidateCachedCellSizeForIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    [_sectionDataMetrics[section] invalidateCachedCellSizeForIndex:indexPath.item];
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    [self.sectionDataMetrics[section] invalidateCachedCellSizeForIndex:indexPath.item];
 }
 
 - (void)invalidateCachedHeightForHeaderInSection:(NSInteger)section {
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    _sectionDataMetrics[section].cachedHeightForHeader = UITableViewAutomaticDimension;
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    self.sectionDataMetrics[section].cachedHeightForHeader = UITableViewAutomaticDimension;
 }
 
 - (void)invalidateCachedHeightForFooterInSection:(NSInteger)section {
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    _sectionDataMetrics[section].cachedHeightForFooter = UITableViewAutomaticDimension;
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    self.sectionDataMetrics[section].cachedHeightForFooter = UITableViewAutomaticDimension;
 }
 
 - (void)invalidateCachedSizeForHeaderInSection:(NSInteger)section {
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    _sectionDataMetrics[section].cachedSizeForHeader = CGSizeZero;
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    self.sectionDataMetrics[section].cachedSizeForHeader = CGSizeZero;
 }
 
 - (void)invalidateCachedSizeForFooterInSection:(NSInteger)section {
-    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
-    _sectionDataMetrics[section].cachedSizeForFooter = CGSizeZero;
+    validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    self.sectionDataMetrics[section].cachedSizeForFooter = CGSizeZero;
 }
 
 

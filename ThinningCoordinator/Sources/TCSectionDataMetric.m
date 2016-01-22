@@ -59,8 +59,12 @@
     if (!self) {
         return nil;
     }
-    
+
     _itemsData = [itemsData mutableCopy];
+    _cachedHeightForHeader = UITableViewAutomaticDimension;
+    _cachedHeightForFooter = UITableViewAutomaticDimension;
+    _cachedSizeForHeader = CGSizeZero;
+    _cachedSizeForFooter = CGSizeZero;
     
     return self;
 }
@@ -143,7 +147,6 @@
     return _cachedSizeForCell;
 }
 
-
 #pragma mark - Retrieve
 
 - (NSInteger)numberOfItems {
@@ -203,10 +206,17 @@
 
 - (void)append:(nonnull id)data {
     [_itemsData addObject:data];
+    [self.cachedHeightForCell addObject:@(UITableViewAutomaticDimension)];
+    [self.cachedSizeForCell addObject:[NSValue valueWithCGSize:CGSizeZero]];
 }
 
 - (void)appendContentsOf:(nonnull NSArray *)data {
     [_itemsData addObjectsFromArray:data];
+
+    for (int index = 0; index < data.count; index++) {
+        [self.cachedHeightForCell addObject:@(UITableViewAutomaticDimension)];
+        [self.cachedSizeForCell addObject:[NSValue valueWithCGSize:CGSizeZero]];
+    }
 }
 
 - (void)addItemsDataFromArray:(NSArray *)data {
@@ -219,7 +229,19 @@
 
 - (void)insertContentsOf:(nonnull NSArray *)data atIndex:(NSInteger)index {
     validateInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
-    [_itemsData insertObjects:data atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, data.count)]];
+    
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, data.count)];
+    [_itemsData insertObjects:data atIndexes:indexSet];
+    
+    NSMutableArray *height = [NSMutableArray new];
+    NSMutableArray *size = [NSMutableArray new];
+    for (NSUInteger index = 0; index < data.count; index++) {
+        [height addObject:@(UITableViewAutomaticDimension)];
+        [size addObject:[NSValue valueWithCGSize:CGSizeZero]];
+    }
+    
+    [self.cachedHeightForCell insertObjects:height atIndexes:indexSet];
+    [self.cachedSizeForCell insertObjects:size atIndexes:indexSet];
 }
 
 - (void)insertItemsDataFromArray:(NSArray *)data atIndex:(NSInteger)index {
@@ -237,7 +259,18 @@
 
 - (void)replaceWithContentsOf:(nonnull NSArray *)data atIndex:(NSInteger)index {
     validateNoneInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
-    [_itemsData replaceObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, data.count)] withObjects:data];
+
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, data.count)];
+    [_itemsData replaceObjectsAtIndexes:indexSet withObjects:data];
+    
+    NSMutableArray *height = [NSMutableArray new];
+    NSMutableArray *size = [NSMutableArray new];
+    for (NSUInteger index = 0; index < data.count; index++) {
+        [height addObject:@(UITableViewAutomaticDimension)];
+        [size addObject:[NSValue valueWithCGSize:CGSizeZero]];
+    }
+    [self.cachedHeightForCell replaceObjectsAtIndexes:indexSet withObjects:height];
+    [self.cachedSizeForCell replaceObjectsAtIndexes:indexSet withObjects:size];
 }
 
 - (void)replaceWithNewDataArray:(NSArray *)data atIndex:(NSInteger)index {
@@ -245,20 +278,26 @@
 }
 
 - (nonnull id)removeFirst {
-    if ([_itemsData count] <= 0) {
+    if ([self.itemsData count] <= 0) {
         return nil;
     }
 
-    id first = _itemsData.firstObject;
+    id first = self.itemsData.firstObject;
     [_itemsData removeObjectAtIndex:0];
+    
+    [self.cachedHeightForCell removeObjectAtIndex:0];
+    [self.cachedSizeForCell removeObjectAtIndex:0];
     
     return first;
 }
 
 - (nonnull id)removeLast {
-    id last = _itemsData.lastObject;
+    id last = self.itemsData.lastObject;
     [_itemsData removeLastObject];
 
+    [self.cachedHeightForCell removeLastObject];
+    [self.cachedSizeForCell removeLastObject];
+    
     return last;
 }
 
@@ -267,8 +306,11 @@
         return nil;
     }
     
-    id removed = [_itemsData objectAtIndex:index];
+    id removed = [self.itemsData objectAtIndex:index];
     [_itemsData removeObjectAtIndex:index];
+    
+    [self.cachedHeightForCell removeObjectAtIndex:index];
+    [self.cachedSizeForCell removeObjectAtIndex:index];
     
     return removed;
 }
@@ -278,15 +320,22 @@
 }
 
 - (nullable NSArray *)removeAll {
-    NSArray *removed = [[NSArray alloc] initWithArray:_itemsData];
+    NSArray *removed = [[NSArray alloc] initWithArray:self.itemsData];
     [_itemsData removeAllObjects];
+    
+    [self.cachedHeightForCell removeAllObjects];
+    [self.cachedSizeForCell removeAllObjects];
+    
     return removed;
 }
 
 - (void)exchangeElementAtIndex:(NSInteger)index withElementAtIndex:(NSInteger)otherIndex {
-    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
-    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    validateNoneInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    validateNoneInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
     [_itemsData exchangeObjectAtIndex:index withObjectAtIndex:otherIndex];
+    
+    [self.cachedHeightForCell exchangeObjectAtIndex:index withObjectAtIndex:otherIndex];
+    [self.cachedSizeForCell exchangeObjectAtIndex:index withObjectAtIndex:otherIndex];
 }
 
 - (void)exchangeDataAtIndex:(NSInteger)sourceIndex withDataAtIndex:(NSInteger)destinationIndex {
@@ -294,66 +343,74 @@
 }
 
 - (void)moveElementAtIndex:(NSInteger)index toIndex:(NSInteger)otherIndex {
-    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
-    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    validateNoneInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    validateNoneInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
     if (index == otherIndex) {
         return;
     }
     
-    id moved = [_itemsData objectAtIndex:index];
+    id moved = [self.itemsData objectAtIndex:index];
     [_itemsData removeObjectAtIndex:index];
     [_itemsData insertObject:moved atIndex:otherIndex];
+    
+    NSNumber *height = [self.cachedHeightForCell objectAtIndex:index];
+    [self.cachedHeightForCell removeObjectAtIndex:index];
+    [self.cachedHeightForCell insertObject:height atIndex:otherIndex];
+    
+    NSValue *size = [self.cachedSizeForCell objectAtIndex:index];
+    [self.cachedSizeForCell removeObjectAtIndex:index];
+    [self.cachedSizeForCell insertObject:size atIndex:otherIndex];
 }
 
 #pragma mark - Cache Height
 
 - (void)cacheHeight:(CGFloat)height forIndex:(NSInteger)index {
-    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
-    _cachedHeightForCell[index] = @(height);
+    validateNoneInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    self.cachedHeightForCell[index] = @(height);
 }
 - (CGFloat)cachedHeightForIndex:(NSInteger)index {
-    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    validateNoneInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
 #if defined(__LP64__) && __LP64__
-    return [_cachedHeightForCell[index] doubleValue];
+    return [self.cachedHeightForCell[index] doubleValue];
 #else
-    return [_cachedHeightForCell[index] floatValue];
+    return [self.cachedHeightForCell[index] floatValue];
 #endif
 }
 
 - (void)cacheSize:(CGSize)size forIndex:(NSInteger)index {
-    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
-    _cachedSizeForCell[index] = [NSValue valueWithCGSize:size];
+    validateNoneInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    self.cachedSizeForCell[index] = [NSValue valueWithCGSize:size];
 }
 
 - (CGSize)cachedSizeForIndex:(NSInteger)index {
-    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
-    return [_cachedSizeForCell[index] CGSizeValue];
+    validateNoneInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    return [self.cachedSizeForCell[index] CGSizeValue];
 }
 
 - (void)invalidateCachedCellHeightForIndex:(NSInteger)index {
-    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
-    _cachedHeightForCell[index] = @(UITableViewAutomaticDimension);
+    validateNoneInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    self.cachedHeightForCell[index] = @(UITableViewAutomaticDimension);
 }
 
 - (void)invalidateCachedCellSizeForIndex:(NSInteger)index {
-    validateNoneInsertElementArgumentIndex(_itemsData, index, __FILE__, __LINE__, __FUNCTION__);
-    _cachedSizeForCell[index] = [NSValue valueWithCGSize:CGSizeZero];
+    validateNoneInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
+    self.cachedSizeForCell[index] = [NSValue valueWithCGSize:CGSizeZero];
 }
 
 - (void)invalidateCachedHeightForHeader {
-    _cachedHeightForHeader = 0.0f;
+    self.cachedHeightForHeader = 0.0f;
 }
 
 - (void)invalidateCachedHeightForFooter {
-    _cachedHeightForFooter = 0.0f;
+    self.cachedHeightForFooter = 0.0f;
 }
 
 - (void)invalidateCachedSizeForHeader {
-    _cachedSizeForHeader = CGSizeZero;
+    self.cachedSizeForHeader = CGSizeZero;
 }
 
 - (void)invalidateCachedSizeForFooter {
-    _cachedSizeForFooter = CGSizeZero;
+    self.cachedSizeForFooter = CGSizeZero;
 }
 
 

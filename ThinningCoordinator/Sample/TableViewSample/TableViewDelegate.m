@@ -10,6 +10,10 @@
 
 @implementation TableViewDelegate
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [self heightForRowAtIndexPath:indexPath];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return [self heightForHeaderInSection:section];
 }
