@@ -25,7 +25,7 @@
 		46EF52E41C50FB4D00E3117E /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EF52E31C50FB4D00E3117E /* CollectionViewCell.m */; };
 		46EF52E71C50FED800E3117E /* Text.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EF52E61C50FED800E3117E /* Text.m */; };
 		46EF52EA1C51116A00E3117E /* CollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 46EF52E91C51116A00E3117E /* CollectionViewFlowLayout.m */; };
-		46F2E7A91C507B21005D6CD6 /* ResuableView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7A81C507B21005D6CD6 /* ResuableView+Extension.m */; };
+		46F2E7A91C507B21005D6CD6 /* ResuableView+TCExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7A81C507B21005D6CD6 /* ResuableView+TCExtension.m */; };
 		46F2E7AE1C50AAE8005D6CD6 /* CollectionViewSampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7AD1C50AAE8005D6CD6 /* CollectionViewSampleViewController.m */; };
 		46F2E7B11C50ABC6005D6CD6 /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7B01C50ABC6005D6CD6 /* TableViewCell.m */; };
 		46F2E7B41C50ACF6005D6CD6 /* TableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7B31C50ACF6005D6CD6 /* TableViewDataSource.m */; };
@@ -75,8 +75,8 @@
 		46EF52E81C51116A00E3117E /* CollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		46EF52E91C51116A00E3117E /* CollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		46EF52EB1C51148600E3117E /* TCSectionDataMetric+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TCSectionDataMetric+Private.h"; sourceTree = "<group>"; };
-		46F2E7A71C507B21005D6CD6 /* ResuableView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ResuableView+Extension.h"; sourceTree = "<group>"; };
-		46F2E7A81C507B21005D6CD6 /* ResuableView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ResuableView+Extension.m"; sourceTree = "<group>"; };
+		46F2E7A71C507B21005D6CD6 /* ResuableView+TCExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ResuableView+TCExtension.h"; sourceTree = "<group>"; };
+		46F2E7A81C507B21005D6CD6 /* ResuableView+TCExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ResuableView+TCExtension.m"; sourceTree = "<group>"; };
 		46F2E7AC1C50AAE8005D6CD6 /* CollectionViewSampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewSampleViewController.h; sourceTree = "<group>"; };
 		46F2E7AD1C50AAE8005D6CD6 /* CollectionViewSampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewSampleViewController.m; sourceTree = "<group>"; };
 		46F2E7AF1C50ABC6005D6CD6 /* TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
@@ -164,11 +164,11 @@
 			isa = PBXGroup;
 			children = (
 				46997CD61C4FA9A900D30602 /* ThinningCoordinator.h */,
-				46997CCE1C4FA9A100D30602 /* TCSectionDataMetric.h */,
 				46EF52EB1C51148600E3117E /* TCSectionDataMetric+Private.h */,
+				46997CCE1C4FA9A100D30602 /* TCSectionDataMetric.h */,
 				46997CCF1C4FA9A100D30602 /* TCSectionDataMetric.m */,
-				46997CCA1C4FA9A100D30602 /* TCGlobalDataMetric.h */,
 				46E9D5DA1C51197100263B8B /* TCGlobalDataMetric+Private.h */,
+				46997CCA1C4FA9A100D30602 /* TCGlobalDataMetric.h */,
 				46997CCB1C4FA9A100D30602 /* TCGlobalDataMetric.m */,
 				46997CC71C4FA9A100D30602 /* TCDataSourceProtocol.h */,
 				46997CC61C4FA9A100D30602 /* TCDataSource+Private.h */,
@@ -179,8 +179,8 @@
 				46997CC91C4FA9A100D30602 /* TCDelegate.m */,
 				46997CCC1C4FA9A100D30602 /* TCHelper.h */,
 				46997CCD1C4FA9A100D30602 /* TCHelper.m */,
-				46F2E7A71C507B21005D6CD6 /* ResuableView+Extension.h */,
-				46F2E7A81C507B21005D6CD6 /* ResuableView+Extension.m */,
+				46F2E7A71C507B21005D6CD6 /* ResuableView+TCExtension.h */,
+				46F2E7A81C507B21005D6CD6 /* ResuableView+TCExtension.m */,
 				46F2E7B81C50ADAF005D6CD6 /* NSObject+TCIdentifier.h */,
 				46F2E7B91C50ADAF005D6CD6 /* NSObject+TCIdentifier.m */,
 				46F2E7BB1C50B6B6005D6CD6 /* TCDefaultSupplementaryView.h */,
@@ -384,7 +384,7 @@
 				46997CD51C4FA9A100D30602 /* TCSectionDataMetric.m in Sources */,
 				46997CD11C4FA9A100D30602 /* TCDataSource.m in Sources */,
 				46F2E7B11C50ABC6005D6CD6 /* TableViewCell.m in Sources */,
-				46F2E7A91C507B21005D6CD6 /* ResuableView+Extension.m in Sources */,
+				46F2E7A91C507B21005D6CD6 /* ResuableView+TCExtension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

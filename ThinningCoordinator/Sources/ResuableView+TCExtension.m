@@ -24,7 +24,7 @@
 //  THE SOFTWARE.
 //
 
-#import "ResuableView+Extension.h"
+#import "ResuableView+TCExtension.h"
 #import "TCHelper.h"
 #import <objc/runtime.h>
 

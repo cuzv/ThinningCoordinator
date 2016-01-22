@@ -34,6 +34,12 @@
 - (void)cacheSize:(CGSize)size forIndex:(NSInteger)index;
 - (CGSize)cachedSizeForIndex:(NSInteger)index;
 
+@property (nonatomic, assign, readwrite) CGFloat cachedHeightForHeader;
+@property (nonatomic, assign, readwrite) CGFloat cachedHeightForFooter;
+
+@property (nonatomic, assign, readwrite) CGSize cachedSizeForHeader;
+@property (nonatomic, assign, readwrite) CGSize cachedSizeForFooter;
+
 
 @end
 

@@ -26,6 +26,7 @@
 
 
 #import "TCSectionDataMetric.h"
+#import "TCSectionDataMetric+Private.h"
 #import "TCHelper.h"
 
 @interface TCSectionDataMetric ()
@@ -41,12 +42,6 @@
 
 @property (nonatomic, strong) NSMutableArray<NSNumber *> *cachedHeightForCell;
 @property (nonatomic, strong) NSMutableArray<NSValue *> *cachedSizeForCell;
-
-@property (nonatomic, assign) CGFloat cachedHeightForHeader;
-@property (nonatomic, assign) CGFloat cachedHeightForFooter;
-
-@property (nonatomic, assign) CGSize cachedSizeForHeader;
-@property (nonatomic, assign) CGSize cachedSizeForFooter;
 
 @end
 

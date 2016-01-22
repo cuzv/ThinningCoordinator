@@ -33,7 +33,7 @@
 #import "TCHelper.h"
 #import "TCDefaultSupplementaryView.h"
 #import "NSObject+TCIdentifier.h"
-#import "ResuableView+Extension.h"
+#import "ResuableView+TCExtension.h"
 
 @interface TCDataSource ()
 

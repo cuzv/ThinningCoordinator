@@ -24,10 +24,11 @@
 //  THE SOFTWARE.
 //
 
-
 #import "TCGlobalDataMetric.h"
 #import "TCSectionDataMetric.h"
+#import "TCSectionDataMetric+Private.h"
 #import "TCHelper.h"
+
 
 @interface TCGlobalDataMetric ()
 @property (nonatomic, strong) NSMutableArray<TCSectionDataMetric *> *sectionDataMetrics;
@@ -414,6 +415,105 @@
             [NSException raise:@"FatalError: take out data faild." format:@""];
         }
     }
+}
+
+
+#pragma mark - Cache Size & Height
+
+- (void)cacheHeight:(CGFloat)height forIndexPath:(nonnull NSIndexPath *)indexPath {
+    NSInteger section = indexPath.section;
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    [_sectionDataMetrics[section] cacheHeight:height forIndex:indexPath.item];
+}
+
+- (CGFloat)cachedHeightForIndexPath:(nonnull NSIndexPath *)indexPath {
+    NSInteger section = indexPath.section;
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    return [_sectionDataMetrics[section] cachedHeightForIndex:indexPath.item];
+}
+
+- (void)cacheSize:(CGSize)size forIndexPath:(nonnull NSIndexPath *)indexPath {
+    NSInteger section = indexPath.section;
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    [_sectionDataMetrics[section] cacheSize:size forIndex:indexPath.item];
+}
+
+- (CGSize)cachedSizeForIndexPath:(nonnull NSIndexPath *)indexPath {
+    NSInteger section = indexPath.section;
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    return [_sectionDataMetrics[section] cachedSizeForIndex:indexPath.item];
+}
+
+- (void)cacheHeight:(CGFloat)height forHeaderInSection:(NSInteger)section {
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    _sectionDataMetrics[section].cachedHeightForHeader = height;
+}
+
+- (CGFloat)cachedHeightForHeaderInSection:(NSInteger)section {
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    return _sectionDataMetrics[section].cachedHeightForHeader;
+}
+
+- (void)cacheSize:(CGSize)size forHeaderInSection:(NSInteger)section {
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    _sectionDataMetrics[section].cachedSizeForHeader = size;
+}
+
+- (CGSize)cachedSizeForHeaderInSection:(NSInteger)section {
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    return _sectionDataMetrics[section].cachedSizeForHeader;
+}
+
+- (void)cacheHeight:(CGFloat)height forFooterInSection:(NSInteger)section {
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    _sectionDataMetrics[section].cachedHeightForFooter = height;
+}
+
+- (CGFloat)cachedHeightForFooterInSection:(NSInteger)section {
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    return _sectionDataMetrics[section].cachedHeightForFooter;
+}
+
+- (void)cacheSize:(CGSize)size forFooterInSection:(NSInteger)section {
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    _sectionDataMetrics[section].cachedSizeForFooter = size;
+}
+
+- (CGSize)cachedSizeForFooterInSection:(NSInteger)section {
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    return _sectionDataMetrics[section].cachedSizeForFooter;
+}
+
+- (void)invalidateCachedCellHeightForIndexPath:(nonnull NSIndexPath *)indexPath {
+    NSInteger section = indexPath.section;
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    [_sectionDataMetrics[section] invalidateCachedCellHeightForIndex:indexPath.item];
+}
+
+- (void)invalidateCachedCellSizeForIndexPath:(nonnull NSIndexPath *)indexPath {
+    NSInteger section = indexPath.section;
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    [_sectionDataMetrics[section] invalidateCachedCellSizeForIndex:indexPath.item];
+}
+
+- (void)invalidateCachedHeightForHeaderInSection:(NSInteger)section {
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    _sectionDataMetrics[section].cachedHeightForHeader = UITableViewAutomaticDimension;
+}
+
+- (void)invalidateCachedHeightForFooterInSection:(NSInteger)section {
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    _sectionDataMetrics[section].cachedHeightForFooter = UITableViewAutomaticDimension;
+}
+
+- (void)invalidateCachedSizeForHeaderInSection:(NSInteger)section {
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    _sectionDataMetrics[section].cachedSizeForHeader = CGSizeZero;
+}
+
+- (void)invalidateCachedSizeForFooterInSection:(NSInteger)section {
+    validateNoneInsertElementArgumentIndex(_sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
+    _sectionDataMetrics[section].cachedSizeForFooter = CGSizeZero;
 }
 
 

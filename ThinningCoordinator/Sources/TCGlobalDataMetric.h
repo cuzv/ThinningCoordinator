@@ -187,4 +187,13 @@
 /// Move data.
 - (void)moveAtIndexPath:(nonnull NSIndexPath *)sourceIndexPath toIndexPath:(nonnull NSIndexPath *)destinationIndexPath;
 
+#pragma mark - Cache Size & Height
+
+- (void)invalidateCachedCellHeightForIndexPath:(nonnull NSIndexPath *)indexPath;
+- (void)invalidateCachedCellSizeForIndexPath:(nonnull NSIndexPath *)indexPath;
+- (void)invalidateCachedHeightForHeaderInSection:(NSInteger)section;
+- (void)invalidateCachedHeightForFooterInSection:(NSInteger)section;
+- (void)invalidateCachedSizeForHeaderInSection:(NSInteger)section;
+- (void)invalidateCachedSizeForFooterInSection:(NSInteger)section;
+
 @end
