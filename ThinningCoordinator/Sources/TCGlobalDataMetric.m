@@ -297,20 +297,20 @@
     [self insertContentsOf:data atIndexPath:indexPath];
 }
 
-- (void)replace:(nonnull id)data atIndexPath:(nonnull NSIndexPath *)indexPath {
+- (void)replaceWith:(nonnull id)data atIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
     validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
     [self.sectionDataMetrics[section] replaceWith:data atIndex:indexPath.item];
 }
 
-- (void)replaceContentsOf:(nonnull NSArray *)data atIndexPath:(nonnull NSIndexPath *)indexPath {
+- (void)replaceWithContentsOf:(nonnull NSArray *)data atIndexPath:(nonnull NSIndexPath *)indexPath {
     NSInteger section = indexPath.section;
     validateNoneInsertElementArgumentIndex(self.sectionDataMetrics, section, __FILE__, __LINE__, __FUNCTION__);
     [self.sectionDataMetrics[section] replaceWithContentsOf:data atIndex:indexPath.item];
 }
 
 - (void)replaceData:(NSArray *)data atIndexPath:(NSIndexPath *)indexPath {
-    [self replaceContentsOf:data atIndexPath:indexPath];
+    [self replaceWithContentsOf:data atIndexPath:indexPath];
 }
 
 - (nullable TCSectionDataMetric *)removeFirst {

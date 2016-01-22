@@ -149,10 +149,10 @@
 - (void)insertData:(nonnull NSArray *)data atIndexPath:(nonnull NSIndexPath *)indexPath __attribute__((deprecated("use `insertContentsOf:atIndexPath` instead.")));
 
 /// Replace single data to specific section data metric.
-- (void)replace:(nonnull id)data atIndexPath:(nonnull NSIndexPath *)indexPath;
+- (void)replaceWith:(nonnull id)data atIndexPath:(nonnull NSIndexPath *)indexPath;
 
 /// Replace multiple data to specific section data metric.
-- (void)replaceContentsOf:(nonnull NSArray *)data atIndexPath:(nonnull NSIndexPath *)indexPath;
+- (void)replaceWithContentsOf:(nonnull NSArray *)data atIndexPath:(nonnull NSIndexPath *)indexPath;
 
 /// Replace specific item new data to specific section data metric
 - (void)replaceData:(nonnull NSArray *)data atIndexPath:(nonnull NSIndexPath *)indexPath __attribute__((deprecated("use `replaceContentsOf:atIndexPath:` instead.")));
