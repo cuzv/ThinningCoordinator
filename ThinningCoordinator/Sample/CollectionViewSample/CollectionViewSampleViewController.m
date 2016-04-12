@@ -30,10 +30,6 @@
         make.edges.equalTo(self.view);
     }];
     
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-    [self.collectionView addGestureRecognizer:longPress];
- 
-    
     NSArray *data0 = @[@"Michael", @"Moch", @"KKKK"];
     TCSectionDataMetric *section0 = [[TCSectionDataMetric alloc] initWithItemsData:data0 dataForHeader:header dataForFooter:footer];
     
@@ -47,35 +43,11 @@
     
     self.dataSource.globalDataMetric = globalDataMetric;
     [self.collectionView reloadData];
-}
-
-- (IBAction)handleMove:(UIBarButtonItem *)sender {
-}
-
-
-- (void)handleLongPress:(UILongPressGestureRecognizer *)sender {
-    UIGestureRecognizerState state = sender.state;
     
-    switch (state) {
-        case UIGestureRecognizerStateBegan: {
-            NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:[sender locationInView:self.collectionView]];
-            if (indexPath) {
-                [self.collectionView beginInteractiveMovementForItemAtIndexPath:indexPath];
-            }
-        }
-            break;
-        case UIGestureRecognizerStateChanged:
-            [self.collectionView updateInteractiveMovementTargetPosition:[sender locationInView:sender.view]];
-            break;
-        case UIGestureRecognizerStateEnded:
-            [self.collectionView endInteractiveMovement];
-           break;
-        default:
-            [self.collectionView cancelInteractiveMovement];
-            break;
-    }
+    // 如果你需要使用重新排序功能，由于 UICollectionView iOS 9 才提供了官方的 API, 其他支持请查看三方实现。比如
+    // https://github.com/LiorNn/DragDropCollectionView
+    // https://github.com/ra1028/RAReorderableLayout
 }
-
 
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
