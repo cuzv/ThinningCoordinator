@@ -31,10 +31,10 @@
 @class TCDelegate;
 @interface TCDataSource : NSObject <UITableViewDataSource, UICollectionViewDataSource>
 
-@property (nonatomic, weak, readonly) UITableView *tableView;
+@property (nonatomic, weak, readonly, nullable) UITableView *tableView;
 - (nullable instancetype)initWithTableView:(nonnull UITableView *)tableView;
 
-@property (nonatomic, weak, readonly) UICollectionView *collectionView;
+@property (nonatomic, weak, readonly, nullable) UICollectionView *collectionView;
 - (nullable instancetype)initWithCollectionView:(nonnull UICollectionView *)collectionView;
 
 /// The tableview or collction view data metric.
