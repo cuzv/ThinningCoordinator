@@ -25,10 +25,3 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface TCDelegate ()
-
-@property (nonatomic, assign, readonly) BOOL scrollingToTop;
-@property (nonatomic, strong, readonly, nullable) NSValue *targetRect;
-
-@end

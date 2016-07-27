@@ -27,31 +27,3 @@
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
 
-@protocol TCImageLazyLoadable;
-
-@interface TCDataSource ()
-
-@property (nonatomic, weak, readonly, nullable) id<TCImageLazyLoadable> lazyLoadable;
-
-#pragma mark - UITableViewDelegate helper methods
-
-/// TCDelegate subclass UITableViewDelegate require row height, simple return this method
-- (CGFloat)_heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath;
-
-/// TCDelegate subclass UITableViewDelegate require header view height, simple return this method
-- (CGFloat)_heightForHeaderInSection:(NSInteger)section;
-/// TCDelegate subclass UITableViewDelegate require footer view, simple return this method
-- (nullable UIView *)_viewForHeaderInSection:(NSInteger)section;
-
-/// TCDelegate subclass UITableViewDelegate require footer view height, simple return this method
-- (CGFloat)_heightForFooterInSection:(NSInteger)section;
-/// TCDelegate subclass UITableViewDelegate require footer view, simple return this method
-- (nullable UIView *)_viewForFooterInSection:(NSInteger)section;
-
-
-#pragma mark - UICollectionViewDelegate helper methods
-
-- (CGSize)_sizeForItemAtIndexPath:(nonnull NSIndexPath *)indexPath preferredLayoutSizeFittingSize:(CGSize)fittingSize cellType:(nonnull Class)type;
-- (CGSize)_sizeForSupplementaryViewAtIndexPath:(nonnull NSIndexPath *)indexPath preferredLayoutSizeFittingSize:(CGSize)fittingSize cellType:(nonnull Class)type ofKind:(nonnull NSString *)kind;
-
-@end

@@ -197,3 +197,26 @@
 - (void)invalidateCachedSizeForFooterInSection:(NSInteger)section;
 
 @end
+
+
+@interface TCGlobalDataMetric ()
+
+- (void)cacheHeight:(CGFloat)height forIndexPath:(nonnull NSIndexPath *)indexPath;
+- (CGFloat)cachedHeightForIndexPath:(nonnull NSIndexPath *)indexPath;
+
+- (void)cacheSize:(CGSize)size forIndexPath:(nonnull NSIndexPath *)indexPath;
+- (CGSize)cachedSizeForIndexPath:(nonnull NSIndexPath *)indexPath;
+
+- (void)cacheHeight:(CGFloat)height forHeaderInSection:(NSInteger)section;
+- (CGFloat)cachedHeightForHeaderInSection:(NSInteger)section;
+
+- (void)cacheSize:(CGSize)size forHeaderInSection:(NSInteger)section;
+- (CGSize)cachedSizeForHeaderInSection:(NSInteger)section;
+
+- (void)cacheHeight:(CGFloat)height forFooterInSection:(NSInteger)section;
+- (CGFloat)cachedHeightForFooterInSection:(NSInteger)section;
+
+- (void)cacheSize:(CGSize)size forFooterInSection:(NSInteger)section;
+- (CGSize)cachedSizeForFooterInSection:(NSInteger)section;
+
+@end
