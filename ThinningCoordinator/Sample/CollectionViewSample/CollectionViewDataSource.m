@@ -9,6 +9,7 @@
 #import "CollectionViewDataSource.h"
 #import "CollectionViewCell.h"
 #import "ThinningCoordinator.h"
+#import "CollectionViewHeaderFooterView.h"
 
 @implementation CollectionViewDataSource
 
@@ -28,6 +29,35 @@
     [reusableCell setupData:data];
 }
 
+
+#pragma mark - TCCollectionSupplementaryViewibility
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+    return [self viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
+}
+
+- (void)registerReusableSupplementaryView {
+    [self.collectionView registerClass:CollectionViewHeaderFooterView.class forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:CollectionViewHeaderFooterView.tc_identifier];
+    [self.collectionView registerClass:CollectionViewHeaderFooterView.class forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:CollectionViewHeaderFooterView.tc_identifier2];
+}
+
+- (nullable NSString *)reusableSupplementaryHeaderViewIdentifierForIndexPath:(nonnull NSIndexPath *)indexPath {
+    return CollectionViewHeaderFooterView.tc_identifier;
+}
+
+- (void)loadData:(nonnull id)data forReusableSupplementaryHeaderView:(nonnull UICollectionReusableView *)reusableView {
+    CollectionViewHeaderFooterView *headerView = (CollectionViewHeaderFooterView *)reusableView;
+    [headerView setupData:data];
+}
+
+- (nullable NSString *)reusableSupplementaryFooterViewIdentifierForIndexPath:(nonnull NSIndexPath *)indexPath {
+    return CollectionViewHeaderFooterView.tc_identifier2;
+}
+
+- (void)loadData:(nonnull id)data forReusableSupplementaryFooterView:(nonnull UICollectionReusableView *)reusableView {
+    CollectionViewHeaderFooterView *footerView = (CollectionViewHeaderFooterView *)reusableView;
+    [footerView setupData:data];
+}
 
 #pragma mark - TCTableViewCollectionViewMovable
 

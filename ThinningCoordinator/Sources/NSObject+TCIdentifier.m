@@ -32,4 +32,8 @@
     return NSStringFromClass(self.class);
 }
 
++ (nonnull NSString *)tc_identifier2 {
+    return [NSString stringWithFormat:@"%@2222", NSStringFromClass(self.class)];
+}
+
 @end

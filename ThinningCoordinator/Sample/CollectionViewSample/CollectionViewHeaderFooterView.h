@@ -10,4 +10,6 @@
 
 @interface CollectionViewHeaderFooterView : UICollectionReusableView
 
+- (void)setupData:(id)data;
+
 @end

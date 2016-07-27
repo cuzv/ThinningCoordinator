@@ -517,7 +517,7 @@
         }
     }
     else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
-        CGSize size = [self.globalDataMetric cachedSizeForFooterInSection:section];
+        size = [self.globalDataMetric cachedSizeForFooterInSection:section];
         if (!CGSizeEqualToSize(CGSizeZero, size)) {
             return size;
         }

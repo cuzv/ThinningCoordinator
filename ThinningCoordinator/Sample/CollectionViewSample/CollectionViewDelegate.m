@@ -18,6 +18,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGSize fittingSize = CGSizeMake(ceil(CGRectGetWidth(self.collectionView.bounds) - 20), UILayoutFittingExpandedSize.height);
     CGSize size = [self sizeForItemAtIndexPath:indexPath preferredLayoutSizeFittingSize:fittingSize cellType:CollectionViewCell.class];
+    size.width = fittingSize.width;
     return size;
 }
 
@@ -37,14 +38,15 @@
     CGSize fittingSize = CGSizeMake(CGRectGetWidth(collectionView.bounds), UILayoutFittingExpandedSize.height);
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
     CGSize size = [self sizeForSupplementaryViewAtIndexPath:indexPath preferredLayoutSizeFittingSize:fittingSize cellType:CollectionViewHeaderFooterView.class ofKind:UICollectionElementKindSectionHeader];
+    NSLog(@"header size: %@", NSStringFromCGSize(size));
     return size;
-
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
     CGSize fittingSize = CGSizeMake(CGRectGetWidth(collectionView.bounds), UILayoutFittingExpandedSize.height);
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:section];
     CGSize size = [self sizeForSupplementaryViewAtIndexPath:indexPath preferredLayoutSizeFittingSize:fittingSize cellType:CollectionViewHeaderFooterView.class ofKind:UICollectionElementKindSectionFooter];
+    NSLog(@"footer size: %@", NSStringFromCGSize(size));
     return size;
 }
 

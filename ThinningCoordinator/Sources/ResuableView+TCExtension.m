@@ -41,21 +41,12 @@ BOOL TCCollectionViewSupportsConstraintsProperty();
     frame.size = fittingSize;
     self.frame = frame;
     
-    CGSize size;
-    if (TCCollectionViewSupportsConstraintsProperty()) {
-        // Apple's implement like folow, somehow, it doesn't work.
-        // size = systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-        size = [self systemLayoutSizeFittingSize:CGSizeMake(fittingSize.width, UILayoutFittingCompressedSize.height)];
-    } else {
-        NSArray *constraints = @[
-                                 [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:fittingSize.width],
-                                 [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:UILayoutFittingExpandedSize.height]];
-        
-        [self addConstraints:constraints];
-        [self updateConstraints];
-        size = [self systemLayoutSizeFittingSize:fittingSize];
-        [self removeConstraints:constraints];
-    }
+    NSArray *constraints = @[[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:fittingSize.width],
+                             [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:UILayoutFittingExpandedSize.height]];
+    [self addConstraints:constraints];
+    [self updateConstraints];
+    CGSize size = [self systemLayoutSizeFittingSize:fittingSize];
+    [self removeConstraints:constraints];
     
     frame.size = size;
     self.frame = frame;
@@ -77,9 +68,7 @@ BOOL TCCollectionViewSupportsConstraintsProperty();
     CGSize size;
     if (TCCollectionViewSupportsConstraintsProperty()) {
         [self layoutSubviews];
-        // Apple's implement like folow, somehow, it doesn't work.
-        // size = systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-        size = [self.contentView systemLayoutSizeFittingSize:CGSizeMake(fittingSize.width, UILayoutFittingCompressedSize.height)];
+        size = [self.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     } else {
         NSArray *constraints = @[
                                  [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:fittingSize.width],
@@ -124,8 +113,6 @@ BOOL TCCollectionViewSupportsConstraintsProperty();
     CGSize size;
     if (TCCollectionViewSupportsConstraintsProperty()) {
         [self layoutSubviews];
-        // Apple's implement like folow, somehow, it doesn't work.
-        // size = systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
         size = [self.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
     } else {
         NSArray *constraints = @[
@@ -139,11 +126,11 @@ BOOL TCCollectionViewSupportsConstraintsProperty();
     }
     
     // Only consider the height for cells, because the contentView isn't anchored correctly sometimes.
-    fittingSize.height = size.height;
-    frame.size = fittingSize;
+    size.width = fittingSize.width;
+    frame.size = size;
     self.frame = frame;
     
-    return fittingSize;
+    return size;
 }
 
 @end

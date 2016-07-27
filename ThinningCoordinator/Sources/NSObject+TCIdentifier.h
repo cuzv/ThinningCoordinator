@@ -30,5 +30,6 @@
 @interface NSObject (TCIdentifier)
 
 + (nonnull NSString *)tc_identifier;
++ (nonnull NSString *)tc_identifier2;
 
 @end

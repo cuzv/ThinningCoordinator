@@ -10,6 +10,7 @@
 
 @interface CollectionViewDataSource : TCDataSource<
     TCDataSourceable,
+    TCCollectionSupplementaryViewibility,
     TCTableViewCollectionViewMovable
 >
 

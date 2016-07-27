@@ -33,7 +33,7 @@
     [super layoutSubviews];
     [self.contentView setNeedsLayout];
     [self.contentView layoutIfNeeded];
-    self.nameLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.nameLabel.bounds);
+    self.nameLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.nameLabel.bounds) - 16;
 }
 
 - (void)setupUserInterface {

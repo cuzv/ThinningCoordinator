@@ -31,7 +31,8 @@
     }];
     
     NSArray *data0 = @[@"Michael", @"Moch", @"KKKK"];
-    TCSectionDataMetric *section0 = [[TCSectionDataMetric alloc] initWithItemsData:data0 dataForHeader:header dataForFooter:footer];
+    
+    TCSectionDataMetric *section0 = [[TCSectionDataMetric alloc] initWithItemsData:data0 dataForSupplementaryHeader:@[header] dataForSupplementaryFooter:@[footer]];
     
     NSArray *data1 = @[@"Kevin", @"Anna", text1,  @"Jack"];
     TCSectionDataMetric *section1 = [[TCSectionDataMetric alloc] initWithItemsData:data1];
@@ -51,7 +52,7 @@
 
 - (UICollectionView *)collectionView {
     if (!_collectionView) {
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:[CollectionViewFlowLayout new]];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:[UICollectionViewFlowLayout new]];
         _collectionView.backgroundColor = [UIColor whiteColor];
         _collectionView.delegate = self.delegate;
         _collectionView.dataSource = self.dataSource;
