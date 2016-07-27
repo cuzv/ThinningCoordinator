@@ -81,12 +81,3 @@ NS_ASSUME_NONNULL_END
 
 
 @end
-
-
-
-@interface TCDelegate ()
-
-@property (nonatomic, assign) BOOL scrollingToTop;
-@property (nonatomic, strong, nullable) NSValue *targetRect;
-
-@end

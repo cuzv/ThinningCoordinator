@@ -32,11 +32,10 @@
 		46F2E7B71C50AD0A005D6CD6 /* TableViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7B61C50AD0A005D6CD6 /* TableViewDelegate.m */; };
 		46F2E7BA1C50ADAF005D6CD6 /* NSObject+TCIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7B91C50ADAF005D6CD6 /* NSObject+TCIdentifier.m */; };
 		46F2E7BD1C50B6B6005D6CD6 /* TCDefaultSupplementaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F2E7BC1C50B6B6005D6CD6 /* TCDefaultSupplementaryView.m */; };
-		F0A977E64F1E8FE22E64C2C6 /* libPods-ThinningCoordinator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 122F27518F0A1F10E3644E4C /* libPods-ThinningCoordinator.a */; };
+		9D397E64A3D3ECB894B102C7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD30927262BCC04728CDC2F /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		122F27518F0A1F10E3644E4C /* libPods-ThinningCoordinator.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ThinningCoordinator.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4650F5051C50EFDB00A8AEDA /* TableViewHeaderFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewHeaderFooterView.h; sourceTree = "<group>"; };
 		4650F5061C50EFDB00A8AEDA /* TableViewHeaderFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewHeaderFooterView.m; sourceTree = "<group>"; };
 		46997CA61C4FA8F600D30602 /* ThinningCoordinator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThinningCoordinator.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,8 +90,9 @@
 		46F2E7BB1C50B6B6005D6CD6 /* TCDefaultSupplementaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCDefaultSupplementaryView.h; sourceTree = "<group>"; };
 		46F2E7BC1C50B6B6005D6CD6 /* TCDefaultSupplementaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCDefaultSupplementaryView.m; sourceTree = "<group>"; };
 		46F2E7BE1C50CD7C005D6CD6 /* TCDelegate+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TCDelegate+Private.h"; sourceTree = "<group>"; };
-		CF9B3D3C04731D7F736EB70C /* Pods-ThinningCoordinator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ThinningCoordinator.release.xcconfig"; path = "Pods/Target Support Files/Pods-ThinningCoordinator/Pods-ThinningCoordinator.release.xcconfig"; sourceTree = "<group>"; };
-		F9FBCD22CCACC44BF8377B7B /* Pods-ThinningCoordinator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ThinningCoordinator.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ThinningCoordinator/Pods-ThinningCoordinator.debug.xcconfig"; sourceTree = "<group>"; };
+		5239C93AB0A6B93A02C03BD4 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		81A76FF816AABC767F30FD6E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		FAD30927262BCC04728CDC2F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,7 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F0A977E64F1E8FE22E64C2C6 /* libPods-ThinningCoordinator.a in Frameworks */,
+				9D397E64A3D3ECB894B102C7 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,8 +112,8 @@
 			children = (
 				46997CA71C4FA8F600D30602 /* Products */,
 				46997CA81C4FA8F600D30602 /* ThinningCoordinator */,
-				84A5BF90AC6D485A569A5103 /* Pods */,
-				4DEEAC6138A804FD0B5A23C6 /* Frameworks */,
+				4BFC6ACBF5F6B48D3F360B95 /* Pods */,
+				6DDBE10C31CD371B5F1AB8A6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -225,21 +225,21 @@
 			path = CollectionViewSample;
 			sourceTree = "<group>";
 		};
-		4DEEAC6138A804FD0B5A23C6 /* Frameworks */ = {
+		4BFC6ACBF5F6B48D3F360B95 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				122F27518F0A1F10E3644E4C /* libPods-ThinningCoordinator.a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		84A5BF90AC6D485A569A5103 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				F9FBCD22CCACC44BF8377B7B /* Pods-ThinningCoordinator.debug.xcconfig */,
-				CF9B3D3C04731D7F736EB70C /* Pods-ThinningCoordinator.release.xcconfig */,
+				81A76FF816AABC767F30FD6E /* Pods.debug.xcconfig */,
+				5239C93AB0A6B93A02C03BD4 /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		6DDBE10C31CD371B5F1AB8A6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FAD30927262BCC04728CDC2F /* libPods.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -249,12 +249,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 46997CBD1C4FA8F600D30602 /* Build configuration list for PBXNativeTarget "ThinningCoordinator" */;
 			buildPhases = (
-				8627168C02C824AA8572CFB9 /* [CP] Check Pods Manifest.lock */,
+				BE92BF810B5BCC7C548F6D25 /* Check Pods Manifest.lock */,
 				46997CA21C4FA8F600D30602 /* Sources */,
 				46997CA31C4FA8F600D30602 /* Frameworks */,
 				46997CA41C4FA8F600D30602 /* Resources */,
-				BF2F4B4CCC23F4C865DDF334 /* [CP] Embed Pods Frameworks */,
-				D0048235CBD8CDB20B1A928C /* [CP] Copy Pods Resources */,
+				8C6B5279A90090EACB5A07F7 /* Embed Pods Frameworks */,
+				EC0B4CA5E49DD058BCE68EBD /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -311,14 +311,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		8627168C02C824AA8572CFB9 /* [CP] Check Pods Manifest.lock */ = {
+		8C6B5279A90090EACB5A07F7 /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BE92BF810B5BCC7C548F6D25 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -326,34 +341,19 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		BF2F4B4CCC23F4C865DDF334 /* [CP] Embed Pods Frameworks */ = {
+		EC0B4CA5E49DD058BCE68EBD /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ThinningCoordinator/Pods-ThinningCoordinator-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D0048235CBD8CDB20B1A928C /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ThinningCoordinator/Pods-ThinningCoordinator-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -496,12 +496,12 @@
 		};
 		46997CBE1C4FA8F600D30602 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F9FBCD22CCACC44BF8377B7B /* Pods-ThinningCoordinator.debug.xcconfig */;
+			baseConfigurationReference = 81A76FF816AABC767F30FD6E /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				INFOPLIST_FILE = ThinningCoordinator/Sample/Application/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.foobar.ThinningCoordinator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -510,12 +510,12 @@
 		};
 		46997CBF1C4FA8F600D30602 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CF9B3D3C04731D7F736EB70C /* Pods-ThinningCoordinator.release.xcconfig */;
+			baseConfigurationReference = 5239C93AB0A6B93A02C03BD4 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Brand Assets";
 				INFOPLIST_FILE = ThinningCoordinator/Sample/Application/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.foobar.ThinningCoordinator;
 				PRODUCT_NAME = "$(TARGET_NAME)";

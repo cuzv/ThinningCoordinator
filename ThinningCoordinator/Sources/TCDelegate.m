@@ -34,8 +34,8 @@
 @property (nonatomic, weak, readwrite) UITableView *tableView;
 @property (nonatomic, weak, readwrite) UICollectionView *collectionView;
 
-//@property (nonatomic, assign) BOOL scrollingToTop;
-//@property (nonatomic, strong, readwrite, nullable) NSValue *targetRect;
+@property (nonatomic, assign) BOOL scrollingToTop;
+@property (nonatomic, strong, readwrite, nullable) NSValue *targetRect;
 @end
 
 @implementation TCDelegate

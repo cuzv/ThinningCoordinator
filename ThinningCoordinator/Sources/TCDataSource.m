@@ -42,7 +42,7 @@
 @property (nonatomic, weak, readwrite) UICollectionView *collectionView;
 
 @property (nonatomic, weak, nullable) id<TCDataSourceable> sourceable;
-//@property (nonatomic, weak, nullable, readwrite) id<TCImageLazyLoadable> lazyLoadable;
+@property (nonatomic, weak, nullable, readwrite) id<TCImageLazyLoadable> lazyLoadable;
 @property (nonatomic, weak, nullable) id<TCTableViewCollectionViewMovable> movable;
 
 @property (nonatomic, weak, nullable) id<TCTableViewHeaderFooterViewibility> headerFooterViewibility;

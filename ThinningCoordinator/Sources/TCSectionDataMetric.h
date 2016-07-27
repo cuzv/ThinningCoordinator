@@ -157,23 +157,3 @@
 - (void)invalidateCachedSizeForFooter;
 
 @end
-
-
-
-
-@interface TCSectionDataMetric ()
-
-- (void)cacheHeight:(CGFloat)height forIndex:(NSInteger)index;
-- (CGFloat)cachedHeightForIndex:(NSInteger)index;
-
-- (void)cacheSize:(CGSize)size forIndex:(NSInteger)index;
-- (CGSize)cachedSizeForIndex:(NSInteger)index;
-
-@property (nonatomic, assign, readwrite) CGFloat cachedHeightForHeader;
-@property (nonatomic, assign, readwrite) CGFloat cachedHeightForFooter;
-
-@property (nonatomic, assign, readwrite) CGSize cachedSizeForHeader;
-@property (nonatomic, assign, readwrite) CGSize cachedSizeForFooter;
-
-
-@end
