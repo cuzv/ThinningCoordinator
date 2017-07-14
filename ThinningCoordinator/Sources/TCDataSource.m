@@ -88,7 +88,7 @@
     if ([self conformsToProtocol:@protocol(TCTableViewCollectionViewMovable)]) {
         self.movable = (id<TCTableViewCollectionViewMovable>)self;
     }
-
+    
     return self;
 }
 
@@ -104,7 +104,7 @@
 
 - (instancetype)initWithCollectionView:(UICollectionView *)collectionView {
     NSAssert(collectionView, NSLocalizedString(@"CollectionView can not be nil", nil));
-
+    
     self = [self __init__];
     _collectionView = collectionView;
     [self registerCollectionViewReusableView];
@@ -172,8 +172,8 @@
         [self.sourceable loadData:data forReusableCell:cell];
         
         if ([self conformsToProtocol:@protocol(TCImageLazyLoadable)]) {
-            CGRect targetRect = self.delegate.targetRect.CGRectValue;
-            if (CGRectIntersectsRect(targetRect, cell.frame)) {
+            NSValue *targetRect = self.delegate.targetRect;
+            if (!targetRect || CGRectIntersectsRect(targetRect.CGRectValue, cell.frame)) {
                 id lazyLoadable = (id<TCImageLazyLoadable>)self;
                 [lazyLoadable lazyLoadImagesData:data forReusableCell:cell];
             }
@@ -216,7 +216,7 @@
     if (!editable) {
         return NO;
     }
-
+    
     return [editable canEditElementAtIndexPath:indexPath];
 }
 
@@ -240,7 +240,7 @@
         [self.globalDataMetric insert:data atIndexPath:newIndexPath];
         [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
-
+    
     [editable commitEditingStyle:editingStyle forData:data];
 }
 
@@ -286,7 +286,7 @@
         [strong_self.sourceable loadData:data forReusableCell:cell];
     }];
     [self.globalDataMetric cacheHeight:height forIndexPath:indexPath];
- 
+    
     return height;
 }
 
@@ -338,7 +338,7 @@
     }
     
     [headerView prepareForReuse];
-
+    
     if (!self.delegate.scrollingToTop) {
         [headerFooterViewibility loadData:data forReusableHeaderView:headerView];
     }
@@ -354,7 +354,7 @@
     if (height != UITableViewAutomaticDimension) {
         return height;
     }
-
+    
     id headerFooterViewibility = self.headerFooterViewibility;
     if (!headerFooterViewibility) {
         return 10.0f;
@@ -369,7 +369,7 @@
     if (!data) {
         return 10.0f;
     }
-
+    
     height = [self.tableView tc_heightForReusableHeaderFooterViewByIdentifier:identifier dataConfigurationHandler:^(UITableViewHeaderFooterView * _Nonnull reusableHeaderFooterView) {
         [headerFooterViewibility loadData:data forReusableFooterView:reusableHeaderFooterView];
     }];
@@ -397,7 +397,7 @@
     }
     
     [footerView prepareForReuse];
-
+    
     if (!self.delegate.scrollingToTop) {
         [headerFooterViewibility loadData:data forReusableFooterView:footerView];
     }
@@ -431,14 +431,14 @@
         [self.sourceable loadData:data forReusableCell:cell];
         
         if ([self conformsToProtocol:@protocol(TCImageLazyLoadable)]) {
-            CGRect targetRect = self.delegate.targetRect.CGRectValue;
-            if (CGRectIntersectsRect(targetRect, cell.frame)) {
+            NSValue *targetRect = self.delegate.targetRect;
+            if (!targetRect || CGRectIntersectsRect(targetRect.CGRectValue, cell.frame)) {
                 id lazyLoadable = (id<TCImageLazyLoadable>)self;
                 [lazyLoadable lazyLoadImagesData:data forReusableCell:cell];
             }
         }
     }
-
+    
     [cell setNeedsUpdateConstraints];
     [cell updateConstraintsIfNeeded];
     
@@ -489,7 +489,7 @@
         [sourceable loadData:data forReusableCell:reusableView];
     }];
     [self.globalDataMetric cacheSize:size forIndexPath:indexPath];
-
+    
     return size;
 }
 
@@ -549,7 +549,7 @@
         if (!data) {
             return [self.collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:TCDefaultSupplementaryView.tc_identifier forIndexPath:indexPath];
         }
-
+        
         UICollectionReusableView *reusableView = [self.collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:identifier forIndexPath:indexPath];
         if (!self.delegate.scrollingToTop) {
             [supplementaryViewibility loadData:data forReusableSupplementaryHeaderView:reusableView];
@@ -566,12 +566,12 @@
         if (!data) {
             return [self.collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:TCDefaultSupplementaryView.tc_identifier forIndexPath:indexPath];
         }
-
+        
         UICollectionReusableView *reusableView = [self.collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:identifier forIndexPath:indexPath];
         if (!self.delegate.scrollingToTop) {
             [supplementaryViewibility loadData:data forReusableSupplementaryFooterView:reusableView];
         }
-
+        
         return reusableView;
     }
     else {
