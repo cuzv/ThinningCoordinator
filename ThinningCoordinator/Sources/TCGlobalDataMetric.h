@@ -169,6 +169,9 @@
 /// Remove specific data for indexPath.
 - (nullable id)removeAtIndexPath:(nonnull NSIndexPath *)indexPath;
 
+/// Remove specific data for indexPaths.
+- (nullable NSArray<id> *)removeAtIndexPaths:(nonnull NSArray<NSIndexPath *> *)indexPaths;
+
 /// Remove all data.
 - (nullable NSArray *)removeAll;
 

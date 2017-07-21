@@ -206,6 +206,7 @@
 
 - (void)append:(nonnull id)data {
     [_itemsData addObject:data];
+    
     [self.cachedHeightForCell addObject:@(UITableViewAutomaticDimension)];
     [self.cachedSizeForCell addObject:[NSValue valueWithCGSize:CGSizeZero]];
 }
@@ -229,17 +230,16 @@
 
 - (void)insertContentsOf:(nonnull NSArray *)data atIndex:(NSInteger)index {
     validateInsertElementArgumentIndex(self.itemsData, index, __FILE__, __LINE__, __FUNCTION__);
-    
+
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, data.count)];
     [_itemsData insertObjects:data atIndexes:indexSet];
-    
+
     NSMutableArray *height = [NSMutableArray new];
     NSMutableArray *size = [NSMutableArray new];
     for (NSUInteger index = 0; index < data.count; index++) {
         [height addObject:@(UITableViewAutomaticDimension)];
         [size addObject:[NSValue valueWithCGSize:CGSizeZero]];
     }
-    
     [self.cachedHeightForCell insertObjects:height atIndexes:indexSet];
     [self.cachedSizeForCell insertObjects:size atIndexes:indexSet];
 }
@@ -262,7 +262,7 @@
 
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, data.count)];
     [_itemsData replaceObjectsAtIndexes:indexSet withObjects:data];
-    
+
     NSMutableArray *height = [NSMutableArray new];
     NSMutableArray *size = [NSMutableArray new];
     for (NSUInteger index = 0; index < data.count; index++) {
@@ -282,22 +282,20 @@
         return nil;
     }
 
-    id first = self.itemsData.firstObject;
-    [_itemsData removeObjectAtIndex:0];
-    
     [self.cachedHeightForCell removeObjectAtIndex:0];
     [self.cachedSizeForCell removeObjectAtIndex:0];
     
+    id first = self.itemsData.firstObject;
+    [_itemsData removeObjectAtIndex:0];
     return first;
 }
 
 - (nonnull id)removeLast {
-    id last = self.itemsData.lastObject;
-    [_itemsData removeLastObject];
-
     [self.cachedHeightForCell removeLastObject];
     [self.cachedSizeForCell removeLastObject];
     
+    id last = self.itemsData.lastObject;
+    [_itemsData removeLastObject];
     return last;
 }
 
@@ -306,13 +304,18 @@
         return nil;
     }
     
-    id removed = [self.itemsData objectAtIndex:index];
-    [_itemsData removeObjectAtIndex:index];
-    
     [self.cachedHeightForCell removeObjectAtIndex:index];
     [self.cachedSizeForCell removeObjectAtIndex:index];
-    
+
+    id removed = [self.itemsData objectAtIndex:index];
+    [_itemsData removeObjectAtIndex:index];
     return removed;
+}
+
+- (nullable NSArray<id> *)removeAtIndexs:(nonnull NSArray<NSNumber *> *)indexs {
+    TCArrayRemoveIndexs(self.cachedHeightForCell, indexs);
+    TCArrayRemoveIndexs(self.cachedSizeForCell, indexs);
+    return TCArrayRemoveIndexs(_itemsData, indexs);
 }
 
 - (nullable id)removeDataForItemAtIndex:(NSInteger)index {
@@ -320,11 +323,11 @@
 }
 
 - (nullable NSArray *)removeAll {
-    NSArray *removed = [[NSArray alloc] initWithArray:self.itemsData];
-    [_itemsData removeAllObjects];
-    
     [self.cachedHeightForCell removeAllObjects];
     [self.cachedSizeForCell removeAllObjects];
+
+    NSArray *removed = [[NSArray alloc] initWithArray:self.itemsData];
+    [_itemsData removeAllObjects];
     
     return removed;
 }

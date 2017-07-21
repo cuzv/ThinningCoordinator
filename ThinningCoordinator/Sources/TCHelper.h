@@ -30,4 +30,7 @@
 
 void validateInsertElementArgumentIndex(NSArray *arr, const NSInteger index, const void *file, const int line, const void *method);
 void validateNoneInsertElementArgumentIndex(NSArray *arr, const NSInteger index, const void *file, const int line, const void *method);
+
+NSArray *TCArrayRemoveIndexs(NSMutableArray *arr, NSArray<NSNumber *> *indexs);
+
 @end
