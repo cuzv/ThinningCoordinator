@@ -172,8 +172,8 @@
         [self.sourceable loadData:data forReusableCell:cell];
         
         if ([self conformsToProtocol:@protocol(TCImageLazyLoadable)]) {
-            CGRect targetRect = self.delegate.targetRect.CGRectValue;
-            if (CGRectIntersectsRect(targetRect, cell.frame)) {
+            NSValue *targetRect = self.delegate.targetRect;
+            if (!targetRect || CGRectIntersectsRect(targetRect.CGRectValue, cell.frame)) {
                 id lazyLoadable = (id<TCImageLazyLoadable>)self;
                 [lazyLoadable lazyLoadImagesData:data forReusableCell:cell];
             }
@@ -431,8 +431,8 @@
         [self.sourceable loadData:data forReusableCell:cell];
         
         if ([self conformsToProtocol:@protocol(TCImageLazyLoadable)]) {
-            CGRect targetRect = self.delegate.targetRect.CGRectValue;
-            if (CGRectIntersectsRect(targetRect, cell.frame)) {
+            NSValue *targetRect = self.delegate.targetRect;
+            if (!targetRect || CGRectIntersectsRect(targetRect.CGRectValue, cell.frame)) {
                 id lazyLoadable = (id<TCImageLazyLoadable>)self;
                 [lazyLoadable lazyLoadImagesData:data forReusableCell:cell];
             }

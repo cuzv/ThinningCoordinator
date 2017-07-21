@@ -131,6 +131,9 @@
 /// Remove specific data at index
 - (nullable id)removeAtIndex:(NSInteger)index;
 
+/// Remove specific data at indexs
+- (nullable NSArray<id> *)removeAtIndexs:(nonnull NSArray<NSNumber *> *)indexs;
+
 /// Remove specific data at index
 - (nullable id)removeDataForItemAtIndex:(NSInteger)index __attribute__((deprecated("use `removeAtIndex:` instead.")));
 

@@ -46,4 +46,26 @@ void validateNoneInsertElementArgumentIndex(NSArray *arr, const NSInteger index,
     }
 }
 
+NSArray *TCArrayRemoveIndexs(NSMutableArray *arr, NSArray<NSNumber *> *indexs) {
+    NSInteger maxIndex = 0;
+    for (NSNumber *element in indexs) {
+        if (element.integerValue > maxIndex) {
+            maxIndex = element.integerValue;
+        }
+    }
+    
+    if (arr.count <= maxIndex) {
+        return nil;
+    }
+    
+    NSMutableArray *removed = [NSMutableArray new];
+    for (NSNumber *element in indexs) {
+        [removed addObject:[arr objectAtIndex:element.integerValue]];
+    }
+    for (id data in removed) {
+        [arr removeObject:data];
+    }
+    return removed;
+}
+
 @end

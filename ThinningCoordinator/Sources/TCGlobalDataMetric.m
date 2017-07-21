@@ -354,6 +354,35 @@
     return [self.sectionDataMetrics[section] removeAtIndex:indexPath.item];
 }
 
+- (nullable NSArray<id> *)removeAtIndexPaths:(nonnull NSArray<NSIndexPath *> *)indexPaths {
+    if (!indexPaths.count) {
+        return nil;
+    }
+    
+    NSMutableArray *result = [NSMutableArray new];
+    NSMutableArray<NSNumber *> *indexs = [NSMutableArray new];
+    void (^performRemove)() = ^(NSInteger section){
+        NSArray<id> *removed = [self.sectionDataMetrics[section] removeAtIndexs:indexs];
+        if (removed) {
+            [result addObjectsFromArray:removed];
+        }
+        [indexs removeAllObjects];
+    };
+    
+    NSArray<NSIndexPath *> *arr = [indexPaths sortedArrayUsingSelector:@selector(compare:)];
+    NSInteger section = arr.firstObject.section;
+    for (NSIndexPath *indexPath in arr) {
+        if (indexPath.section != section) {
+            performRemove(section);
+        }
+        [indexs addObject:@(indexPath.item)];
+        section = indexPath.section;
+    }
+    performRemove(section);
+
+    return result;
+}
+
 - (nullable NSArray *)removeAll {
     NSArray *all = [[NSArray alloc] initWithArray:self.sectionDataMetrics];
     [_sectionDataMetrics removeAllObjects];
