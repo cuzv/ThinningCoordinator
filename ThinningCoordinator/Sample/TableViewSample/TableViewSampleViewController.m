@@ -62,6 +62,7 @@
         _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _tableView.delegate = self.delegate;
         _tableView.dataSource = self.dataSource;
+        _tableView.allowsSelectionDuringEditing = YES;
 //        _tableView.rowHeight = UITableViewAutomaticDimension;
 //        _tableView.estimatedRowHeight = 44;
         if ([_tableView respondsToSelector:@selector(layoutMargins)]) {
