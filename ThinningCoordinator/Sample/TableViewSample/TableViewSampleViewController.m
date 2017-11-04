@@ -2,8 +2,8 @@
 //  ViewController.m
 //  ThinningCoordinator
 //
-//  Created by Moch Xiao on 1/20/16.
-//  Copyright © 2016 Moch. All rights reserved.
+//  Created by Roy Shaw on 1/20/16.
+//  Copyright © 2016 Red Rain. All rights reserved.
 //
 
 #import "TableViewSampleViewController.h"

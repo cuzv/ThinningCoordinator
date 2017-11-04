@@ -2,8 +2,8 @@
 //  NSObject+TCIdentifier.m
 //  ThinningCoordinator
 //
-//  Created by Moch Xiao on 1/21/16.
-//  Copyright © @2016 Moch Xiao (https://github.com/cuzv).
+//  Created by Roy Shaw on 1/21/16.
+//  Copyright © @2016 Red Rain (https://github.com/cuzv).
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
